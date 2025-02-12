@@ -1,0 +1,247 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    display: flex;
+    min-height: 100vh;
+    background: #f4f4f4;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background: #470EE9;
+    color: white;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logo {
+    padding: 0 20px 20px 20px;
+    display: block;
+    text-align: center;
+}
+
+.nav-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding: 30px;
+    margin-top: 170px;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    color: white;
+    text-decoration: none;
+    padding: 12px 20px;
+    transition: background 0.3s;
+}
+.nav-link span {
+    font-size: 0.95rem;
+}
+.nav-link i {
+    width: 25px;
+    font-size: 1.2rem;
+    margin-right: 10px;
+}
+
+
+/* Ajout de l'effet actif et hover :*/
+.nav-link:hover,
+.nav-link.active {
+border-left: 10px solid white;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    margin-left: 250px;
+    padding: 13px;
+    background: white;
+}
+
+.main-wrapper {
+     background:rgba(240, 240, 240, 0.94); /* Couleur grise */
+     padding: 35px; /* Espacement autour du contenu */
+     min-height: 98vh; /* Assure que ça couvre toute la hauteur */
+}
+
+.search-bar {
+     background: white;
+     padding: 25px;
+     border-radius: 80px;
+     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+     display: flex;
+     align-items: center;
+     border: 2px solid #eee;
+     width: 100%;
+     max-width: 1170px;
+}
+
+
+.search-bar input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 0 10px;
+    font-size: 0.95rem;
+}
+
+.search-bar i {
+    color: #888;
+    font-size: 1.1rem;
+}
+
+/* Style des icônes */
+.icons {
+display: flex;
+align-items: center;
+gap: 20px; /* Espacement entre les icônes */
+margin-left: 80%; /* Séparation avec la barre de recherche */
+margin-top:-4.7%;
+}
+
+.icons .icon {
+position: relative;
+display: flex;
+align-items: center;
+justify-content: center;
+width: 50px; /* Taille de l'icône */
+height: 550x;
+border-radius: 50%;
+background:rgba(240, 240, 240, 0.94); /* Fond blanc */
+cursor: pointer;
+}
+
+.icons .icon i {
+font-size: 2rem;
+color: #470EE9;
+}
+
+/* Effet au survol */
+.icons .icon:hover {
+background:rgba(20, 27, 234, 0.1);
+}
+
+
+/* Style pour la section user-info */
+/* Style de la section user-info */
+.user-info {
+display: flex;
+align-items: center;
+gap: 15px;
+background: transparent; /* Prend la couleur de l’arrière-plan */
+padding: 10px;
+border-radius: 10px;
+width: fit-content;
+cursor: pointer;
+position: relative;
+}
+
+/* Icône utilisateur */
+.user-info .user-icon {
+font-size: 50px;
+color: #470EE9;
+}
+
+/* Texte utilisateur */
+.user-details {
+display: flex;
+flex-direction: column; /* Permet d'afficher le rôle sous le login */
+align-items: flex-start;
+}
+
+/* Login */
+.user-details .login {
+font-size: 1rem;
+font-weight: bold;
+color: #470EE9; /* Couleur donnée */
+font-family: 'Poppins', sans-serif;
+
+}
+
+/* Rôle sous le login */
+.user-details .role {
+font-size: 0.9rem;
+color: #696969;
+font-family: 'Poppins', sans-serif;
+}
+
+/* Flèche déroulante */
+.user-info .arrow {
+font-size: 1.5rem;
+color: #470EE9;
+transition: transform 0.3s ease;
+}
+
+/* Rotation de la flèche quand la liste est ouverte */
+.user-info .arrow.open {
+transform: rotate(180deg);
+}
+
+/* Style du menu déroulant */
+.user-info .dropdown {
+display: none;
+position: absolute;
+top: 100%;
+left: 0;
+background: white; /* Semi-transparent */
+color: black;
+border-radius: 5px;
+width: 200px;
+padding: 10px;
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+z-index: 10;
+}
+
+/* Liens du menu */
+.user-info .dropdown a {
+display: block;
+color: black;
+text-decoration: none;
+padding: 10px;
+font-size: 0.95rem;
+}
+
+/* Effet au survol */
+.user-info .dropdown a:hover {
+background: rgba(20, 27, 234, 0.1);
+}
+
+/* Afficher le menu quand il est actif */
+.user-info .dropdown.show {
+display: block;
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 70px;
+        align-items: center;
+    }
+
+    .nav-link span {
+        display: none;
+    }
+
+    .nav-link i {
+        margin: 0 auto;
+    }
+
+    .main-content {
+        margin-left: 70px;
+    }
+}

@@ -1,0 +1,89 @@
+                       /*page login.php */
+.login {
+    min-height: 100vh;
+    background: #470EE9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    margin: 0;
+}
+
+.login .login-box {
+    background: #470EE9;
+    width: 100%;
+    max-width: clamp(280px, 50vw, 435px);
+    padding: 20px;
+    top: 50%;
+    left: 50%;
+}
+
+.login label {
+    font-family: 'Poppins', sans-serif;
+    color: #FFFFFF;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    padding-left: 10px;
+    display: block;
+}
+
+.login .form-control {
+    background: #470EE9;
+    border-radius: 40px;
+    padding: 12px 20px;
+    font-size: 16px;
+    text-align: center;
+    font-weight: bold;
+    color: white;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.login .btn-login {
+    background: white;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 700;
+    border-radius: 40px;
+    width: 100%;
+    padding: 12px;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.login .password-container {
+    position: relative;
+    width: 100%;
+}
+
+.login .toggle-password {
+    position: absolute;
+    right: 15px;
+    top: 70%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 10px;
+}
+
+.login .login-logo {
+    position: absolute;
+    left: 23%;
+    top: 50%;
+    transform: translateY(-40%);
+    opacity: 0.8;
+    max-width: clamp(350px, 50vw, 600px);
+}
+
+@media (max-width: 500px) {
+    .login .login-logo {
+        left: 5%;
+    }
+}
