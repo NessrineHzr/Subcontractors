@@ -16,6 +16,7 @@ if ($login_result->num_rows > 0) {
     $login = $row['login_Utilisateur'];
     $role = $row['role_Utilisateur']; // Récupérer le rôle
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
