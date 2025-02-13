@@ -1,7 +1,12 @@
-<html>
-<body>
-<footer style="text-align: center; padding: 20px 0; background-color: #f8f8f8;">
-<p>&copy; Copyright  SITEM  <?php echo  date(" Y "); ?></p>
+
+</div>
+</main>
+<footer class="footer">
+    <p>&copy; <?php echo  date(" Y "); ?> SITEM - Tous droits réservés</p>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="../../public/js/script_app.js"></script>
 </footer>
 </body>
 </html>

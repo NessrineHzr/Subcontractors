@@ -1,9 +1,11 @@
 <?php
 include('../header_menu.php');
+?>
 
 
-echo "Hello ".$_SESSION['Login'];
+Mon profil
 
 
+<?php
 include('../footer.php');
 ?>
