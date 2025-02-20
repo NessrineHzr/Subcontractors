@@ -74,7 +74,7 @@ body {
 }
 
 .main-wrapper {
-    background: rgba(240, 240, 240, 0.94);
+    background: #f0f0f0f0;
     padding: 35px;
     min-height: 98vh;
 }

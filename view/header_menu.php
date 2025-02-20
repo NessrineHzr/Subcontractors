@@ -4,6 +4,7 @@ session_start();
 include('../../config/base_de_donnee.php');
 $login = $_SESSION['Login'];
 $role = $_SESSION['Role'];
+$Nom = $_SESSION['Nom'];
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -26,7 +27,7 @@ $role = $_SESSION['Role'];
             <a href="file.php" class="nav-link"><i class="fas fa-home"></i><span>Dashboard</span></a>
             <a href="file.php" class="nav-link"><i class="fas fa-file-alt"></i><span>Demandes</span></a>
             <a href="file.php" class="nav-link"><i class="fas fa-user-tie"></i><span>Sous-traitants</span></a>
-            <a href="file.php" class="nav-link"><i class="fas fa-users"></i><span>Salariés</span></a>
+            <a href="salarie.php" class="nav-link"><i class="fas fa-users"></i><span>Salariés</span></a>
             <a href="file.php" class="nav-link"><i class="fas fa-file-contract"></i><span>Contrats</span></a>
             <a href="file.php" class="nav-link"><i class="fas fa-folder"></i><span>Documents</span></a>
             <a href="file.php" class="nav-link"><i class="fas fa-envelope"></i><span>Messageries</span></a>
@@ -53,14 +54,14 @@ $role = $_SESSION['Role'];
                         <i class="fas fa-user-circle user-icon"></i>
                         <!-- Infos utilisateur -->
                         <div class="user-details">
-                            <span class="login"><?php echo $login; ?></span>
+                            <span class="login"><?php echo $Nom; ?></span>
                             <span class="role"><?php echo $role; ?></span>
                         </div>
                         <!-- Flèche de la liste déroulante -->
                         <i class="fas fa-chevron-down arrow"></i>
                         <!-- Liste déroulante -->
                         <div class="dropdown">
-                            <a href="profile.php">Mes informations</a>
+                            <a href="profile.php" id="information">Mes informations</a>
                             <a href="../../controllers/logout.php">Déconnexion</a>
                         </div>
                     </div>
