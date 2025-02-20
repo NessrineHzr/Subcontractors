@@ -30,7 +30,6 @@ include('../header_menu.php');
 }
 h2 {
     font-family: 'Poppins', sans-serif;
-    justify-content:;
     display: flex;
     align-items: center;
     font-size: 25px;
