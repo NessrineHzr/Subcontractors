@@ -30,63 +30,53 @@ include('../header_menu.php');
 }
 h2 {
     font-family: 'Poppins', sans-serif;
-    justify-content:;
     display: flex;
     align-items: center;
-    font-size: 25px;
+    font-size: 150%;
     color: #333;
-
-    
 }
 .cadre {
     display: flex;
     justify-content: space-between;
     width: 100%;
     height: 90vh;
-  }
-
-  .cadre1 {
-  background-color: white;
-  border-radius: 10px;
-  font-weight: bold;
-  width: 74.5%;
-  padding: 35px;
-  box-sizing: border-box; 
 }
-
+.cadre1 {
+    background-color: white;
+    border-radius: 10px;
+    font-weight: bold;
+    width: 74.5%;
+    padding: 2%;
+    box-sizing: border-box; 
+}
 .cadre1 table {
-  width: 100%; 
-  border-collapse: collapse; 
+    width: 100%; 
+    border-collapse: collapse; 
 }
-
 .cadre1 tr, td {
-  font-family: 'Poppins', sans-serif;
-  width: 50%; 
-  padding: 20px;
-  font-size: 17px;
+    font-family: 'Poppins', sans-serif;
+    width: 50%; 
+    padding: 2%;
+    font-size: 17px;
 }
-
 .cadre1 input {
-  font-family: 'Poppins', sans-serif;
-  font-size: 15px;
-  width: 100%; 
-  padding: 20px; 
-  box-sizing: border-box;
-  background: #F6F6F6 ;
-  border: none;
-  border-radius: 8px;
-  margin-top: 25px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    width: 100%; 
+    padding: 4%; 
+    box-sizing: border-box;
+    background: #F6F6F6;
+    border: none;
+    border-radius: 8px;
+    margin-top: 5%;
 }
-
 .cadre2{
-  background-color:  white;
-  border-radius: 10px;
-  font-size: 23px;
-  width: 24%;
-  padding: 40px;
+    background-color: white;
+    border-radius: 10px;
+    font-size: 23px;
+    width: 24%;
+    padding: 40px;
 }
-
-
 #update_profile_btn {
     font-family: 'Poppins', sans-serif;
     width: 50%;
@@ -97,11 +87,9 @@ h2 {
     border: none;
     border-radius: 8px;    
 }
-
 #update_profile_btn:hover {
     background-color: #3a0cb0;
 }
-
 .modal {
     display: none;
     position: fixed;
@@ -112,32 +100,35 @@ h2 {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.4);
 }
-
 .modal-content {
     font-family: 'Poppins', sans-serif;
     color: #612cf3;
     background-color: #fff;
-    width: 350px;
-    height: auto;
+    width: 20%;
+    height: 20%;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     position: relative;
     padding: 20px;
     margin: 15% auto;
     text-align: center;
 }
-
+#text {
+    color: #612cf3;
+    font-size: 25px;
+    margin-top: 20px;
+    text-align: center;
+}
 .close-message {
     color: #aaa;
     position: absolute;
-    top: 15px;
-    right: 15px;
+    top: 5%;
+    right: 5%;
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
-    margin-top: 15px;
 }
 #message{
-  margin-top: 20px;
+    margin-top: 20px;
 }
 /* image */
 .image_profile {
@@ -146,27 +137,27 @@ h2 {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 20px;
+    margin-top: 7%;
     gap: 20px;
     font-size: 18px;
     font-weight: bold;
-
+    position: relative;
 }
 .image_profile img {
-    width: 140px; 
-    height: 140px; 
+    width: 50%; 
+    height: 50%; 
     border-radius: 50%;
     object-fit: cover; 
 }
 .edit-btn {
     position: absolute;
-    bottom: 580px;
-    right: 150px;
+    bottom: 50%;
+    right: 20%;
     background-color: #470EE9;
     color: white;
+    width: 12%;          
+    aspect-ratio: 1/1;
     border: none;
-    width: 35px;
-    height: 35px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -174,39 +165,154 @@ h2 {
     cursor: pointer;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
-
 .edit-btn:hover {
     background-color: #3a0cb0;
 }
-
 /* icons */
-
 .icons_profile {
     font-family: 'Poppins', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
     font-size: 17px;
     color: #333;
-    margin-top: 70px;
+    margin-top: 25%;
 }
-
 .icons_profile i {
     font-size: 15px; 
     color: white; 
     background-color: #470EE9; 
-    width: 35px;
-    height: 35px;
+    width: 12%;          
+    aspect-ratio: 1/1;    
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
 }
+/* responsive */
+@media screen and (max-width: 1200px) {
+    .cadre {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
 
+    .cadre1 {
+        width: 70%;
+        height: 100%;
+        padding: 2%;
+    }
+
+    .cadre2 {
+        width: 28%;
+        height: 100%;
+        padding: 2%;
+    }
+
+    .cadre1 table {
+        width: 100%;
+    }
+
+    .cadre1 tr, .cadre1 td {
+        font-size: 16px;
+    }
+
+    .image_profile img {
+        width: 55%; 
+        height: 55%;
+    }
+
+    .edit-btn {
+        width: 15%;
+        bottom: 45%;
+        right: 15%;
+    }
+
+    .icons_profile {
+        margin-top: 10%;
+        font-size: 16px;
+    }
+
+    .icons_profile i {
+        width: 13%;
+    }
+
+    #update_profile_btn {
+        width: 60%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .cadre {
+        flex-direction: column;
+    }
     
+    .cadre1, .cadre2 {
+        width: 100%;
+    }
+    
+    .cadre1 tr {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .cadre1 td {
+        width: 100%;
+    }
+    .cadre1 tr, td {
+      font-size: 15px;
+      width: 100%;
+     }
+    #update_profile_btn {
+        width: 50%;
+    }    
+    .icons_profile {
+        margin-top: 15%;
+    }
+    .icons_profile {
+        margin-top: 15%;
+    }
+    .image_profile img {
+    width: 40%; 
+    height: 40%; 
+    }
+    .edit-btn {
+      width: 45px;
+      right: 25%;
+    }
+    .icons_profile i {
+        width: 10%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+  .h1 {
+        font-size: 18px;
+    }
+    .titre, h2 {
+        font-size: 17px;
+    }
+    .cadre {
+        font-size: 12px;
+        padding:5px;
+    }
+    
+    .cadre1 tr, td {
+      font-size: 15px;
+      width: 100%;
+        }
+    .edit-btn {
+        width: 30px;   
+    }
+    #update_profile_btn {
+        width: 50%;
+    }
+}
+
 </style>
+
 <form action="" method="post">
   <h1>Dashboard  <span class="titre">  > Mon compte</span> </h1><br><br>
   <div class="cadre">
@@ -286,10 +392,10 @@ h2 {
 </div>
 </form>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-<div id="modal" class="modal">
+<div id="modal" class="modal" >
   <div class="modal-content">
     <span class="close-message">&times;</span>
-    <h2 id="text"></h2>
+    <h2 id="text" ></h2>
     <p id="message"></p>
   </div>
 </div>
