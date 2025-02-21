@@ -1,7 +1,6 @@
 <?php
 include('../header_menu.php');
 $login = $_SESSION['Login'];
-echo "<h1>Bonjour, $login !</h1>";
 ?>
 
 <!DOCTYPE html>
@@ -82,21 +81,9 @@ input[type="reset"] {
   right: 50px;
   top: 170px;
 }
-#ajouter_salarie {
-  background-color: #612cf3;
-  color: white;
-  font-size: 16px;
-  width: 28%;
-}
 
-#annuler {
-  background-color: white;
-  color: #612cf3;
-  border: 1px solid #612cf3;
-  font-size: 15px;
-  width: 28%;
-  margin-left: 41.2%;
-}
+
+
 
 /* fenetre d'ajout */
 .modal_2 {
@@ -181,11 +168,6 @@ input[type="reset"] {
     background-color: white;
     color: #612cf3;
     border: 2px solid #612cf3;
-}
-
-.table {
-  padding: 30px;
-  margin: 20px 0;
 }
 
 .table h1 {
@@ -416,134 +398,178 @@ input[type="reset"] {
   color: white;
 }
 </style>
-<input type="button" class="boutton" id="ajout_salarie" value="+   Ajouter un Salarié"></input>
-<p1 class="erreur" id="erreur2" style="display:block;"></p1>
-<div id="modal_ajout_salarie" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <h2>Ajouter un salarié</h2><br><br>
-    <form id="form_ajout_salarie" action="" method="post" >
-      <label for="nom">Nom :</label>
-      <input type="text" id="nom" name="nom" ><br><br>
-      <label for="prenom">Prénom :</label>
-      <input type="text" id="prenom" name="prenom"><br><br>
-      <label for="dateNaissance">Date de naissance :</label>
-      <input type="date" id="dateNaissance" name="dateNaissance" ><br><br>
-      <label for="nationalite">Nationalité :</label>
-      <input type="text" id="nationalite" name="nationalite" ><br><br>
-      <label for="poste">Poste :</label>
-      <input type="text" id="poste" name="poste" ><br><br>
-      <label for="typeMission">Type de mission :</label>
-      <select id="typeMission" name="typeMission" required><br><br>
+<div class="table" action="" method="post">
+  <div class="table-responsive-xxl" id="table_listeSalarie"></div>
+</div>
+<!-- Model ajout -->
+<div class="modal fade" id="ajoutSalarie" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" style="color: #470EE9; margin: 0;">Ajouter un salarié</h3>
+        <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
+      </div>
+      <div class="modal-body">
+        <label for="nom">Nom*</label>
+        <input type="text" id="nom" name="nom"><br><br>
+        <label for="prenom">Prénom*</label>
+        <input type="text" id="prenom" name="prenom"><br><br>
+        <label for="dateNaissance">Date de naissance*</label>
+        <input type="date" id="dateNaissance" name="dateNaissance"><br><br>
+        <label for="nationalite">Nationalité*</label>
+        <input type="text" id="nationalite" name="nationalite"><br><br>
+        <label for="poste">Poste*</label>
+        <input type="text" id="poste" name="poste"><br><br>
+        <label for="typeMission">Type de mission*</label>
+        <select id="typeMission" name="typeMission" required>
           <option value="">Sélectionnez une mission</option>
           <option value="européenne">Européenne</option>
           <option value="française">Française</option>
-      </select><br><br>
-      <input type="reset" id="annuler" value="Annuler ">
-      <input type="button" id="ajouter_salarie" value="Ajouter ">
-    </form>
-  </div>
-</div>
-
-<div id="modal_message_2" class="modal_2">
-  <div class="modal-content_2">
-    <span class="close-message_2">&times;</span>
-    <h2 id="modal_message_title_2"></h2>
-    <p id="modal_message_text_2"></p>
-    <div class="form-buttons_2">
-      <input type="button" id="ajouter_autre_salarie" value="Ajouter un autre salarié">
-      <input type="button" id="fermer_message_2" value="Fermer">
+        </select><br><br>
+      </div>
+      <div class="modal-footer">
+        <button class="buttonvalidate" id="ajouter_salarie">Ajouter</button>
+        <button class="buttonannule" id="btn_annule">Annuler</button>
+      </div>
     </div>
   </div>
-</div><br><br>
-
-<div class="table" action="" method="post">
-  <h1>Tous les salariés</h1>
-  <table class="table-salarie" >
-    <thead>
-      <tr>
-        <th>Nom</th>
-        <th>Prénom</th>
-        <th>Date de naissance</th>
-        <th>Nationalité</th>
-        <th>Poste</th>
-        <th>Mission</th>
-        <th>Documents</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-<?php $sql = "SELECT id_Salarie,nom_Salarie, prenom_Salarie, dateNaissance_Salarie, nationalite_Salarie, poste_Salarie, typeMission_Salarie FROM salarie WHERE etat_Salarie = '1'";
-  $result = mysqli_query($connexion,$sql);
-  if ($result->num_rows > 0) {
-      while($row = $result->fetch_assoc()) {
-        $missionClass = ($row['typeMission_Salarie'] == 'européenne') ? 'mission mission-europeenne' : 'mission';
-          echo "<tr>";
-          echo "<td>" . $row['nom_Salarie'] . "</td>";
-          echo "<td>" . $row['prenom_Salarie'] . "</td>";
-          echo "<td>" . $row['dateNaissance_Salarie'] . "</td>";
-          echo "<td>" . $row['nationalite_Salarie'] . "</td>";
-          echo "<td>" . $row['poste_Salarie'] . "</td>";
-          echo "<td><button class='$missionClass'>" . $row['typeMission_Salarie'] . "</button></td>";
-          echo "<td><button class='icon-button'><i class='fa fa-eye'></i></button></td>";
-          echo "<td>
-                <button type='button' class='modifier' 
-                        data-id='" . $row['id_Salarie'] . "'
-                        data-nom='" . $row['nom_Salarie'] . "'
-                        data-prenom='" . $row['prenom_Salarie'] . "'
-                        data-date='" . $row['dateNaissance_Salarie'] . "'
-                        data-nationalite='" . $row['nationalite_Salarie'] . "'
-                        data-poste='" . $row['poste_Salarie'] . "'
-                        data-mission='" . $row['typeMission_Salarie'] . "'>Modifier</button>
-                <button type='button' class='supprimer' 
-                        data-id='" . $row['id_Salarie'] . "'>Supprimer</button>
-                </td>";
-          echo "</tr>";
-      }
-  } 
-  ?>
-    </tbody>
-  </table>
 </div>
 
-<div id="updateSalarie" class="modal3">
-<div class="modal-content3">
-  <h2>Modifier les informations du salarié</h2>
-  <span class="close3">&times;</span>
-  <form id="updateSalarieForm">
-    <input type="hidden" id="id_Salarie" name="id_Salarie">
-    <label for="nom_Salarie">Nom</label>
-    <input type="text" id="nom_Salarie" name="nom_Salarie">
-    <label for="prenom_Salarie">Prénom</label>
-    <input type="text" id="prenom_Salarie" name="prenom_Salarie">
-    <label for="dateNaissance_Salarie">Date de naissance</label>
-    <input type="date" id="dateNaissance_Salarie" name="dateNaissance_Salarie">
-    <label for="nationalite_Salarie">Nationalité</label>
-    <input type="text" id="nationalite_Salarie" name="nationalite_Salarie">
-    <label for="poste_Salarie">Poste</label>
-    <input type="text" id="poste_Salarie" name="poste_Salarie">
-    <label for="typeMission_Salarie">Mission</label>
-    <select id="typeMission_Salarie" name="typeMission_Salarie">
-        <option value="européenne">Européenne</option>
-        <option value="française">Française</option>
-      </select>    
-    <button type="button" id="annuler_update">Annuler</button>
-    <button type="button" id="update_salarie">Enregistrer</button>
-  </form>
-</div>
-</div>
-
-<div id="message_2" class="modal_4">
-  <div class="modal-content_4">
-    <span class="close-message_4">&times;</span>
-    <h2 id="modal_message_title_4"></h2>
-    <p id="modal_message_text_4"></p>
-    <div class="form-buttons_4">
-      <input type="button" id="supprimer_salarie" value="Supprimer">
-      <input type="button" id="annuler_supprimer" value="Annuler">
+<!-- end Model ajout -->
+<!-- Model alert modification succès -->
+<div class="modal fade" id="SuccessAddSalarie" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content3">
+      <h2>Ajouter un salarié</h2>
+      <span class="close3">&times;</span>
+      <div style="font-size:20px; margin-top:109px;">
+          <center id="addsalarie_success"></center>  
+      </div>
     </div>
   </div>
+</div>
+<!-- end Model alert modification succès -->
+<!-- Model alert modification echec -->
+<div class="modal fade" id="EchecAddSalarie" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content3">
+      <h2>Ajouter un salarié</h2>
+      <span class="close3">&times;</span>
+      <div style="font-size:20px; margin-top:109px;">
+          <center id="addsalarie_echec"></center>  
+      </div>
+    </div>
   </div>
+</div>
+<!-- end Model alert modification echec -->
+<!-- Model modification -->
+<div class="modal fade bd-example-modal-lg" id="updateSalarie" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content3">
+      <h2>Modifier les informations du salarié</h2>
+      <span class="close3">&times;</span>
+      <form id="updateSalarieForm">
+        <input type="hidden" id="id_Salarie" name="id_Salarie">
+
+        <label for="nom_Salarie">Nom</label>
+        <input type="text" id="nom_Salarie">
+
+        <label for="prenom_Salarie">Prénom</label>
+        <input type="text" id="prenom_Salarie">
+
+        <label for="dateNaissance_Salarie">Date de naissance</label>
+        <input type="date" id="dateNaissance_Salarie">
+
+        <label for="nationalite_Salarie">Nationalité</label>
+        <input type="text" id="nationalite_Salarie">
+
+        <label for="poste_Salarie">Poste</label>
+        <input type="text" id="poste_Salarie">
+
+        <label for="typeMission_Salarie">Mission</label>
+        <select id="typeMission_Salarie">
+          <option value="européenne">Européenne</option>
+          <option value="française">Française</option>
+        </select> 
+
+        <button type="button" id="update_salarie">Enregistrer</button>
+        <button type="button" id="btn_annule">Annuler</button>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- end Model modification -->
+<!-- Model alert modification succès -->
+<div class="modal fade" id="SuccessUpSalarie" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content3">
+      <h2>Modifier les informations du salarié</h2>
+      <span class="close3">&times;</span>
+      <div style="font-size:20px; margin-top:109px;">
+          <center id="upsalarie_success"></center>  
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end Model alert modification succès -->
+<!-- Model alert modification echec -->
+<div class="modal fade" id="EchecUpSalarie" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content3">
+      <h2>Modifier les informations du salarié</h2>
+      <span class="close3">&times;</span>
+      <div style="font-size:20px; margin-top:109px;">
+          <center id="upsalarie_echec"></center>  
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end Model alert modification echec -->
+<!-- Model suppression -->
+<div class="modal fade" id="deleteSalarie" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content3">
+      <h2>Supprimer Salarié</h2>
+      <span class="close3">&times;</span>
+      <div style="font-size:20px; margin-top:109px;">
+        <p>Voulez-vous supprimer le client ?</p>
+				<br>
+				<div style="float: right;">
+					<button type="button" id="btn_delete">Supprimer</button>
+          <button type="button" id="btn_annule">Annuler</button>
+				</div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end Model suppression -->
+<!-- Model alert supprimer succès -->
+<div class="modal fade" id="SuccessDeleteSalarie" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content3">
+      <h2>Supprimer Salarié</h2>
+      <span class="close3">&times;</span>
+      <div style="font-size:20px; margin-top:109px;">
+          <center id="deletesalarie_success"></center>  
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end Model alert supprimer succès -->
+<!-- Model alert supprimer echec -->
+<div class="modal fade" id="EchecDeleteSalarie" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content3">
+      <h2>Supprimer Salarié</h2>
+      <span class="close3">&times;</span>
+      <div style="font-size:20px; margin-top:109px;">
+          <center id="deletesalarie_echec"></center>  
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end Model alert supprimer echec -->
+
 
 </body>
 </html>

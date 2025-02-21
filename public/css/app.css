@@ -307,3 +307,113 @@ body {
     bottom: 0;
     width: 100%;
 }
+
+/**************************************************************/
+/*** button validate modal ***/
+.buttonvalidate {
+	background-color: #470EE9;
+	border-color: transparent;
+	color: white;
+	border-radius: 3px;
+    width: 143px;
+	height: 50px;
+	font-size: 15px;
+	font-weight: 700;
+}
+
+.buttonannule {
+	background-color: white;
+	border-color: transparent;
+	color: #470EE9;
+	border-radius: 3px;
+    width: 143px;
+	height: 50px;
+	font-size: 15px;
+	font-weight: 700;
+    border: 1px solid #470EE9;
+}
+
+/** modal footer */
+.modal-footer {
+    display: flex;
+    justify-content: flex-end; /* Aligner les boutons à droite */
+    gap: 10px; /* Ajouter un petit espace entre les boutons */
+    padding-top: 5%;
+    background: #fff;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between; /* Espacement entre le titre et le bouton */
+    align-items: center; /* Alignement vertical */
+    padding-bottom: 10%;
+    background: #fff;
+}
+#btn_close {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+#btn_close img {
+    width: 20px; /* Ajuste la taille selon ton besoin */
+    height: auto;
+}
+
+
+/*********************************** data tables ************/
+/* Conteneur principal */
+.dataTables_wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Barre de recherche */
+.dataTables_filter {
+    position: relative;
+}
+
+.dataTables_filter input {
+    padding-left: 35px;
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    height: 38px;
+}
+
+/* Bouton d'ajout */
+.btn-add {
+    background-color: #612cf3;
+    color: white;
+    border-radius: 8px;
+    padding: 8px 15px;
+    border: none;
+    font-weight: bold;
+}
+
+.btn-add:hover {
+    background-color: #7545f9;
+}
+
+.search-control {
+    height: 40px;
+    font-size: 16px;
+    background-color: #f8f9fa;
+}
+
+/* Pagination élégante */
+.dataTables_paginate .page-item .page-link {
+    color: #fff;
+    background-color: #470EE9;
+    border-radius: 8px;
+    padding: 8px 14px;
+    border: none;
+    font-size: 14px;
+    transition: all 0.3s ease-in-out;
+}
+
+
+
+
+
+
+

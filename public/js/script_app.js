@@ -1,7 +1,12 @@
 $(document).ready(function() {
+    ReloadButtonExit();
+    ReloadButtonExitX();
     login();
     update_profile();
+    // Salarie
+    view_salarie_record()
     ajout_salarie();
+    get_salarie_data();
     update_salarie();
     supprimer_salarie();
     
@@ -49,6 +54,65 @@ $(document).ready(function() {
     });
 });
 
+// close button annuler
+function ReloadButtonExit() {
+    $(document).on("click", "#btn_annule", function () {
+      window.location.reload();
+    });
+}
+function ReloadButtonExitX() {
+    $(document).on("click", "#btn_close", function () {
+      window.location.reload();
+    });
+}
+
+// Search pagination
+function searchpagination(id, title, EnteteDroite, titre) {
+    $('.dataTables_length').parent().parent().css('align-items', 'center');
+
+    // Création du titre avec breadcrumb
+    let headerHTML = `<nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0 p-0 align-items-center d-flex">${titre}`;
+    headerHTML += `</ol></nav>`;
+
+    $('.dataTables_length').html(headerHTML);
+
+    // Appliquer un conteneur flex pour bien aligner les éléments et ajouter un espacement
+    EnteteDroite.addClass('d-flex align-items-center');
+
+    // Ajout du champ de recherche stylisé avec une marge à droite
+    let searchInput = EnteteDroite.find("input");
+    searchInput.addClass('form-control rounded-pill ps-5 border-0 shadow-sm');
+    searchInput.css("margin-right", "5px"); // Ajout d'une marge explicite
+
+    // Bouton "Ajouter" avec espacement
+    let addButton = `<button class='btn btn-add' id="${id}" title="${title}">${title}</button>`;
+    
+    // Ajout des éléments dans l'ordre souhaité
+    EnteteDroite.prepend(searchInput); 
+    EnteteDroite.append(addButton);
+}
+$(document).ready(function() {
+    let table = $('#listeSalarie').DataTable({
+        "info": false,
+        "language": {
+            "search": "", // Essaie de masquer "Search:"
+            "searchPlaceholder": "Rechercher..." // Ajoute un placeholder
+        }
+    });
+    // Supprime le texte "Search:" après le chargement de DataTables
+    setTimeout(() => {
+        $(".dataTables_filter label").contents().filter(function() {
+            return this.nodeType === 3; // Sélectionne uniquement le texte brut (ex: "Search:")
+        }).remove();
+    }, 100);
+});
+
+
+
+
+
+//login
 function login() {
     $("#connexion_btn").on("click", function (event) {
         event.preventDefault();  // Empêche la soumission du formulaire
@@ -130,63 +194,43 @@ function update_profile(){
             success: function (data) {
                 data = $.parseJSON(data);
                 $("#modal").fadeIn();
-        if (data.success) {
-          $("#text").text("Succès");
-          $("#message").text(data.success);
-        } else{
-          $("#text").text("Erreur");
-          $("#message").text(data.error);
-        }
-    }
-});
-});
+                if (data.success) {
+                  $("#text").text("Succès");
+                  $("#message").text(data.success);
+                } else{
+                  $("#text").text("Erreur");
+                  $("#message").text(data.error);
+                }
+            }
+        });
+    });
 }
-$(".close-message").click(function() {
-    $("#modal").fadeOut();
-});
-$(window).click(function(event) {
-    if ($(event.target).is("#modal")) {
-        $("#modal").fadeOut();
-    }
-});
-// les fenetre pour l'ajout de salarie 
-    // Ouvrir la modale lors du clic sur le bouton "Ajouter un Salarié"
-    $("#ajout_salarie").click(function() {
-        $("#modal_ajout_salarie").fadeIn();
-    });
 
-    // Fermer la modale lorsque l'utilisateur clique sur la croix
-    $(".close").click(function() {
-        $("#modal_ajout_salarie").fadeOut();
-    });
-    $("#annuler").click(function() {
-        $("#modal_ajout_salarie").fadeOut();
-    });
-
-    // Fermer la modale si l'utilisateur clique en dehors du contenu
-    $(window).click(function(event) {
-        if ($(event.target).is("#modal_ajout_salarie")) {
-            $("#modal_ajout_salarie").fadeOut();
+// module salarie
+function view_salarie_record() {
+  $.ajax({
+    url: "../../models/viewSalarie.php",
+    method: "post",
+    success: function (data) {
+      try {
+        data = $.parseJSON(data);
+        if (data.status == "success") {
+          $("#table_listeSalarie").html(data.html);
+          $('#listeSalarie').DataTable({ "info": false});
+          searchpagination("ajout_salarie","Ajouter un salarié",$('#listeSalarie_filter'),"Liste des salariés");
         }
-    });
-
-    // Ouvrir la modale d'ajout de salarié (première fenêtre) depuis le bouton "Ajouter un autre salarié"
-$("#ajouter_autre_salarie").on("click", function() {
-    $("#modal_message_2").fadeOut();
-    $("#modal_ajout_salarie").fadeIn();
+      } catch (e) {
+        console.error("Invalid Response!");
+      }
+    },
   });
-  
-  // Fermer la modale de message (deuxième fenêtre) via le bouton "Fermer" ou la croix
-  $("#fermer_message_2, .close-message_2").on("click", function() {
-    $("#modal_message_2").fadeOut();
-    location.reload();
-  });
-  
+}
 
-// info salarie
 function ajout_salarie(){
-    $("#ajouter_salarie").on("click", function (event) {
-        event.preventDefault();
+    $(document).on("click", "#ajout_salarie", function () {
+        $("#ajoutSalarie").modal("show");
+    });
+    $(document).on("click", "#ajouter_salarie", function () {
         var nom = $("#nom").val();
         var prenom = $("#prenom").val();
         var dateNaissance = $("#dateNaissance").val();
@@ -211,154 +255,146 @@ function ajout_salarie(){
             contentType: false,
             data: form_data,
             success: function(data) {
-                data = $.parseJSON(data);
-                console.log(data);
-        $("#modal_ajout_salarie").fadeOut();
-        if (data.success) {
-          $("#modal_message_title_2").text("Succès");
-          $("#modal_message_text_2").text(data.success);
-        } else {
-          $("#modal_message_title_2").text("Erreur");
-          $("#modal_message_text_2").text(data.error);
-        }
-        $("#modal_message_2").fadeIn();
+                if (data.includes('text-echec')) {
+                    $("#ajoutSalarie").modal("hide");
+                    $("#addsalarie_echec").removeClass("text-checked").addClass("text-echec").html(data);
+                    $("#EchecAddSalarie").modal("show");
+                    setTimeout(function () {
+                      if ($("#EchecAddSalarie").length > 0) {
+                        $("#EchecAddSalarie").modal("hide");
+                      }
+                    }, 2000);
+                    view_salarie_record();
+                } else {
+                    $("#ajoutSalarie").modal("hide");
+                    $("#addsalarie_success").addClass("text-checked").html(data);
+                    $("#SuccessAddSalarie").modal("show");
+                    $("#addsalarie_success").removeClass("text-echec").addClass("text-checked");
+                    setTimeout(function () {
+                      if ($("#SuccessAddSalarie").length > 0) {
+                        $("#SuccessAddSalarie").modal("hide");
+                      }
+                    }, 2000);
+                    view_salarie_record();
                 }
-            }
-        );
+            } 
+        });
     });
 };
 
-// fenetre update :
-function update_salarie() {
-        $(".modifier").click(function() {
-            var id_Salarie = $(this).data("id");
-            var nom_Salarie = $(this).data("nom");
-            var prenom_Salarie = $(this).data("prenom");
-            var dateNaissance_Salarie = $(this).data("date");
-            var nationalite_Salarie = $(this).data("nationalite");
-            var poste_Salarie = $(this).data("poste");
-            var typeMission_Salarie = $(this).data("mission");
-            $("#id_Salarie").val(id_Salarie);
-            $("#nom_Salarie").val(nom_Salarie);
-            $("#prenom_Salarie").val(prenom_Salarie);
-            $("#dateNaissance_Salarie").val(dateNaissance_Salarie);
-            $("#nationalite_Salarie").val(nationalite_Salarie);
-            $("#poste_Salarie").val(poste_Salarie);
-            $("#typeMission_Salarie").val(typeMission_Salarie);
+function get_salarie_data() {
+    $(document).on("click", "#btn_modif_salarie", function () {
+        var ID = $(this).attr("data-id");
+        $.ajax({
+            url: "../../models/getSalarie.php",
+            method: "post",
+            data: {
+              SalarieID: ID
+            },
+            dataType: "JSON",
+            success: function (data) {
+              $("#id_Salarie").val(data[0]);
+              $("#nom_Salarie").val(data[1]);
+              $("#prenom_Salarie").val(data[2]);
+              $("#dateNaissance_Salarie").val(data[3]);
+              $("#nationalite_Salarie").val(data[4]);
+              $("#poste_Salarie").val(data[5]);
+              $("#typeMission_Salarie").val(data[6]);
+              $("#updateSalarie").modal("show");
+            },
+        });
+    });
+}
 
-            $("#updateSalarie").fadeIn();});
-            $("#annuler_update").click(function() {
-            $("#updateSalarie").fadeOut();});
-            $("#update_salarie").click(function() {
-            var formData = new FormData($("#updateSalarieForm")[0]);
-            $.ajax({
-                url: "../../models/updateSalarie.php",
-                type: "POST",
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    try {
-                        var data = JSON.parse(response);
-                        $("#updateSalarie").fadeOut();
-                        $("#message_2").fadeIn();                    
-                    if (data.success) {
-                        $("#modal_message_title_4").text("Succès");
-                        $("#modal_message_text_4").text("Mise à jour réussie !");
-                        $(".form-buttons_4").html('<input type="button" id="ok_update" value="OK" class="btn-success">');
-                        $(document).on("click", "#ok_update", function() {
-                            $("#message_2").fadeOut(function() {
-                                location.reload();
-                            });
-                        });
-                    } else {
-                        $("#modal_message_title_4").text("Erreur");
-                        $("#modal_message_text_4").text(data.error || "Une erreur est survenue lors de la mise à jour");
-                        $(".form-buttons_4").html('<input type="button" id="ok_error" value="OK" class="btn-error">');
-                        $(document).on("click", "#ok_error", function() {
-                            $("#message_2").fadeOut();
-                        });
-                    }
-                } catch (e) {
-                    $("#modal_message_title_4").text("Erreur");
-                    $("#modal_message_text_4").text("Erreur lors du traitement de la réponse");
-                    $(".form-buttons_4").html('<input type="button" id="ok_error" value="OK" class="btn-error">');
+function update_salarie() {
+    $(document).on("click", "#update_salarie", function () {
+        $("#updateSalarie").scrollTop(0);
+        var id_Salarie = $("#id_Salarie").val();
+        var nom_Salarie = $("#nom_Salarie").val();
+        var prenom_Salarie = $("#prenom_Salarie").val();
+        var dateNaissance_Salarie = $("#dateNaissance_Salarie").val();
+        var nationalite_Salarie = $("#nationalite_Salarie").val();
+        var poste_Salarie = $("#poste_Salarie").val();
+        var typeMission_Salarie = $("#typeMission_Salarie").val();
+        var form_data = new FormData();
+        form_data.append("id_Salarie", id_Salarie);
+        form_data.append("nom_Salarie", nom_Salarie);
+        form_data.append("prenom_Salarie", prenom_Salarie);
+        form_data.append("dateNaissance_Salarie", dateNaissance_Salarie);
+        form_data.append("nationalite_Salarie", nationalite_Salarie);
+        form_data.append("poste_Salarie", poste_Salarie);
+        form_data.append("typeMission_Salarie", typeMission_Salarie);
+        $.ajax({
+            url: "../../models/updateSalarie.php",
+            type: "POST",
+            data: form_data,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                if (data.includes('text-echec')) {
+                    $("#updateSalarie").modal("hide");
+                    $("#upsalarie_echec").removeClass("text-checked").addClass("text-echec").html(data);
+                    $("#EchecUpSalarie").modal("show");
+                    setTimeout(function () {
+                      if ($("#EchecUpSalarie").length > 0) {
+                        $("#EchecUpSalarie").modal("hide");
+                      }
+                    }, 2000);
+                    view_salarie_record();
+                } else {
+                    $("#updateSalarie").modal("hide");
+                    $("#upsalarie_success").addClass("text-checked").html(data);
+                    $("#SuccessUpSalarie").modal("show");
+                    $("#upsalarie_success").removeClass("text-echec").addClass("text-checked");
+                    setTimeout(function () {
+                      if ($("#SuccessUpSalarie").length > 0) {
+                        $("#SuccessUpSalarie").modal("hide");
+                      }
+                    }, 2000);
+                    view_salarie_record();
                 }
             },
-            error: function(xhr, status, error) {
-                $("#modal_message_title_4").text("Erreur");
-                $("#modal_message_text_4").text("Erreur lors de la mise à jour : " + error);
-                $(".form-buttons_4").html('<input type="button" id="ok_error" value="OK" class="btn-error">');
-            }
-            });
         });
-    }
-$(window).click(function(event) {
-    if ($(event.target).is("#updateSalarie")) {
-        $("#updateSalarie").fadeOut();
-    }
-});
-$(".close3").click(function() {
-    $("#updateSalarie").fadeOut();
-});
-// supprimer salarie 
+    });
+}     
 
 function supprimer_salarie() {
-    $(".supprimer").click(function() {
-        let selectedId = $(this).data("id");
-        let selectedRow = $(this).closest("tr");
-        $("#message_2").fadeIn();
-        $("#modal_message_title_4").text("Confirmation de suppression");
-        $("#modal_message_text_4").text("Êtes-vous sûr de vouloir supprimer ce salarié ?");
-        $("#message_2").data("selectedId", selectedId);
-        $("#message_2").data("selectedRow", selectedRow);
-    });
-    $(document).on("click", ".close-message_4", function() {
-        $("#message_2").fadeOut();
-    });
-    $(document).on("click", "#annuler_supprimer", function() {
-        $("#message_2").fadeOut();
-    });
-    $(document).on("click", "#supprimer_salarie", function() {
-        let selectedId = $("#message_2").data("selectedId");
-        let selectedRow = $("#message_2").data("selectedRow");
-        if (selectedId) {
+    $(document).on("click", "#btn_supprime_salarie", function () {
+        var Delete_ID = $(this).attr("data-id1");
+        $("#deleteSalarie").modal("show");
+        $(document).on("click", "#btn_delete", function () {
             $.ajax({
                 url: "../../models/supprimerSalarie.php",
-                type: "POST",
-                data: { id: selectedId },
-                success: function(response) {
-                    try {
-                        var data = JSON.parse(response);
-                        $("#modal_message_title_4").text("Succès");
-                        if (data.success) {
-                            $("#modal_message_text_4").text(data.success);
-                            selectedRow.fadeOut(400, function() {
-                                $(this).remove();
-                            });
-                            $(".form-buttons_4").html('<input type="button" id="ok_suppression" value="OK" class="btn-success">');
-                        } else {
-                            $("#modal_message_text_4").text(data.error || "Une erreur est survenue lors de la suppression");
-                            $(".form-buttons_4").html('<input type="button" id="ok_error" value="OK" class="btn-error">');
+                method: "post",
+                data: {
+                    SalarieID: Delete_ID
+                },
+                success: function (data) {
+                    if (data.includes('text-echec')) {
+                      $("#deleteSalarie").modal("hide");
+                      $("#deletesalarie_echec").removeClass("text-checked").addClass("text-echec").html(data);
+                      $("#EchecDeleteSalarie").modal("show");
+                      setTimeout(function () {
+                        if ($("#EchecDeleteSalarie").length > 0) {
+                          $("#EchecDeleteSalarie").modal("hide");
                         }
-                    } catch(e) {
-                        $("#modal_message_text_4").text("Erreur lors du traitement de la réponse");
-                        $(".form-buttons_4").html('<input type="button" id="ok_error" value="OK" class="btn-error">');
+                      }, 2000);
+                      view_salarie_record();
+                    } else {
+                      $("#deleteSalarie").modal("hide");
+                      $("#deletesalarie_success").addClass("text-checked").html(data);
+                      $("#SuccessDeleteSalarie").modal("show");
+                      $("#deletesalarie_success").removeClass("text-echec").addClass("text-checked");
+                      setTimeout(function () {
+                        if ($("#SuccessDeleteSalarie").length > 0) {
+                          $("#SuccessDeleteSalarie").modal("hide");
+                        }
+                      }, 2000);
+                      view_salarie_record();
                     }
                 },
-                error: function(xhr, status, error) {
-                    $("#modal_message_text_4").text("Erreur lors de la suppression : " + error);
-                    $(".form-buttons_4").html('<input type="button" id="ok_error" value="OK" class="btn-error">');
-                }
             });
-        }
+        });
     });
-    $(document).on("click", "#ok_suppression, #ok_error", function() {
-        $("#message_2").fadeOut();
-        if ($(this).attr("id") === "ok_suppression") {
-            location.reload();
-        }
-    });
-};
- 
-
+}
+// end module salarie
