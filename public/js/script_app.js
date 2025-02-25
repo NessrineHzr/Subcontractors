@@ -2,14 +2,16 @@ $(document).ready(function() {
     ReloadButtonExit();
     ReloadButtonExitX();
     login();
+    // Profile
     update_profile();
+    update_profile_image();
     // Salarie
     view_salarie_record()
     ajout_salarie();
     get_salarie_data();
     update_salarie();
     supprimer_salarie();
-    
+    get_salarie_document();    
 
 });
 
@@ -36,6 +38,12 @@ function toggleDropdown() {
     dropdown.classList.toggle("show");
     arrow.classList.toggle("open");
 }
+
+ // Initialisation de Select2 sur le champ nationalité
+ $('#nationalite').select2({
+    placeholder: 'Sélectionnez une nationalité', 
+    allowClear: true 
+});
 
 // Logout app
 $(document).ready(function() {
@@ -69,29 +77,25 @@ function ReloadButtonExitX() {
 // Search pagination
 function searchpagination(id, title, EnteteDroite, titre) {
     $('.dataTables_length').parent().parent().css('align-items', 'center');
-
     // Création du titre avec breadcrumb
     let headerHTML = `<nav aria-label="breadcrumb">
-        <ol class="breadcrumb mb-0 p-0 align-items-center d-flex">${titre}`;
+        <ol class="breadcrumb mb-0 p-0 align-items-center d-flex">
+                <h2>${titre}</h2>`;
     headerHTML += `</ol></nav>`;
-
     $('.dataTables_length').html(headerHTML);
-
     // Appliquer un conteneur flex pour bien aligner les éléments et ajouter un espacement
     EnteteDroite.addClass('d-flex align-items-center');
-
     // Ajout du champ de recherche stylisé avec une marge à droite
     let searchInput = EnteteDroite.find("input");
     searchInput.addClass('form-control rounded-pill ps-5 border-0 shadow-sm');
     searchInput.css("margin-right", "5px"); // Ajout d'une marge explicite
-
     // Bouton "Ajouter" avec espacement
     let addButton = `<button class='btn btn-add' id="${id}" title="${title}">${title}</button>`;
-    
     // Ajout des éléments dans l'ordre souhaité
     EnteteDroite.prepend(searchInput); 
     EnteteDroite.append(addButton);
 }
+
 $(document).ready(function() {
     let table = $('#listeSalarie').DataTable({
         "info": false,
@@ -108,32 +112,28 @@ $(document).ready(function() {
     }, 100);
 });
 
+//////////////////////// Module login //////////////////////
 
-
-
-
-//login
 function login() {
     $("#connexion_btn").on("click", function (event) {
-        event.preventDefault();  // Empêche la soumission du formulaire
+        event.preventDefault(); 
         var username = $("#login").val();
         var password = $("#password").val();
         var form_data = new FormData();
         form_data.append("username", username);
         form_data.append("password", password);
         $.ajax({
-            url: "../../models/loginUtilisateur.php",  // Assure-toi que le chemin est correct
+            url: "../../models/loginUtilisateur.php", 
             type: "POST",
             processData: false,
             contentType: false,
             data: form_data,
             success: function (data) {
                 data = $.parseJSON(data);
-                console.log(data); // Vérifie ce qui est retourné par le serveur
+                console.log(data); 
                 if (data.success) {
                     window.location.href = "file.php";
                 } else {
-                    // $error = "Login ou mot de passe incorrect";
                     $("#erreur").html("<div class='alert alert-danger alert-dismissible fade show' role='alert'><i class='fas fa-exclamation-circle me-2'></i>Login ou mot de passe incorrect</div>");
                     $(document).on("click", "#reessayer", function () {
                       $("#login").val('');
@@ -145,11 +145,12 @@ function login() {
         });
     });
 }
+///////////// Module Profile //////////////////
 
-// update profil
+// Modifier Profil
 function update_profile(){
     $("#update_profile_btn").on("click", function (event) {
-        event.preventDefault();  // Empêche la soumission du formulaire
+        event.preventDefault(); 
         var nom = $("#nom").val();
         var prenom = $("#prenom").val();
         var email = $("#email").val();
@@ -158,24 +159,36 @@ function update_profile(){
         var ancien_mdp = $("#ancien_mdp").val();
         var nouveau_mdp = $("#nouveau_mdp").val();
         var confirmer_mdp = $("#confirmer_mdp").val();
-        if (nouveau_mdp !== "" && confirmer_mdp === "") {
+        {if (nouveau_mdp !== "" && confirmer_mdp === "") {
             $("#modal").fadeIn();
-            $("#titre").text("Erreur");
+            $("#text").text("Alert mot de passe");
             $("#message").text("Veuillez confirmer votre mot de passe !");
+            setTimeout(function () {
+                $("#modal").fadeOut();
+            }, 4000);
             return false;
         } 
         else if (nouveau_mdp === "" && confirmer_mdp !== "") {
             $("#modal").fadeIn();
-            $("#titre").text("Erreur");
+            $("#text").text("Alert mot de passe");
             $("#message").text("Veuillez saisir votre nouveau mot de passe !");
+            setTimeout(function () {
+                $("#modal").fadeOut();
+            }, 4000);
             return false;
         } 
         else if (nouveau_mdp !== "" && nouveau_mdp !== confirmer_mdp) {
             $("#modal").fadeIn();
-            $("#titre").text("Erreur");
+            $("#text").text("Alert mot de passe");
             $("#message").text("Le mot de passe confirmé n'est pas identique au nouveau mot de passe !");
+            setTimeout(function () {
+                $("#modal").fadeOut();
+            }, 4000);
             return false;
         }
+        setTimeout(function () {
+            $("#modal").fadeOut();
+        }, 4000);}
         var form_data = new FormData();
         form_data.append("nom", nom);
         form_data.append("prenom", prenom);
@@ -186,7 +199,7 @@ function update_profile(){
         form_data.append("nouveau_mdp", nouveau_mdp);
         form_data.append("confirmer_mdp", confirmer_mdp);
         $.ajax({
-            url: "../../models/updateProfile.php",  // Assure-toi que le chemin est correct
+            url: "../../models/updateProfile.php", 
             type: "POST",
             processData: false,
             contentType: false,
@@ -195,18 +208,45 @@ function update_profile(){
                 data = $.parseJSON(data);
                 $("#modal").fadeIn();
                 if (data.success) {
-                  $("#text").text("Succès");
+                  $("#text").text("Modifier mes informations");
                   $("#message").text(data.success);
                 } else{
-                  $("#text").text("Erreur");
+                  $("#text").text("Modifier mes informations");
                   $("#message").text(data.error);
                 }
+                setTimeout(function () {
+                    $("#modal").fadeOut();
+                }, 4000);
             }
         });
     });
 }
 
-// module salarie
+// Modifier image profile 
+function update_profile_image() {
+    $("#file_input").on("change", function (event) {
+        event.preventDefault(); 
+        var file_input = $("#file_input").prop("files")[0];
+            var form_data = new FormData();
+            form_data.append("profile_image", file_input);
+            $.ajax({
+                url: "../../models/updateImageUtilisateur.php", 
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: form_data,
+                success: function (response) {
+                    window.location.reload(); 
+                },
+                error: function () {
+                    alert("Une erreur est survenue lors de l'envoi de l'image.");
+                }
+            });
+    });
+}
+
+//////////////////////// Module Salarie //////////////////////////
+
 function view_salarie_record() {
   $.ajax({
     url: "../../models/viewSalarie.php",
@@ -219,13 +259,14 @@ function view_salarie_record() {
           $('#listeSalarie').DataTable({ "info": false});
           searchpagination("ajout_salarie","Ajouter un salarié",$('#listeSalarie_filter'),"Liste des salariés");
         }
-      } catch (e) {
+      } catch (e) { 
         console.error("Invalid Response!");
       }
     },
   });
 }
 
+// Ajouter salarie
 function ajout_salarie(){
     $(document).on("click", "#ajout_salarie", function () {
         $("#ajoutSalarie").modal("show");
@@ -237,10 +278,21 @@ function ajout_salarie(){
         var nationalite = $("#nationalite").val();
         var poste = $("#poste").val();
         var typeMission = $("#typeMission").val();
+        var pieceIdentite = $("#piece_identite")[0].files[0];
+        var dpae = $("#dpae")[0].files[0];
+        var permit = $("#permit")[0].files[0];
+        var certificatA1 = $("#certificat_a1")[0].files[0];
+        var certificatZoll = $("#certificat_zoll")[0].files[0];
+        var photo = $("#photo")[0].files[0];
+
         if (nom === "" || prenom === "" || dateNaissance === "" || nationalite === "" || poste === "" || typeMission === "") {
             alert("Veuillez remplir tous les champs !");
             return;
         }
+        if (!pieceIdentite || !dpae || !permit || !certificatA1 || !certificatZoll || !photo) {
+          alert("Veuillez sélectionner tous les fichiers requis !");
+          return;
+      }
         var form_data = new FormData();
         form_data.append("nom", nom);
         form_data.append("prenom", prenom);
@@ -248,6 +300,12 @@ function ajout_salarie(){
         form_data.append("nationalite", nationalite);
         form_data.append("poste", poste);
         form_data.append("typeMission", typeMission);
+        form_data.append("piece_identite", pieceIdentite);
+        form_data.append("dpae", dpae);
+        form_data.append("permit", permit);
+        form_data.append("certificat_a1", certificatA1);
+        form_data.append("certificat_zoll", certificatZoll);
+        form_data.append("photo", photo);
         $.ajax({
             url: "../../models/ajouterSalarie.php", 
             type: "POST",
@@ -263,7 +321,7 @@ function ajout_salarie(){
                       if ($("#EchecAddSalarie").length > 0) {
                         $("#EchecAddSalarie").modal("hide");
                       }
-                    }, 2000);
+                    }, 4000);
                     view_salarie_record();
                 } else {
                     $("#ajoutSalarie").modal("hide");
@@ -274,14 +332,15 @@ function ajout_salarie(){
                       if ($("#SuccessAddSalarie").length > 0) {
                         $("#SuccessAddSalarie").modal("hide");
                       }
-                    }, 2000);
+                    }, 4000);
                     view_salarie_record();
                 }
             } 
         });
     });
-};
+}
 
+// Affichier Salarie
 function get_salarie_data() {
     $(document).on("click", "#btn_modif_salarie", function () {
         var ID = $(this).attr("data-id");
@@ -306,6 +365,8 @@ function get_salarie_data() {
     });
 }
 
+
+// Modifier Salarie
 function update_salarie() {
     $(document).on("click", "#update_salarie", function () {
         $("#updateSalarie").scrollTop(0);
@@ -339,7 +400,7 @@ function update_salarie() {
                       if ($("#EchecUpSalarie").length > 0) {
                         $("#EchecUpSalarie").modal("hide");
                       }
-                    }, 2000);
+                    }, 4000);
                     view_salarie_record();
                 } else {
                     $("#updateSalarie").modal("hide");
@@ -350,14 +411,20 @@ function update_salarie() {
                       if ($("#SuccessUpSalarie").length > 0) {
                         $("#SuccessUpSalarie").modal("hide");
                       }
-                    }, 2000);
+                    }, 4000);
                     view_salarie_record();
                 }
             },
         });
     });
-}     
+} 
+$(document).click(function(event) {
+    if (!$(event.target).closest('#updateSalarie').length) {
+        $('#updateSalarie').modal('hide');
+    }
+});   
 
+// Supprimer Salarie
 function supprimer_salarie() {
     $(document).on("click", "#btn_supprime_salarie", function () {
         var Delete_ID = $(this).attr("data-id1");
@@ -378,7 +445,7 @@ function supprimer_salarie() {
                         if ($("#EchecDeleteSalarie").length > 0) {
                           $("#EchecDeleteSalarie").modal("hide");
                         }
-                      }, 2000);
+                      }, 4000);
                       view_salarie_record();
                     } else {
                       $("#deleteSalarie").modal("hide");
@@ -389,7 +456,7 @@ function supprimer_salarie() {
                         if ($("#SuccessDeleteSalarie").length > 0) {
                           $("#SuccessDeleteSalarie").modal("hide");
                         }
-                      }, 2000);
+                      }, 4000);
                       view_salarie_record();
                     }
                 },
@@ -397,4 +464,38 @@ function supprimer_salarie() {
         });
     });
 }
-// end module salarie
+$(document).click(function(event) {
+    if (!$(event.target).closest('#deleteSalarie').length) {
+        $('#deleteSalarie').modal('hide');
+    }
+});
+
+// Afficher Document Salarie
+function get_salarie_document() {
+    $(document).on("click", "#btn_document_salarie", function () {
+        var ID = $(this).attr("data-document");
+        $.ajax({
+          url: "../../models/getDocumentSalarie.php",
+          method: "POST",
+          data: {SalarieID: ID},
+          dataType: "json",
+          success: function (data) {
+            $("#id_Salarie").val(data[0]);
+            $("#pieceid_Salarie").val(data[1]);
+            $("#dpae_Salarie").val(data[2]);
+            $("#permis_Salarie").val(data[3]);
+            $("#certifa1_Salarie").val(data[4]);
+            $("#certifzoll_Salarie").val(data[5]);
+            $("#photo_Salarie").val(data[6]);
+            $("#documentSalarie").modal("show");
+          },
+        });
+    });
+}
+$(document).click(function(event) {
+    if (!$(event.target).closest('#documentSalarie').length) {
+        $('#documentSalarie').modal('hide');
+    }
+});
+
+

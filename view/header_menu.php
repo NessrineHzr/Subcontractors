@@ -2,9 +2,14 @@
 // Démarrer la session
 session_start();
 include('../../config/base_de_donnee.php');
+$ID = $_SESSION['ID'];
 $login = $_SESSION['Login'];
 $role = $_SESSION['Role'];
 $Nom = $_SESSION['Nom'];
+$query = "SELECT * FROM utilisateur WHERE id_Utilisateur = '$ID'";
+  $result = mysqli_query($connexion, $query);
+  $row = mysqli_fetch_assoc($result);
+  $img= $row['image_Utilisateur']; 
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -18,10 +23,6 @@ $Nom = $_SESSION['Nom'];
     <!-- DataTables JS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
-<script>
-
-</script>
-
 </head>
 <body>
     <aside class="sidebar">
@@ -54,7 +55,8 @@ $Nom = $_SESSION['Nom'];
                     </div>
                     <div class="user-info" onclick="toggleDropdown()">
                         <!-- Icône utilisateur -->
-                        <i class="fas fa-user-circle user-icon"></i>
+                        <img id="profile_image" class="user-icon" src="../img/profil/<?php echo $img; ?>">
+                        <!-- <i class="fas fa-user-circle user-icon"></i> -->
                         <!-- Infos utilisateur -->
                         <div class="user-details">
                             <span class="login"><?php echo $Nom; ?></span>

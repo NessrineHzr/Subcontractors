@@ -155,8 +155,8 @@ body {
 }
 
 .user-info .user-icon {
-    font-size: 40px;
-    color: #470EE9;
+    width: 50px; 
+    border-radius: 50%;
 }
 
 .user-details {
@@ -333,31 +333,167 @@ body {
     border: 1px solid #470EE9;
 }
 
-/** modal footer */
+/** modal header body footer */
+.modal-body {
+    margin: 7%;
+    justify-content: center;
+    align-items: center;
+}
 .modal-footer {
+    margin: 7%;
     display: flex;
     justify-content: flex-end; /* Aligner les boutons à droite */
     gap: 10px; /* Ajouter un petit espace entre les boutons */
-    padding-top: 5%;
     background: #fff;
 }
 
 .modal-header {
+    margin: 7%;
     display: flex;
     justify-content: space-between; /* Espacement entre le titre et le bouton */
     align-items: center; /* Alignement vertical */
-    padding-bottom: 10%;
     background: #fff;
 }
+/* boutton close */
 #btn_close {
     background: none;
     border: none;
     cursor: pointer;
 }
 #btn_close img {
-    width: 20px; /* Ajuste la taille selon ton besoin */
+    width: 25px; /* Ajuste la taille selon ton besoin */
     height: auto;
 }
+
+/* modal content */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4); 
+  }
+  
+  .modal-content {
+    background-color: #fff;
+    margin: 8% auto; 
+    padding: 20px;
+    border: 1px solid #888;
+    width: 35%;
+    border-radius: 5px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    position: relative;
+  }
+  .modal input , select {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0 7px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    border-color: #470EE9 ;
+  }
+  
+  .modal-content-2 {
+    background-color: #fff;
+    margin: 8% auto; 
+    padding: 20px;
+    border: 1px solid #888;
+    max-width: 30%;
+    border-radius: 5px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    position: relative;
+  }
+  
+  
+  /* liste des salaries */
+.table h1 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    text-align: left; 
+  }
+  
+  .table-salarie {
+    background-color: white; 
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .table-salarie thead th {
+    font-weight: bold;
+    font-size: 14px;
+  }
+  .table-salarie thead tr {
+    background-color: #f4f4f4;
+  }
+  
+  .table-salarie th, .table-salarie td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 5px solid #f4f4f4;
+    vertical-align: middle;
+  }
+  
+  .table-salarie tbody tr:hover {
+    background-color: #f4f4f4;
+  }
+  
+  .icon-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #612cf3;
+    font-size: 16px;
+    padding: 6px;
+  }
+  
+  .fa-eye {
+    color: #612cf3; 
+  }
+  
+  .modifier, .supprimer {
+      padding: 8px 12px;
+      font-size: 14px;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      transition: 0.3s ease;
+  }
+  .modifier {
+      background-color:#513ede;
+      color: white;
+  }
+  
+  .modifier:hover {
+      background-color:#7545f9;
+  }
+  
+  .supprimer {
+      background-color:#513ede;
+      color: white;
+      margin-left: 10px;
+  }
+  
+  .supprimer:hover {
+      background-color: #7545f9;
+  }
+  .mission-europeenne {
+    border-radius: 60px;
+    border-color : rgba(241, 136, 220, 0.44);
+    background-color:rgba(241, 136, 220, 0.44);
+    color:rgb(235, 57, 199) ;
+  }
+  .mission:not(.mission-europeenne) {
+    border-radius: 60px;
+    border-color: rgba(88, 189, 236, 0.32);
+    background-color: rgba(88, 189, 236, 0.32);
+    color: rgb(37, 185, 243);
+  }
+  
 
 
 /*********************************** data tables ************/
@@ -384,10 +520,11 @@ body {
 .btn-add {
     background-color: #612cf3;
     color: white;
-    border-radius: 8px;
-    padding: 8px 15px;
+    border-radius: 5px;
+    padding: 12px 20px;
     border: none;
     font-weight: bold;
+    font-size: 14px;
 }
 
 .btn-add:hover {
@@ -397,7 +534,14 @@ body {
 .search-control {
     height: 40px;
     font-size: 16px;
+    border-radius: 5px;
     background-color: #f8f9fa;
+}
+
+.title-class {
+    font-size: 20px;
+    font-weight: bold;
+    color: #470EE9;
 }
 
 /* Pagination élégante */
@@ -409,10 +553,263 @@ body {
     border: none;
     font-size: 14px;
     transition: all 0.3s ease-in-out;
+
+}
+.paginate_button  :hover {
+    background-color: #f8f9fa !important;
 }
 
+/**************************************************************/
+/* page profile */
+.profile .titre{
+    font-family: 'Poppins', sans-serif;
+    color: #470EE9;
+    font-size: 25px;
+    font-weight: bold;
+}
+.profile h2 {
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    align-items: center;
+    font-size: 150%;
+    color: #333;
+}
+.profile .cadre {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 90vh;
+}
+.profile .cadre1 {
+    background-color: white;
+    border-radius: 10px;
+    font-weight: bold;
+    width: 74.5%;
+    padding: 2%;
+    box-sizing: border-box; 
+}
+.profile .cadre1 table {
+    width: 100%; 
+    border-collapse: collapse; 
+}
+.profile .cadre1 tr,.profile .cadre1 td {
+    font-family: 'Poppins', sans-serif;
+    width: 50%; 
+    padding: 2%;
+    font-size: 17px;
+}
+.profile .cadre1 input {
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    width: 100%; 
+    padding: 4%; 
+    box-sizing: border-box;
+    background: #F6F6F6;
+    border: none;
+    border-radius: 8px;
+    margin-top: 5%;
+}
+.profile .cadre2{
+    background-color: white;
+    border-radius: 10px;
+    font-size: 23px;
+    width: 24%;
+    padding: 40px;
+}
+.profile #update_profile_btn {
+    font-family: 'Poppins', sans-serif;
+    width: 50%;
+    padding: 15px;
+    background-color: #470EE9;
+    color: white;
+    font-size: 17px;
+    border: none;
+    border-radius: 8px;    
+}
+.profile #update_profile_btn:hover {
+    background-color: #3a0cb0;
+}
 
+/* image */
+.profile .image_profile {
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 7%;
+    gap: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    position: relative;
+}
+.profile .image_profile img {
+    width: 50%; 
+    height: 50%; 
+    border-radius: 50%;
+    object-fit: cover; 
+}
+.profile .edit-btn {
+    position: absolute;
+    bottom: 50%;
+    right: 20%;
+    background-color: #470EE9;
+    color: white;
+    width: 12%;          
+    aspect-ratio: 1/1;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+.profile .edit-btn:hover {
+    background-color: #3a0cb0;
+}
+/* icons */
+.profile .icons_profile {
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 17px;
+    color: #333;
+    margin-top: 25%;
+}
+.profile .icons_profile i {
+    font-size: 15px; 
+    color: white; 
+    background-color: #470EE9; 
+    width: 12%;          
+    aspect-ratio: 1/1;    
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/* responsive */
+@media screen and (max-width: 1200px) {
+    .profile .cadre {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
 
+    .profile .cadre1 {
+        width: 70%;
+        height: 100%;
+        padding: 2%;
+    }
+
+    .profile .cadre2 {
+        width: 28%;
+        height: 100%;
+        padding: 2%;
+    }
+
+    .profile .cadre1 table {
+        width: 100%;
+    }
+
+    .profile .cadre1 tr, .profile .cadre1 td {
+        font-size: 16px;
+    }
+
+    .profile .image_profile img {
+        width: 55%; 
+        height: 55%;
+    }
+
+    .profile .edit-btn {
+        width: 15%;
+        bottom: 45%;
+        right: 15%;
+    }
+
+    .profile .icons_profile {
+        margin-top: 10%;
+        font-size: 16px;
+    }
+
+    .profile .icons_profile i {
+        width: 13%;
+    }
+
+    .profile #update_profile_btn {
+        width: 60%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .profile .cadre {
+        flex-direction: column;
+    }
+    
+    .profile .cadre1, .profile .cadre2 {
+        width: 100%;
+    }
+    
+    .profile .cadre1 tr {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .profile .cadre1 td {
+        width: 100%;
+    }
+    .profile .cadre1 tr, td {
+      font-size: 15px;
+      width: 100%;
+     }
+     .profile #update_profile_btn {
+        width: 50%;
+    }    
+    .profile .icons_profile {
+        margin-top: 15%;
+    }
+    .profile .icons_profile {
+        margin-top: 15%;
+    }
+    .profile .image_profile img {
+    width: 40%; 
+    height: 40%; 
+    }
+    .profile .edit-btn {
+      width: 45px;
+      right: 25%;
+    }
+    .profile .icons_profile i {
+        width: 10%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .profile .h1 {
+        font-size: 18px;
+    }
+    .profile .titre, h2 {
+        font-size: 17px;
+    }
+    .profile .cadre {
+        font-size: 12px;
+        padding:5px;
+    }
+    
+    .profile .cadre1 tr, td {
+      font-size: 15px;
+      width: 100%;
+        }
+    .profile .edit-btn {
+        width: 30px;   
+    }
+    .profile #update_profile_btn {
+        width: 50%;
+    }
+}
 
 
 
