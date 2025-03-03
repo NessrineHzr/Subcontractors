@@ -136,18 +136,20 @@ function display_salarie(){
     $result = mysqli_query($connexion,$sql);
     if ($result->num_rows > 0) {
         while($row = $result->fetch_assoc()) {
-            $missionClass = ($row['typeMission_Salarie'] == 'européenne') ? 'mission mission-europeenne' : 'mission';
+            $missionClass = ($row['typeMission_Salarie'] == 'Européenne') ? 'mission mission-europeenne' : 'mission';
             $value .= "<tr>
                 <td>" . $row['nom_Salarie'] . "</td>
                 <td>" . $row['prenom_Salarie'] . "</td>
                 <td>" . $row['dateNaissance_Salarie'] . "</td>
                 <td>" . $row['nationalite_Salarie'] . "</td>
                 <td>" . $row['poste_Salarie'] . "</td>
-                <td><button class='$missionClass'>" . $row['typeMission_Salarie'] . "</button></td>
-                <td><button type='button' class='icon-button' id='btn_document_salarie' data-document='" . $row['id_Salarie'] . "'><i class='fa fa-eye'></i></button></td>
+                <td> <div class='$missionClass'>" . $row['typeMission_Salarie'] . "</div></td>
+                <td><button type='button' class='icon-button' id='btn_document_salarie' data-document='" . $row['id_Salarie'] . "'><img src='../img/view.png'/></button></td>
                 <td>
-                    <button type='button' class='modifier' id='btn_modif_salarie' data-id='" . $row['id_Salarie'] . "'>Modifier</button>
-                    <button type='button' class='supprimer' id='btn_supprime_salarie' data-id1='" . $row['id_Salarie'] . "'>Supprimer</button>
+                    <center>
+                        <button type='button' class='modifier' id='btn_modif_salarie' data-id='" . $row['id_Salarie'] . "'>Modifier</button>
+                        <button type='button' class='supprimer' id='btn_supprime_salarie' data-id1='" . $row['id_Salarie'] . "'>Supprimer</button>
+                    </center>
                 </td>
             </tr>";
         }

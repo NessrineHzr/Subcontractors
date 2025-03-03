@@ -115,6 +115,10 @@ body {
     font-size: 1.1rem;
 }
 
+.dataTables_wrapper .dataTables_filter label {
+    display: none !important;
+}
+
 /* Icônes de notification */
 .icons {
     display: flex;
@@ -311,7 +315,7 @@ body {
 /**************************************************************/
 /*** button validate modal ***/
 .buttonvalidate {
-	background-color: #470EE9;
+	background-color: #A386F4;
 	border-color: transparent;
 	color: white;
 	border-radius: 3px;
@@ -353,6 +357,15 @@ body {
     justify-content: space-between; /* Espacement entre le titre et le bouton */
     align-items: center; /* Alignement vertical */
     background: #fff;
+}
+
+.echec-modal {
+    color: red;
+    background: #ffb1b1;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 /* boutton close */
 #btn_close {
@@ -426,7 +439,10 @@ body {
   .table-salarie thead th {
     font-weight: bold;
     font-size: 14px;
+    text-align: center; 
+    vertical-align: middle; 
   }
+
   .table-salarie thead tr {
     background-color: #f4f4f4;
   }
@@ -449,6 +465,8 @@ body {
     color: #612cf3;
     font-size: 16px;
     padding: 6px;
+    display: block;
+    margin: auto;
   }
   
   .fa-eye {
@@ -482,19 +500,35 @@ body {
       background-color: #7545f9;
   }
   .mission-europeenne {
+    font-size: 10px;
+    width: 65px;
+    height: 19px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
     border-radius: 60px;
-    border-color : rgba(241, 136, 220, 0.44);
-    background-color:rgba(241, 136, 220, 0.44);
-    color:rgb(235, 57, 199) ;
+    background-color:#F1BEF9;
+    color:#CA0EE9;
   }
   .mission:not(.mission-europeenne) {
+    font-size: 10px;
+    width: 65px;
+    height: 19px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
     border-radius: 60px;
-    border-color: rgba(88, 189, 236, 0.32);
-    background-color: rgba(88, 189, 236, 0.32);
-    color: rgb(37, 185, 243);
+    background-color:#DFEFFE;
+    color:#2400FF;
   }
-  
-
+ /* Centrer le titre du tableau */
+table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th, table.dataTable tfoot td {
+    text-align: center !important;
+}
 
 /*********************************** data tables ************/
 /* Conteneur principal */
@@ -514,6 +548,11 @@ body {
     border-radius: 8px;
     border: 1px solid #ced4da;
     height: 38px;
+}
+
+/* pagination */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    padding: 0em 0em !important;
 }
 
 /* Bouton d'ajout */
@@ -555,8 +594,22 @@ body {
     transition: all 0.3s ease-in-out;
 
 }
-.paginate_button  :hover {
-    background-color: #f8f9fa !important;
+
+/* Title page */
+.breadcrumb-item+.breadcrumb-item::before {
+    content: " > ";
+    padding-right: .5rem;
+    color: #6c757d;
+}
+.breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 0;
+    list-style: none;
+}
+.breadcrumb-item+.breadcrumb-item {
+    padding-left: .5rem;
+    padding-top: .2rem;
 }
 
 /**************************************************************/
@@ -578,7 +631,7 @@ body {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    height: 90vh;
+    height: 100%;
 }
 .profile .cadre1 {
     background-color: white;
@@ -596,7 +649,7 @@ body {
     font-family: 'Poppins', sans-serif;
     width: 50%; 
     padding: 2%;
-    font-size: 17px;
+    font-size: 12px;
 }
 .profile .cadre1 input {
     font-family: 'Poppins', sans-serif;
@@ -649,6 +702,21 @@ body {
     border-radius: 50%;
     object-fit: cover; 
 }
+
+.profile .btn_edit_image_profil {
+    position: absolute;
+    right: 18%;
+    background-color: #470EE9;
+    color: white;
+    width: 10%;          
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
 .profile .edit-btn {
     position: absolute;
     bottom: 50%;

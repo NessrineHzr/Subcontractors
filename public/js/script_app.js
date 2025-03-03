@@ -75,13 +75,14 @@ function ReloadButtonExitX() {
 }
 
 // Search pagination
-function searchpagination(id, title, EnteteDroite, titre) {
+function searchpagination(id, title, EnteteDroite, titremodule, titre) {
     $('.dataTables_length').parent().parent().css('align-items', 'center');
     // Création du titre avec breadcrumb
     let headerHTML = `<nav aria-label="breadcrumb">
-        <ol class="breadcrumb mb-0 p-0 align-items-center d-flex">
-                <h2>${titre}</h2>`;
-    headerHTML += `</ol></nav>`;
+        <ol class="breadcrumb mb-0 p-0">
+            <div class="breadcrumb-item" style="font-size: 23px; font-weight: bold;">${titremodule}</div>
+            <div class="breadcrumb-item active" style="font-size: 19px; color:#470EE9; font-weight: bold;" aria-current="page">${titre}</div>
+        </ol></nav>`;
     $('.dataTables_length').html(headerHTML);
     // Appliquer un conteneur flex pour bien aligner les éléments et ajouter un espacement
     EnteteDroite.addClass('d-flex align-items-center');
@@ -95,22 +96,6 @@ function searchpagination(id, title, EnteteDroite, titre) {
     EnteteDroite.prepend(searchInput); 
     EnteteDroite.append(addButton);
 }
-
-$(document).ready(function() {
-    let table = $('#listeSalarie').DataTable({
-        "info": false,
-        "language": {
-            "search": "", // Essaie de masquer "Search:"
-            "searchPlaceholder": "Rechercher..." // Ajoute un placeholder
-        }
-    });
-    // Supprime le texte "Search:" après le chargement de DataTables
-    setTimeout(() => {
-        $(".dataTables_filter label").contents().filter(function() {
-            return this.nodeType === 3; // Sélectionne uniquement le texte brut (ex: "Search:")
-        }).remove();
-    }, 100);
-});
 
 //////////////////////// Module login //////////////////////
 
@@ -257,7 +242,7 @@ function view_salarie_record() {
         if (data.status == "success") {
           $("#table_listeSalarie").html(data.html);
           $('#listeSalarie').DataTable({ "info": false});
-          searchpagination("ajout_salarie","Ajouter un salarié",$('#listeSalarie_filter'),"Liste des salariés");
+          searchpagination("ajout_salarie","Ajouter un salarié",$('#listeSalarie_filter'),"Salariés","Liste des salariés");
         }
       } catch (e) { 
         console.error("Invalid Response!");
@@ -272,6 +257,7 @@ function ajout_salarie(){
         $("#ajoutSalarie").modal("show");
     });
     $(document).on("click", "#ajouter_salarie", function () {
+        $("#ajoutSalarie").scrollTop(0);
         var nom = $("#nom").val();
         var prenom = $("#prenom").val();
         var dateNaissance = $("#dateNaissance").val();
@@ -286,57 +272,55 @@ function ajout_salarie(){
         var photo = $("#photo")[0].files[0];
 
         if (nom === "" || prenom === "" || dateNaissance === "" || nationalite === "" || poste === "" || typeMission === "") {
-            alert("Veuillez remplir tous les champs !");
-            return;
+            $("#message_salarie").addClass("echec-modal").html("Veuillez remplir tous les champs obligatoires !");
+        }else if (!pieceIdentite || !dpae || !permit || !certificatA1 || !certificatZoll || !photo) {
+            $("#message_salarie").addClass("echec-modal").html("Veuillez sélectionner tous les fichiers requis !");
+        }else{
+            var form_data = new FormData();
+            form_data.append("nom", nom);
+            form_data.append("prenom", prenom);
+            form_data.append("dateNaissance", dateNaissance);
+            form_data.append("nationalite", nationalite);
+            form_data.append("poste", poste);
+            form_data.append("typeMission", typeMission);
+            form_data.append("piece_identite", pieceIdentite);
+            form_data.append("dpae", dpae);
+            form_data.append("permit", permit);
+            form_data.append("certificat_a1", certificatA1);
+            form_data.append("certificat_zoll", certificatZoll);
+            form_data.append("photo", photo);
+            $.ajax({
+                url: "../../models/ajouterSalarie.php", 
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: form_data,
+                success: function(data) {
+                    if (data.includes('text-echec')) {
+                        $("#ajoutSalarie").modal("hide");
+                        $("#addsalarie_echec").removeClass("text-checked").addClass("text-echec").html(data);
+                        $("#EchecAddSalarie").modal("show");
+                        setTimeout(function () {
+                          if ($("#EchecAddSalarie").length > 0) {
+                            $("#EchecAddSalarie").modal("hide");
+                          }
+                        }, 4000);
+                        view_salarie_record();
+                    } else {
+                        $("#ajoutSalarie").modal("hide");
+                        $("#addsalarie_success").addClass("text-checked").html(data);
+                        $("#SuccessAddSalarie").modal("show");
+                        $("#addsalarie_success").removeClass("text-echec").addClass("text-checked");
+                        setTimeout(function () {
+                          if ($("#SuccessAddSalarie").length > 0) {
+                            $("#SuccessAddSalarie").modal("hide");
+                          }
+                        }, 4000);
+                        view_salarie_record();
+                    }
+                } 
+            });
         }
-        if (!pieceIdentite || !dpae || !permit || !certificatA1 || !certificatZoll || !photo) {
-          alert("Veuillez sélectionner tous les fichiers requis !");
-          return;
-      }
-        var form_data = new FormData();
-        form_data.append("nom", nom);
-        form_data.append("prenom", prenom);
-        form_data.append("dateNaissance", dateNaissance);
-        form_data.append("nationalite", nationalite);
-        form_data.append("poste", poste);
-        form_data.append("typeMission", typeMission);
-        form_data.append("piece_identite", pieceIdentite);
-        form_data.append("dpae", dpae);
-        form_data.append("permit", permit);
-        form_data.append("certificat_a1", certificatA1);
-        form_data.append("certificat_zoll", certificatZoll);
-        form_data.append("photo", photo);
-        $.ajax({
-            url: "../../models/ajouterSalarie.php", 
-            type: "POST",
-            processData: false,
-            contentType: false,
-            data: form_data,
-            success: function(data) {
-                if (data.includes('text-echec')) {
-                    $("#ajoutSalarie").modal("hide");
-                    $("#addsalarie_echec").removeClass("text-checked").addClass("text-echec").html(data);
-                    $("#EchecAddSalarie").modal("show");
-                    setTimeout(function () {
-                      if ($("#EchecAddSalarie").length > 0) {
-                        $("#EchecAddSalarie").modal("hide");
-                      }
-                    }, 4000);
-                    view_salarie_record();
-                } else {
-                    $("#ajoutSalarie").modal("hide");
-                    $("#addsalarie_success").addClass("text-checked").html(data);
-                    $("#SuccessAddSalarie").modal("show");
-                    $("#addsalarie_success").removeClass("text-echec").addClass("text-checked");
-                    setTimeout(function () {
-                      if ($("#SuccessAddSalarie").length > 0) {
-                        $("#SuccessAddSalarie").modal("hide");
-                      }
-                    }, 4000);
-                    view_salarie_record();
-                }
-            } 
-        });
     });
 }
 
@@ -377,45 +361,49 @@ function update_salarie() {
         var nationalite_Salarie = $("#nationalite_Salarie").val();
         var poste_Salarie = $("#poste_Salarie").val();
         var typeMission_Salarie = $("#typeMission_Salarie").val();
-        var form_data = new FormData();
-        form_data.append("id_Salarie", id_Salarie);
-        form_data.append("nom_Salarie", nom_Salarie);
-        form_data.append("prenom_Salarie", prenom_Salarie);
-        form_data.append("dateNaissance_Salarie", dateNaissance_Salarie);
-        form_data.append("nationalite_Salarie", nationalite_Salarie);
-        form_data.append("poste_Salarie", poste_Salarie);
-        form_data.append("typeMission_Salarie", typeMission_Salarie);
-        $.ajax({
-            url: "../../models/updateSalarie.php",
-            type: "POST",
-            data: form_data,
-            processData: false,
-            contentType: false,
-            success: function(data) {
-                if (data.includes('text-echec')) {
-                    $("#updateSalarie").modal("hide");
-                    $("#upsalarie_echec").removeClass("text-checked").addClass("text-echec").html(data);
-                    $("#EchecUpSalarie").modal("show");
-                    setTimeout(function () {
-                      if ($("#EchecUpSalarie").length > 0) {
-                        $("#EchecUpSalarie").modal("hide");
-                      }
-                    }, 4000);
-                    view_salarie_record();
-                } else {
-                    $("#updateSalarie").modal("hide");
-                    $("#upsalarie_success").addClass("text-checked").html(data);
-                    $("#SuccessUpSalarie").modal("show");
-                    $("#upsalarie_success").removeClass("text-echec").addClass("text-checked");
-                    setTimeout(function () {
-                      if ($("#SuccessUpSalarie").length > 0) {
-                        $("#SuccessUpSalarie").modal("hide");
-                      }
-                    }, 4000);
-                    view_salarie_record();
-                }
-            },
-        });
+        if (nom_Salarie === "" || prenom_Salarie === "" || dateNaissance_Salarie === "" || nationalite_Salarie === "" || poste_Salarie === "" || typeMission_Salarie === "") {
+            $("#messageup_salarie").addClass("echec-modal").html("Veuillez remplir tous les champs obligatoires !");
+        }else{
+            var form_data = new FormData();
+            form_data.append("id_Salarie", id_Salarie);
+            form_data.append("nom_Salarie", nom_Salarie);
+            form_data.append("prenom_Salarie", prenom_Salarie);
+            form_data.append("dateNaissance_Salarie", dateNaissance_Salarie);
+            form_data.append("nationalite_Salarie", nationalite_Salarie);
+            form_data.append("poste_Salarie", poste_Salarie);
+            form_data.append("typeMission_Salarie", typeMission_Salarie);
+            $.ajax({
+                url: "../../models/updateSalarie.php",
+                type: "POST",
+                data: form_data,
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    if (data.includes('text-echec')) {
+                        $("#updateSalarie").modal("hide");
+                        $("#upsalarie_echec").removeClass("text-checked").addClass("text-echec").html(data);
+                        $("#EchecUpSalarie").modal("show");
+                        setTimeout(function () {
+                          if ($("#EchecUpSalarie").length > 0) {
+                            $("#EchecUpSalarie").modal("hide");
+                          }
+                        }, 4000);
+                        view_salarie_record();
+                    } else {
+                        $("#updateSalarie").modal("hide");
+                        $("#upsalarie_success").addClass("text-checked").html(data);
+                        $("#SuccessUpSalarie").modal("show");
+                        $("#upsalarie_success").removeClass("text-echec").addClass("text-checked");
+                        setTimeout(function () {
+                          if ($("#SuccessUpSalarie").length > 0) {
+                            $("#SuccessUpSalarie").modal("hide");
+                          }
+                        }, 4000);
+                        view_salarie_record();
+                    }
+                },
+            });
+        }
     });
 } 
 $(document).click(function(event) {

@@ -5,10 +5,6 @@ $login = $_SESSION['Login'];
 <!DOCTYPE html>
 <html lang="fr">
 <body>
-<link rel="stylesheet" href="../../public/css/app.css">
-<link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 <style>
     .file-container {
         display: flex;
@@ -38,6 +34,7 @@ $login = $_SESSION['Login'];
         <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
       </div>
       <div class="modal-body">
+        <p id="message_salarie"></p><br><br>
         <label for="nom">Nom*</label>
         <input type="text" id="nom" name="nom"><br><br>
         <label for="prenom">Prénom*</label>
@@ -131,6 +128,7 @@ $login = $_SESSION['Login'];
       </div>
       <div class="modal-body">
           <input type="hidden" id="id_Salarie" name="id_Salarie">
+          <p id="messageup_salarie"></p><br>
           <label for="nom_Salarie">Nom</label>
           <input type="text" id="nom_Salarie"><br><br>
           <label for="prenom_Salarie">Prénom</label>
@@ -139,7 +137,7 @@ $login = $_SESSION['Login'];
           <input type="date" id="dateNaissance_Salarie"><br><br>
           <label for="nationalite_Salarie">Nationalité</label>
           <select id="nationalite_Salarie" name="nationalite_Salarie">
-            <option value="">Sélectionnez une nationalité</option>
+            <option value="">Sélectionnez la nationalité</option>
               <?php 
                 global $connexion;
                 $sql = "SELECT libelle_Nationalite FROM nationalite";
@@ -155,8 +153,8 @@ $login = $_SESSION['Login'];
           <input type="text" id="poste_Salarie"><br><br>
           <label for="typeMission_Salarie">Mission</label>
           <select id="typeMission_Salarie">
-            <option value="européenne">Européenne</option>
-            <option value="française">Française</option>
+            <option value="Européenne">Européenne</option>
+            <option value="Française">Française</option>
           </select> 
       </div>
       <div class="modal-footer">
