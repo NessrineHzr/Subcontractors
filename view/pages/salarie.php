@@ -6,19 +6,53 @@ $login = $_SESSION['Login'];
 <html lang="fr">
 <body>
 <style>
-    .file-container {
-        display: flex;
-        flex-direction: row;
-    }
-
-    .file-container label {
+    .titre {
         font-size: 17px;
         color: #470EE9;
-       }
+        margin-bottom: 25px;
+        text-align: left;
+    }
+    .documents {
+        display: flex; 
+        flex-wrap: wrap;
+    }
+    .document {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: left;
+        justify-content: space-between;
+        width: 150px;
+        position: relative;
+        padding: 17px;
+    }
+    .image-container {
+        display: flex;
+        flex-direction: column;
+    }
+    .doc {
+        background-color: #FFF0DB; 
+        padding: 30px;
+        border: none;
+        display: flex;
+        position: relative;
+    }
+    .doc img {
+        width: 40px;
+        height: 50px;
+    }
+    .telecharger {
+        border: none;
+        background-color: transparent;
+        display: flex;
+    }
 
-    .file-container a img {
-        width: 80%; 
-        margin-top:70%;
+    .telecharger img {
+        width: 30px;
+        height: 30px;
+        margin-top: -105px;
+        transform: translateX(85px);
+
     }
 
 </style>
@@ -35,46 +69,70 @@ $login = $_SESSION['Login'];
       </div>
       <div class="modal-body">
         <p id="message_salarie"></p><br><br>
-        <label for="nom">Nom*</label>
-        <input type="text" id="nom" name="nom"><br><br>
-        <label for="prenom">Prénom*</label>
-        <input type="text" id="prenom" name="prenom"><br><br>
-        <label for="dateNaissance">Date de naissance*</label>
-        <input type="date" id="dateNaissance" name="dateNaissance"><br><br>
-        <label for="nationalite">Nationalité*</label>
-        <select id="nationalite" name="nationalite">
-        <option value="">Sélectionnez une nationalité</option>
-          <?php 
-          global $connexion;
-          $sql = "SELECT libelle_Nationalite FROM nationalite";
-          $result = mysqli_query($connexion, $sql);
-          if ($result) {
-              while($row = mysqli_fetch_assoc($result)) {
-                  echo "<option value='". $row['libelle_Nationalite'] ."'>" . $row['libelle_Nationalite'] . "</option>";
-              }
-          }
-          ?>
-        </select><br><br>
-        <label for="poste">Poste*</label>
-        <input type="text" id="poste" name="poste"><br><br>
-        <label for="typeMission">Type de mission*</label>
-        <select id="typeMission" name="typeMission" required>
-          <option value="">Sélectionnez une mission</option>
-          <option value="européenne">Européenne</option>
-          <option value="française">Française</option>
-        </select><br><br>
-        <label for="piece_identite">Piece d'identité*</label>
-        <input type="file" id="piece_identite" name="piece_identite"><br><br>
-        <label for="dpae">DPAE*</label>
-        <input type="file" id="dpae" name="dpae"><br><br>
-        <label for="permit">Permis de conduire</label>
-        <input type="file" id="permit" name="permit"><br><br>
-        <label for="certificat_a1">Certificat A1*</label>
-        <input type="file" id="certificat_a1" name="certificat_a1"><br><br>
-        <label for="certificat_zoll">Certificat Zoll*</label>
-        <input type="file" id="certificat_zoll" name="certificat_zoll"><br><br>
-        <label for="photo">Photo*</label>
-        <input type="file" id="photo" name="photo"><br><br>
+        <div class="form-group">
+          <label for="nom">Nom*</label>
+          <input type="text" id="nom" name="nom"><br><br>
+        </div>
+        <div class="form-group">
+          <label for="prenom">Prénom*</label>
+          <input type="text" id="prenom" name="prenom"><br><br>
+        </div>
+        <div class="form-group">
+          <label for="dateNaissance">Date de naissance*</label>
+          <input type="date" id="dateNaissance" name="dateNaissance"><br><br>
+        </div>
+        <div class="form-group">
+          <label for="nationalite">Nationalité*</label>
+          <select id="nationalite" name="nationalite">
+          <option value="">Sélectionnez une nationalité</option>
+            <?php 
+            global $connexion;
+            $sql = "SELECT libelle_Nationalite FROM nationalite";
+            $result = mysqli_query($connexion, $sql);
+            if ($result) {
+                while($row = mysqli_fetch_assoc($result)) {
+                    echo "<option value='". $row['libelle_Nationalite'] ."'>" . $row['libelle_Nationalite'] . "</option>";
+                }
+            }
+            ?>
+          </select><br><br>
+        </div>
+        <div class="form-group">
+          <label for="poste">Poste*</label>
+          <input type="text" id="poste" name="poste"><br><br>
+        </div>
+        <div class="form-group">
+         <label for="typeMission">Type de mission*</label>
+          <select id="typeMission" name="typeMission" required>
+            <option value="">Sélectionnez une mission</option>
+            <option value="européenne">Européenne</option>
+            <option value="française">Française</option>
+          </select><br><br>
+        </div>
+        <div class="form-group">
+          <label for="piece_identite">Piece d'identité*</label>
+          <input type="file" id="piece_identite" name="piece_identite"><br><br>
+        </div>
+        <div class="form-group">
+          <label for="dpae">DPAE*</label>
+          <input type="file" id="dpae" name="dpae"><br><br>
+        </div>
+        <div class="form-group">
+          <label for="permit">Permis de conduire</label>
+          <input type="file" id="permit" name="permit"><br><br>
+        </div>
+        <div class="form-group">
+          <label for="certificat_a1">Certificat A1*</label>
+          <input type="file" id="certificat_a1" name="certificat_a1"><br><br>
+        </div>
+        <div class="form-group">
+          <label for="certificat_zoll">Certificat Zoll*</label>
+          <input type="file" id="certificat_zoll" name="certificat_zoll"><br><br>
+        </div>
+        <div class="form-group">
+          <label for="photo">Photo*</label>
+          <input type="file" id="photo" name="photo"><br><br>
+        </div>
       </div>
       <div class="modal-footer">
         <button class="buttonvalidate" id="ajouter_salarie">Ajouter</button>
@@ -129,12 +187,19 @@ $login = $_SESSION['Login'];
       <div class="modal-body">
           <input type="hidden" id="id_Salarie" name="id_Salarie">
           <p id="messageup_salarie"></p><br>
+        <div class="form-group">
           <label for="nom_Salarie">Nom</label>
           <input type="text" id="nom_Salarie"><br><br>
+        </div>
+        <div class="form-group">
           <label for="prenom_Salarie">Prénom</label>
           <input type="text" id="prenom_Salarie"><br><br>
+        </div>
+        <div class="form-group">
           <label for="dateNaissance_Salarie">Date de naissance</label>
           <input type="date" id="dateNaissance_Salarie"><br><br>
+        </div>
+        <div class="form-group">
           <label for="nationalite_Salarie">Nationalité</label>
           <select id="nationalite_Salarie" name="nationalite_Salarie">
             <option value="">Sélectionnez la nationalité</option>
@@ -149,13 +214,18 @@ $login = $_SESSION['Login'];
                 }
               ?>
             </select><br><br>
+        </div>
+        <div class="form-group">
           <label for="poste_Salarie">Poste</label>
           <input type="text" id="poste_Salarie"><br><br>
+        </div>
+        <div class="form-group">
           <label for="typeMission_Salarie">Mission</label>
           <select id="typeMission_Salarie">
             <option value="Européenne">Européenne</option>
             <option value="Française">Française</option>
           </select> 
+        </div>
       </div>
       <div class="modal-footer">
           <button id="update_salarie" class="buttonvalidate">Enregistrer</button>
@@ -264,29 +334,68 @@ $login = $_SESSION['Login'];
       <div class="modal-body" >
         <div class="file-container">
           <input type="hidden" id="id_Salarie" name="id_Salarie">
-          <label for="pieceid_Salarie">Piece d'identité:</label>
-          <input  id="pieceid_Salarie" type="hidden">
-          <a href="#" id="link_pieceid"><img src="../img/piece_jointe.png" ></a>
+          
+          <div class="documents">
+          <div class="document">
+            <label for="pieceid_Salarie" class="titre">Pièce d'identité :</label>
+            <input id="pieceid_Salarie" type="hidden">
+            <div class="image-container">
+              <a href="#" id="link_pieceid" class="doc"><img src="../img/doc.png" alt="Document"></a>
+              <label for="file_pieceid" class="telecharger"><img src="../img/edit.png" alt="Modifier"></label>
+              <input type="file" id="file_pieceid" class="update_document" data-doc="pieceIdentite_Salarie" hidden>
+            </div>
+          </div>
 
-          <label for="dpae_Salarie">DPAE:</label>
-          <input id="dpae_Salarie" type="hidden">
-          <a href="#" id="link_dpae"><img src="../img/piece_jointe.png" ></a>
+          <div class="document">
+            <label for="dpae_Salarie" class="titre">DPAE :</label>
+            <input id="dpae_Salarie" type="hidden">
+            <div class="image-container">
+              <a href="#" id="link_dpae" class="doc"><img src="../img/doc.png" alt="Document"></a>
+              <label for="file_dpae" class="telecharger"><img src="../img/edit.png" alt="Modifier"></label>
+              <input type="file" id="file_dpae" class="update_document" data-doc="dpae_Salarie" hidden>
+            </div>
+          </div>
 
-          <label for="permis_Salarie">Permis de conduire:</label>
-          <input id="permis_Salarie" type="hidden">
-          <a href="#" id="link_permis"><img src="../img/piece_jointe.png" ></a>
+          <div class="document">
+            <label for="permis_Salarie" class="titre">Permis de conduire :</label>
+            <input id="permis_Salarie" type="hidden">
+            <div class="image-container">
+              <a href="#" id="link_permis" class="doc"><img src="../img/doc.png" alt="Document"></a>
+              <label for="file_permis" class="telecharger"><img src="../img/edit.png" alt="Modifier"></label>
+              <input type="file" id="file_permis" class="update_document" data-doc="permit_Salarie" hidden>
+            </div>
+          </div>
 
-          <label for="certifa1_Salarie">Certificat A1:</label>
-          <input id="certifa1_Salarie" type="hidden">
-          <a href="#" id="link_certifa1"><img src="../img/piece_jointe.png" ></a>
+          <div class="document">
+            <label for="certifa1_Salarie" class="titre">Certificat A1 :</label>
+            <input id="certifa1_Salarie" type="hidden">
+            <div class="image-container">
+              <a href="#" id="link_certifa1" class="doc"><img src="../img/doc.png" alt="Document"></a>
+              <label for="file_certifa1" class="telecharger"><img src="../img/edit.png" alt="Modifier"></label>
+              <input type="file" id="file_certifa1" class="update_document" data-doc="certificatA1_Salarie" hidden>
+            </div>
+          </div>
 
-          <label for="certifzoll_Salarie">Certificat Zoll:</label>
-          <input id="certifzoll_Salarie" type="hidden">
-          <a href="#" id="link_certifzoll"><img src="../img/piece_jointe.png" ></a>
+          <div class="document">
+            <label for="certifzoll_Salarie" class="titre">Certificat Zoll :</label>
+            <input id="certifzoll_Salarie" type="hidden">
+            <div class="image-container">
+              <a href="#" id="link_certifzoll" class="doc"><img src="../img/doc.png" alt="Document"></a>
+              <label for="file_certifzoll" class="telecharger"><img src="../img/edit.png" alt="Modifier"></label>
+              <input type="file" id="file_certifzoll" class="update_document" data-doc="certificatZoll_Salarie" hidden>
+            </div>
+          </div>
 
-          <label for="photo_Salarie">Photo:</label>
-          <input id="photo_Salarie" type="hidden">
-          <a href="#" id="link_photo"><img src="../img/piece_jointe.png" ></a>
+          <div class="document">
+            <label for="photo_Salarie" class="titre">Photo :</label>
+            <input id="photo_Salarie" type="hidden">
+            <div class="image-container">
+              <a href="#" id="link_photo" class="doc"><img src="../img/doc.png" alt="Photo"></a>
+              <label for="file_photo" class="telecharger"><img src="../img/edit.png" alt="Modifier"></label>
+              <input type="file" id="file_photo" class="update_document" data-doc="photo_Salarie" hidden>
+            </div>
+          </div>
+          </div>
         </div>
       </div> 
     </div>

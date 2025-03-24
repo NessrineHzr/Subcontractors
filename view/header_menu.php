@@ -18,7 +18,6 @@ $query = "SELECT * FROM utilisateur WHERE id_Utilisateur = '$ID'";
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SUBCONTRACTORS</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.lineicons.com/3.0/lineicons.css">
     <link rel="stylesheet" href="../../public/css/app.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>    
     <!-- SELECT2 -->
@@ -32,8 +31,8 @@ $query = "SELECT * FROM utilisateur WHERE id_Utilisateur = '$ID'";
         <img src="../img/logo_projet.jpg" alt="Description de l'image" width="100" height="50">
         <nav class="nav-menu">
             <a href="file.php" class="nav-link"><i class="fas fa-home"></i><span>Dashboard</span></a>
-            <a href="file.php" class="nav-link"><i class="fas fa-file-alt"></i><span>Demandes</span></a>
-            <a href="file.php" class="nav-link"><i class="fas fa-user-tie"></i><span>Sous-traitants</span></a>
+            <a href="demande.php" class="nav-link"><i class="fas fa-file-alt"></i><span>Demandes</span></a>
+            <a href="sous-traitant.php" class="nav-link"><i class="fas fa-user-tie"></i><span>Sous-traitants</span></a>
             <a href="salarie.php" class="nav-link"><i class="fas fa-users"></i><span>Salariés</span></a>
             <a href="file.php" class="nav-link"><i class="fas fa-file-contract"></i><span>Contrats</span></a>
             <a href="file.php" class="nav-link"><i class="fas fa-folder"></i><span>Documents</span></a>

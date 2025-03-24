@@ -11,7 +11,23 @@ $(document).ready(function() {
     get_salarie_data();
     update_salarie();
     supprimer_salarie();
-    get_salarie_document();    
+    get_salarie_document();
+    update_salarie_document();
+    // Sous-traitant 
+    view_soustraitant_record(); 
+    ajout_soustraitant(); 
+    get_soustraitant_data();
+    update_soustraitant();
+    supprimer_soustraitant();
+    get_soustraitant_chefprojet_data();
+    get_soustraitant_chefprojet_demande_data();
+    get_soustraitant_document();
+    // demande 
+    view_demande_record();
+    update_status_demande();
+    ajout_demande();
+    supprimer_demande();
+    download_document_demande();
 
 });
 
@@ -96,6 +112,27 @@ function searchpagination(id, title, EnteteDroite, titremodule, titre) {
     EnteteDroite.prepend(searchInput); 
     EnteteDroite.append(addButton);
 }
+function searchpagination_withoutbuttom(id, title, EnteteDroite, titremodule) {
+    $('.dataTables_length').parent().parent().css('align-items', 'center');
+    // Création du titre avec breadcrumb
+    let headerHTML = `<nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0 p-0">
+            <div class="breadcrumb-item" style="font-size: 23px; font-weight: bold;">${titremodule}</div>
+        </ol></nav>`;
+    $('.dataTables_length').html(headerHTML);
+    // Appliquer un conteneur flex pour bien aligner les éléments et ajouter un espacement
+    EnteteDroite.addClass('d-flex align-items-center');
+    // Ajout du champ de recherche stylisé avec une marge à droite
+    let searchInput = EnteteDroite.find("input");
+    searchInput.addClass('form-control rounded-pill ps-5 border-0 shadow-sm');
+    searchInput.css("margin-right", "5px"); // Ajout d'une marge explicite
+    // Bouton "Ajouter" avec espacement
+    let addButton = `<button class='btn btn-add' id="${id}" title="${title}">${title}</button>`;
+    // Ajout des éléments dans l'ordre souhaité
+    EnteteDroite.prepend(searchInput); 
+    EnteteDroite.append(addButton);
+}
+
 
 //////////////////////// Module login //////////////////////
 
@@ -469,12 +506,55 @@ function get_salarie_document() {
           dataType: "json",
           success: function (data) {
             $("#id_Salarie").val(data[0]);
+            $(".update_document").attr("data-document", data[0]);
             $("#pieceid_Salarie").val(data[1]);
+            if (!data[1]) {
+                $("#link_pieceid").css("background-color", "#FF4E4E");
+                $("#link_pieceid").attr("href", "javascript:void(0)");
+            } else {
+                $("#link_pieceid").css("border", "#FFF0DB");
+                $("#link_pieceid").attr("href", data[1]);
+            }
             $("#dpae_Salarie").val(data[2]);
+            if (!data[2]) {
+                $("#link_dpae").css("background-color", "#FF4E4E");
+                $("#link_dpae").attr("href", "javascript:void(0)");
+            } else {
+                $("#link_dpae").css("border", "#FFF0DB");
+                $("#link_dpae").attr("href", data[2]);
+            }
             $("#permis_Salarie").val(data[3]);
+            if (!data[3]) {
+                $("#link_permis").css("background-color", "#FF4E4E");
+                $("#link_permis").attr("href", "javascript:void(0)");
+            } else {
+                $("#link_permis").css("border", "#FFF0DB");
+                $("#link_permis").attr("href", data[3]);
+            }
             $("#certifa1_Salarie").val(data[4]);
+            if (!data[4]) {
+                $("#link_certifa1").css("background-color", "#FF4E4E");
+                $("#link_certifa1").attr("href", "javascript:void(0)");
+            } else {
+                $("#link_certifa1").css("border", "#FFF0DB");
+                $("#link_certifa1").attr("href", data[4]);
+            }
             $("#certifzoll_Salarie").val(data[5]);
+            if (!data[5]) {
+                $("#link_certifzoll").css("background-color", "#FF4E4E");
+                $("#link_certifzoll").attr("href", "javascript:void(0)");
+            } else {
+                $("#link_certifzoll").css("border", "#FFF0DB");
+                $("#link_certifzoll").attr("href", data[5]);
+            }
             $("#photo_Salarie").val(data[6]);
+            if (!data[6]) {
+                $("#link_photo").css("background-color", "#FF4E4E");
+                $("#link_photo").attr("href", "javascript:void(0)");
+            } else {
+                $("#link_photo").css("border", "#FFF0DB");
+                $("#link_photo").attr("href", data[6]);
+            }
             $("#documentSalarie").modal("show");
           },
         });
@@ -486,4 +566,554 @@ $(document).click(function(event) {
     }
 });
 
+// Modifier document salarie
+function update_salarie_document() {
+    $(".update_document").on("change", function (event) {
+        event.preventDefault();
+        var ID = $(this).attr("data-document");
+        var file_input = $(this).prop("files")[0];
+        var type_document = $(this).data("doc"); 
+        var form_data = new FormData();
+        form_data.append("document", file_input);
+        form_data.append("type_document", type_document);
+        form_data.append("SalarieID", ID);
+        $.ajax({
+            url: "../../models/updateDocumentSalarie.php",
+            type: "POST",
+            processData: false,
+            contentType: false,
+            data: form_data,
+            success: function (response) {
+                window.location.reload();
+            },
+            error: function () {
+                alert("Une erreur est survenue lors de l'envoi du document.");
+            }
+        });
+    });
+}
+ /////////////////////// Module Sous-traitant //////////////////
 
+ function view_soustraitant_record() {
+    $.ajax({
+      url: "../../models/viewSousTraitant.php",
+      method: "post",
+      success: function (data) {
+        try {
+          data = $.parseJSON(data);
+          if (data.status == "success") {
+            $("#table_listeSousTraitant").html(data.html);
+            $('#listeSousTraitant').DataTable({ "info": false});
+            searchpagination("ajout_soustraitant","Ajouter un sous-traitant",$('#listeSousTraitant_filter'),"Sous-traitants","Liste des sous-traitant");
+          }
+        } catch (e) { 
+          console.error("Invalid Response!" , data);
+        }
+      },
+    });
+  }
+
+// Ajouter sous-traitant
+function ajout_soustraitant(){
+    $(document).on("click", "#ajout_soustraitant", function () {
+        $("#ajoutSoustraitant").modal("show");
+    });
+    $(document).on("click", "#ajouter_soustraitant", function () {
+        $("#ajoutSoustraitant").scrollTop(0);
+        
+        var nom = $("#nom").val();
+        var nomGerant = $("#nomGerant").val();
+        var adresse = $("#adresse").val();
+        var pays = $("#pays").val();
+        var siret = $("#siret").val();
+        var email = $("#email").val();
+        var telephone = $("#telephone").val();
+        var iban = $("#iban").val();
+        var typesMission = $("#typeMission").val();
+        var chefProjet = $("#chefProjet").val();
+
+        if (nom === "" || nomGerant === "" || adresse === "" || pays === "" || siret === "" || email === "" || telephone === "" || iban === "" || typeMission === "" || chefProjet === "") {
+            $("#message_soustraitant").addClass("echec-modal").html("Veuillez remplir tous les champs obligatoires !");
+        } else {
+            var form_data = new FormData();
+            form_data.append("nom", nom);
+            form_data.append("nomGerant", nomGerant);
+            form_data.append("adresse", adresse);
+            form_data.append("pays", pays);
+            form_data.append("siret", siret);
+            form_data.append("email", email);
+            form_data.append("telephone", telephone);
+            form_data.append("iban", iban);
+            form_data.append("typesMission", typesMission);
+            form_data.append("chefProjet", chefProjet);
+            $.ajax({
+                url: "../../models/ajouterSoustraitant.php", 
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: form_data,
+                success: function(data) {
+                    if (data.includes('text-echec')) {
+                        $("#ajoutSoustraitant").modal("hide");
+                        $("#addsoustraitant_echec").removeClass("text-checked").addClass("text-echec").html(data);
+                        $("#EchecAddSoustraitant").modal("show");
+                        setTimeout(function () {
+                            if ($("#EchecAddSoustraitant").length > 0) {
+                                $("#EchecAddSoustraitant").modal("hide");
+                            }
+                        }, 4000);
+                        view_soustraitant_record();
+                    } else {
+                        $("#ajoutSoustraitant").modal("hide");
+                        $("#addsoustraitant_success").addClass("text-checked").html(data);
+                        $("#SuccessAddSoustraitant").modal("show");
+                        $("#addsoustraitant_success").removeClass("text-echec").addClass("text-checked");
+                        setTimeout(function () {
+                            if ($("#SuccessAddSoustraitant").length > 0) {
+                                $("#SuccessAddSoustraitant").modal("hide");
+                            }
+                        }, 4000);
+                        view_soustraitant_record();
+                    }
+                } 
+            });
+        }
+    });
+}
+
+// Affichier Soustraitant
+function get_soustraitant_data() {
+    $(document).on("click", "#btn_modif_soustraitant", function () {
+        var ID = $(this).attr("data-id");
+        $.ajax({
+            url: "../../models/getSoustraitant.php",
+            method: "post",
+            data: {
+              ID: ID
+            },
+            dataType: "JSON",
+            success: function (data) {
+              $("#id_Entreprise").val(data[0]);
+              $("#nom_Entreprise").val(data[1]);
+              $("#nomGerant_Entreprise").val(data[2]);
+              $("#adresse_Entreprise").val(data[3]);
+              $("#pays_Entreprise").val(data[4]);
+              $("#siret_Entreprise").val(data[5]);
+              $("#email_Entreprise").val(data[6]);
+              $("#telephone_Entreprise").val(data[7]);
+              $("#iban_Entreprise").val(data[8]);
+              $("#typesMission_Entreprise").val(data[9]);
+              $("#chefProjet_Entreprise").val(data[10]);
+              $("#modifSoustraitant").modal("show");
+            },
+        });
+    });
+}
+
+// Modifier sous-traitant 
+function update_soustraitant() {
+    $(document).on("click", "#modifier_soustraitant", function () {
+        $("#modifSoustraitant").scrollTop(0);
+        var id = $("#id_Entreprise").val();
+        var nom = $("#nom_Entreprise").val();
+        var nomGerant = $("#nomGerant_Entreprise").val();
+        var adresse = $("#adresse_Entreprise").val();
+        var pays = $("#pays_Entreprise").val();
+        var siret = $("#siret_Entreprise").val();
+        var email = $("#email_Entreprise").val();
+        var telephone = $("#telephone_Entreprise").val();
+        var iban = $("#iban_Entreprise").val();
+        var typesMission = $("#typesMission_Entreprise").val();
+        var chefProjet = $("#chefProjet_Entreprise").val();
+        if (nom === "" || nomGerant === "" || adresse === "" || pays === "" || siret === "" || email === "" || telephone === "" || iban === "" || typesMission === "" || chefProjet === "") {
+            $("#messageup_soustraitant").addClass("echec-modal").html("Veuillez remplir tous les champs obligatoires !");
+        }else{
+            var form_data = new FormData();
+            form_data.append("id", id);
+            form_data.append("nom", nom);
+            form_data.append("nomGerant", nomGerant);
+            form_data.append("adresse", adresse);
+            form_data.append("pays", pays);
+            form_data.append("siret", siret);
+            form_data.append("email", email);
+            form_data.append("telephone", telephone);
+            form_data.append("iban", iban);
+            form_data.append("typesMission", typesMission);
+            form_data.append("chefProjet", chefProjet);
+            $.ajax({
+                url: "../../models/updateSoustraitant.php",
+                type: "POST",
+                data: form_data,
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    if (data.includes('text-echec')) {
+                        $("#modifSoustraitant").modal("hide");
+                        $("#upsoustraitant_echec").removeClass("text-checked").addClass("text-echec").html(data);
+                        $("#EchecUpSoustraitant").modal("show");
+                        setTimeout(function () {
+                          if ($("#EchecUpSoustraitant").length > 0) {
+                            $("#EchecUpSoustraitant").modal("hide");
+                          }
+                        }, 4000);
+                        view_soustraitant_record();
+                    } else {
+                        $("#modifSoustraitant").modal("hide");
+                        $("#upsoustraitant_success").addClass("text-checked").html(data);
+                        $("#SuccessUpSoustraitant").modal("show");
+                        $("#upsoustraitant_success").removeClass("text-echec").addClass("text-checked");
+                        setTimeout(function () {
+                          if ($("#SuccessUpSoustraitant").length > 0) {
+                            $("#SuccessUpSoustraitant").modal("hide");
+                          }
+                        }, 4000);
+                        view_soustraitant_record();
+                    }
+                },
+            });
+        }
+    });
+} 
+$(document).click(function(event) {
+    if (!$(event.target).closest('#modifSoustraitant').length) {
+        $('#modifSoustraitant').modal('hide');
+    }
+});
+
+// Supprimer Sous-traitant
+function supprimer_soustraitant() {
+    $(document).on("click", "#btn_supprime_soustraitant", function () {
+        var ID = $(this).attr("data-id1");
+        $("#deleteSoustraitant").modal("show");
+        $(document).on("click", "#btn_delete", function () {
+            $.ajax({
+                url: "../../models/supprimerSoustraitant.php",
+                method: "post",
+                data: {
+                    ID: ID
+                },
+                success: function (data) {
+                    if (data.includes('text-echec')) {
+                      $("#deleteSoustraitant").modal("hide");
+                      $("#deletesoustraitant_echec").removeClass("text-checked").addClass("text-echec").html(data);
+                      $("#EchecDeleteSoustraitant").modal("show");
+                      setTimeout(function () {
+                        if ($("#EchecDeleteSoustraitant").length > 0) {
+                          $("#EchecDeleteSoustraitant").modal("hide");
+                        }
+                      }, 4000);
+                      view_soustraitant_record();
+                    } else {
+                      $("#deleteSoustraitant").modal("hide");
+                      $("#deletesoustraitant_success").addClass("text-checked").html(data);
+                      $("#SuccessDeleteSoustraitant").modal("show");
+                      $("#deletesoustraitant_success").removeClass("text-echec").addClass("text-checked");
+                      setTimeout(function () {
+                        if ($("#SuccessDeleteSoustraitant").length > 0) {
+                          $("#SuccessDeleteSoustraitant").modal("hide");
+                        }
+                      }, 4000);
+                      view_soustraitant_record();
+                    }
+                },
+            });
+        });
+    });
+}
+$(document).click(function(event) {
+    if (!$(event.target).closest('#deleteSoustraitant').length) {
+        $('#deleteSoustraitant').modal('hide');
+    }
+});
+
+// Affichier chefProjet de Soustraitant
+function get_soustraitant_chefprojet_data() {
+    $(document).on("click", "#btn_chefProjet_soustraitant", function () {
+        var ID = $(this).attr("data-id");
+        var ID_chefProjet = $(this).attr("data-chefProjet");
+        $.ajax({
+            url: "../../models/getSoustraitantChefProjet.php",
+            method: "post",
+            data: {
+              ID: ID,
+              ID_chefProjet: ID_chefProjet
+            },
+            dataType: "JSON",
+            success: function (data) {
+                console.log(data);
+                var html = "<p style='text-align: left; color:black'><strong>Nom :</strong> " + data[0] + "</p></br>";
+                html += "<p style='text-align: left;color:black'><strong>Prénom :</strong> " + data[1] + "</p></br>";
+                html += "<p style='text-align: left;color:black'><strong>Date de naissance :</strong> " + data[2] + "</p></br>";
+                html += "<p style='text-align: left;color:black'><strong>Nationalité :</strong> " + data[3] + "</p></br>";
+                $("#info_chefProjet").html(html);
+                $("#affiche_chefProjet").modal("show");
+            },
+        });
+    });
+}
+
+// Ajouter document sous-traitant 
+
+function get_soustraitant_document() {
+    $(document).on("click", "#btn_document_soustraitant", function () {
+        var ID = $(this).attr("data-document");
+        $.ajax({
+          url: "../../models/getDocumentSoustraitant.php",
+          method: "POST",
+          data: {ID: ID},
+          dataType: "json",
+          success: function (data) {
+            $("#id_Document").val(data[0]);
+            $("#idEntreprise_Document").val(data[1]);
+            $("#kbis_Document").val(data[2]);
+            if (!data[2]) {
+                $("#kbis_Document").css("background-color", "#FF4E4E");
+                $("#kbis_Document").attr("href", "javascript:void(0)");
+            } else {
+                $("#kbis_Document").css("border", "#FFF0DB");
+                $("#kbis_Document").attr("href", data[2]);
+            }
+
+            $("#dateValiditeKbis_Document").val(data[3]);
+            $("#pieceIdentitieGerant_Document").val(data[4]);
+            $("#dateValiditePIGerant_Document").val(data[5]);
+            $("#attestationRegulariteFiscale_Document").val(data[6]);
+            $("#dateValiditeAttestRegulariteFiscale_Document").val(data[7]);
+            $("#attestationURSSAF_Document").val(data[8]);
+            $("#dateValiditeAttestURSSAF_Document").val(data[9]);
+            $("#assuranceRcPro_Document").val(data[10]);
+            $("#dateValiditeAssuranceRcPro_Document").val(data[11]);
+            $("#siret_Document").val(data[12]);
+            $("#dateValiditeSiret_Document").val(data[13]);
+            $("#caisseBTP_Document").val(data[14]);
+            $("#dateValiditeCaisseBTP_Document").val(data[15]);
+            $("#numeroFiscal_Document").val(data[16]);
+            $("#dateValiditeNumFiscal_Document").val(data[17]);
+            $("#numeroTVA_Document").val(data[18]);
+            $("#dateValiditeNumTVA_Document").val(data[19]);
+            $("#assurenceDecennale_Document").val(data[20]);
+            $("#dateValiditeAssurenceDecennale_Document").val(data[21]);
+
+          },
+        });
+    });
+}
+
+///////////////////////////// Module demandes /////////////////////////////
+
+function view_demande_record() {
+    $.ajax({
+      url: "../../models/viewDemande.php",
+      method: "post",
+      success: function (data) {
+        try {
+          data = $.parseJSON(data);
+          if (data.status == "success") {
+            $("#table_listeDemande").html(data.html);
+            $('#listeDemande').DataTable({ "info": false});
+            searchpagination_withoutbuttom("ajout_demande","Ajouter un demande",$('#listeDemande_filter'),"Tous les demandes");
+          }
+        } catch (e) { 
+          console.error("Invalid Response!" , data);
+        }
+      },
+    });
+  }
+ 
+// Affichier chefProjet demande
+  function get_soustraitant_chefprojet_demande_data() {
+    $(document).on("click", "#btn_chefProjet_demande", function () {
+        var ID = $(this).attr("data-id-demande");
+        var ID_chefProjet = $(this).attr("data-chefProjet-demande");
+        console.log(ID_chefProjet);
+        console.log(ID);
+        $.ajax({
+            url: "../../models/getSoustraitantChefProjet.php",
+            method: "post",
+            data: {
+              ID: ID,
+              ID_chefProjet: ID_chefProjet
+            },
+            dataType: "JSON",
+            success: function (data) {
+                console.log(data);
+                var html = "<p style='text-align: left; color:black'><strong>Nom :</strong> " + data[0] + "</p></br>";
+                html += "<p style='text-align: left;color:black'><strong>Prénom :</strong> " + data[1] + "</p></br>";
+                html += "<p style='text-align: left;color:black'><strong>Date de naissance :</strong> " + data[2] + "</p></br>";
+                html += "<p style='text-align: left;color:black'><strong>Nationalité :</strong> " + data[3] + "</p></br>";
+                $("#info_chefProjet_demande").html(html);
+                $("#affiche_chefProjet_demande").modal("show");
+
+            },
+        });
+    });
+}
+
+// Modifier status
+function update_status_demande() {
+    $(document).on("click", "#btn_accepter, #btn_refuser", function () {
+        var ID = $(this).attr("data-demande");
+        var action = $(this).attr("id") === "btn_accepter" ? "accepter" : "refuser";
+        $.ajax({
+            url: "../../models/updateStatusDemande.php",
+            method: "post",
+            data: {
+              ID: ID,
+              action: action
+            },
+            dataType: "JSON",
+            success: function (data) {
+                window.location.reload();
+            },    
+        });
+    });
+}
+
+// Ajouter un demande
+function ajout_demande(){
+    $(document).on("click", "#ajout_demande", function () {
+        $("#ajoutDemande").modal("show");
+    });
+    $(document).on("click", "#ajouter_demande", function () {
+        $("#ajoutDemande").scrollTop(0);
+        
+        var nom = $("#nom").val();
+        var societe = $("#societe").val();
+
+        if (nom === "" || societe === "" ) {
+            $("#message_demande").addClass("echec-modal").html("Veuillez remplir tous les champs obligatoires !");
+        }
+
+        var dateValiditeKbis = $("#dateValiditeKbis_Document").val();
+        var dateValiditePIGerant = $("#dateValiditePIGerant_Document").val();
+        var dateValiditeAttestRegulariteFiscale = $("#dateValiditeAttestRegulariteFiscale_Document").val();
+        var dateValiditeAttestURSSAF = $("#dateValiditeAttestURSSAF_Document").val();
+        var dateValiditeAssuranceRcPro = $("#dateValiditeAssuranceRcPro_Document").val();
+        var dateValiditeSiret = $("#dateValiditeSiret_Document").val();
+        var dateValiditeCaisseBTP = $("#dateValiditeCaisseBTP_Document").val();
+        var dateValiditeNumFiscal = $("#dateValiditeNumFiscal_Document").val();
+        var dateValiditeNumTVA = $("#dateValiditeNumTVA_Document").val();
+        var dateValiditeAssurenceDecennale = $("#dateValiditeAssurenceDecennale_Document").val();
+        var kbis = $("#kbis_Document")[0].files[0];
+        var pieceIdentitieGerant = $("#pieceIdentitieGerant_Document")[0].files[0];
+        var attestationRegulariteFiscale = $("#attestationRegulariteFiscale_Document")[0].files[0];
+        var attestationURSSAF = $("#attestationURSSAF_Document")[0].files[0];
+        var assuranceRcPro = $("#assuranceRcPro_Document")[0].files[0];
+        var siret = $("#siret_Document")[0].files[0];
+        var caisseBTP = $("#caisseBTP_Document")[0].files[0];
+        var numeroFiscal = $("#numeroFiscal_Document")[0].files[0];
+        var numeroTVA = $("#numeroTVA_Document")[0].files[0];
+        var assurenceDecennale = $("#assurenceDecennale_Document")[0].files[0];
+        var form_data = new FormData();
+        form_data.append("nom", nom);
+        form_data.append("societe", societe);
+        form_data.append("dateValiditeKbis", dateValiditeKbis);
+        form_data.append("dateValiditePIGerant", dateValiditePIGerant);
+        form_data.append("dateValiditeAttestRegulariteFiscale", dateValiditeAttestRegulariteFiscale);
+        form_data.append("dateValiditeAttestURSSAF", dateValiditeAttestURSSAF);
+        form_data.append("dateValiditeAssuranceRcPro", dateValiditeAssuranceRcPro);
+        form_data.append("dateValiditeSiret", dateValiditeSiret);
+        form_data.append("dateValiditeCaisseBTP", dateValiditeCaisseBTP);
+        form_data.append("dateValiditeNumFiscal", dateValiditeNumFiscal);
+        form_data.append("dateValiditeNumTVA", dateValiditeNumTVA);
+        form_data.append("dateValiditeAssurenceDecennale", dateValiditeAssurenceDecennale);
+        form_data.append("kbis", kbis);
+        form_data.append("pieceIdentitieGerant", pieceIdentitieGerant);
+        form_data.append("attestationRegulariteFiscale", attestationRegulariteFiscale);
+        form_data.append("attestationURSSAF", attestationURSSAF);
+        form_data.append("assuranceRcPro", assuranceRcPro);
+        form_data.append("siret", siret);
+        form_data.append("caisseBTP", caisseBTP);
+        form_data.append("numeroFiscal", numeroFiscal);
+        form_data.append("numeroTVA", numeroTVA);
+        form_data.append("assurenceDecennale", assurenceDecennale);
+        
+       
+        $.ajax({
+            url: "../../models/ajouterDemande.php", 
+            type: "POST",
+            processData: false,
+            contentType: false,
+            data: form_data,
+            success: function(data) {
+                if (data.includes('text-echec')) {
+                    $("#ajoutDemande").modal("hide");
+                    $("#adddemande_echec").removeClass("text-checked").addClass("text-echec").html(data);
+                    $("#EchecAddDemande").modal("show");
+                    setTimeout(function () {
+                        if ($("#EchecAddDemande").length > 0) {
+                            $("#EchecAddDemande").modal("hide");
+                        }
+                    }, 4000);
+                    view_demande_record();
+                } else {
+                    $("#ajoutDemande").modal("hide");
+                    $("#adddemande_success").addClass("text-checked").html(data);
+                    $("#SuccessAddDemande").modal("show");
+                    $("#adddemande_success").removeClass("text-echec").addClass("text-checked");
+                    setTimeout(function () {
+                        if ($("#SuccessAddDemande").length > 0) {
+                            $("#SuccessAddDemande").modal("hide");
+                        }
+                    }, 4000);
+                    view_demande_record();
+                }
+            },
+        });
+    });
+}
+
+// Supprimer Demande
+function supprimer_demande() {
+    $(document).on("click", "#btn_supprime_demande", function () {
+        var ID = $(this).attr("data-demande");
+        $("#deleteDemande").modal("show");
+        $(document).on("click", "#btn_delete", function () {
+            $.ajax({
+                url: "../../models/supprimerDemande.php",
+                method: "post",
+                data: {
+                    ID: ID
+                },
+                success: function (data) {
+                    if (data.includes('text-echec')) {
+                      $("#deleteDemande").modal("hide");
+                      $("#deletedemande_echec").removeClass("text-checked").addClass("text-echec").html(data);
+                      $("#EchecDeleteDemande").modal("show");
+                      setTimeout(function () {
+                        if ($("#EchecDeleteDemande").length > 0) {
+                          $("#EchecDeleteDemande").modal("hide");
+                        }
+                      }, 4000);
+                      view_demande_record();
+                    } else {
+                      $("#deleteDemande").modal("hide");
+                      $("#deletedemande_success").addClass("text-checked").html(data);
+                      $("#SuccessDeleteDemande").modal("show");
+                      $("#deletedemande_success").removeClass("text-echec").addClass("text-checked");
+                      setTimeout(function () {
+                        if ($("#SuccessDeleteDemande").length > 0) {
+                          $("#SuccessDeleteDemande").modal("hide");
+                        }
+                      }, 4000);
+                      view_demande_record();
+                    }
+                },
+            });
+        });
+    });
+}
+$(document).click(function(event) {
+    if (!$(event.target).closest('#deleteDemande').length) {
+        $('#deleteDemande').modal('hide');
+    }
+});
+ 
+// Telecharger document Demande 
+
+function download_document_demande() {
+    $(document).on("click", "#btn_telecharger", function () {
+        var id = $(this).attr("data-demande");
+        window.location.href = "../../models/downloadDocumentDemande.php?id=" + id;
+    });    
+}

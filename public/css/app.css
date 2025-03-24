@@ -315,10 +315,10 @@ body {
 /**************************************************************/
 /*** button validate modal ***/
 .buttonvalidate {
-	background-color: #A386F4;
+	background-color: #470EE9;
 	border-color: transparent;
 	color: white;
-	border-radius: 3px;
+	border-radius: 5px;
     width: 143px;
 	height: 50px;
 	font-size: 15px;
@@ -329,7 +329,7 @@ body {
 	background-color: white;
 	border-color: transparent;
 	color: #470EE9;
-	border-radius: 3px;
+	border-radius: 5px;
     width: 143px;
 	height: 50px;
 	font-size: 15px;
@@ -342,20 +342,23 @@ body {
     margin: 7%;
     justify-content: center;
     align-items: center;
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 10px;
 }
 .modal-footer {
     margin: 7%;
     display: flex;
-    justify-content: flex-end; /* Aligner les boutons à droite */
-    gap: 10px; /* Ajouter un petit espace entre les boutons */
+    justify-content: flex-end;
+    gap: 10px;
     background: #fff;
 }
 
 .modal-header {
     margin: 7%;
     display: flex;
-    justify-content: space-between; /* Espacement entre le titre et le bouton */
-    align-items: center; /* Alignement vertical */
+    justify-content: space-between; 
+    align-items: center;
     background: #fff;
 }
 
@@ -374,7 +377,7 @@ body {
     cursor: pointer;
 }
 #btn_close img {
-    width: 25px; /* Ajuste la taille selon ton besoin */
+    width: 25px; 
     height: auto;
 }
 
@@ -524,6 +527,44 @@ body {
     border-radius: 60px;
     background-color:#DFEFFE;
     color:#2400FF;
+  }
+
+  .status_attente {
+    font-size: 11px;
+    width: 65px;
+    height: 20px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    border-radius: 60px;
+    background-color:#F8F0E4;
+    color: #FFA629;
+  }  .status_acceptee {
+    font-size: 11px;
+    width: 65px;
+    height: 20px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    border-radius: 60px;
+    background-color:#B5FACC;
+    color:#318C40;
+  }  .status_refusee {
+    font-size: 11px;
+    width: 65px;
+    height: 20px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    border-radius: 60px;
+    background-color:#F8E4E4;
+    color:#FF2929;
   }
  /* Centrer le titre du tableau */
 table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th, table.dataTable tfoot td {
@@ -708,7 +749,7 @@ table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th, ta
     right: 18%;
     background-color: #470EE9;
     color: white;
-    width: 10%;          
+    width: 11%;          
     aspect-ratio: 1/1;
     border-radius: 50%;
     display: flex;
@@ -716,7 +757,10 @@ table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th, ta
     justify-content: center;
     cursor: pointer;
 }
-
+.profile .btn_edit_image_profil img {
+    width: 30px;
+    height: 30px; 
+}
 .profile .edit-btn {
     position: absolute;
     bottom: 50%;
