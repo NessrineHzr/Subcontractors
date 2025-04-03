@@ -71,38 +71,37 @@ if ($row = mysqli_fetch_assoc($result)) {
     <button style='float: right; margin-left: 10px;' type="button" id="btn_relancer" class="buttonvalidate">Relancer</button><br><br><br>
 </div>
 
-<div class="documents">
-<div class="document">
-    <a href="#" id="kbis_Document" class="doc"><img src="../img/doc.png" ></a>
-    <button id="telecharger" class="telecharger"><img src="../img/telecharger.png" ></button>
-    <p> KBIS </p>
-</div>
-<div class="document">
-    <a href="#" id="pieceIdentitieGerant_Document" class="doc"><img src="../img/doc.png" ></a>
-    <button id="telecharger" class="telecharger"><img src="../img/telecharger.png" ></button>
-    <p> Pièce d'Identité   </p>
-</div>
-<div class="document">
-    <a href="#" id="attestationRegulariteFiscale_Document" class="doc"><img src="../img/doc.png" ></a>
-    <button id="telecharger" class="telecharger"><img src="../img/telecharger.png" ></button>
-    <p> Attestation de Régularité Fiscale </p>
-</div>
-<div class="document">
-    <a href="#" id="attestationURSSAF_Document" class="doc"><img src="../img/doc.png" ></a>
-    <button id="telecharger" class="telecharger"><img src="../img/telecharger.png" ></button>
-    <p> Attestation URSSAF </p>
-</div>
-<div class="document">
-    <a href="#" id="assuranceRcPro_Document" class="doc"><img src="../img/doc.png" ></a>
-    <button id="telecharger" class="telecharger"><img src="../img/telecharger.png" ></button>
-    <p>Assurance RC PRO  </p>
-</div>
-<div class="document">
-    <a href="#" id="assurenceDecennale_Document" class="doc"><img src="../img/doc.png" ></a>
-    <button id="telecharger" class="telecharger"><img src="../img/telecharger.png" ></button>
-    <p>Assurance Décennale </p>
-</div>
+<?php
+$documents = [
+    "kbis_Document" => "KBIS",
+    "pieceIdentitieGerant_Document" => "Pièce d'Identité",
+    "attestationRegulariteFiscale_Document" => "Attestation de Régularité Fiscale",
+    "attestationURSSAF_Document" => "Attestation URSSAF",
+    "assuranceRcPro_Document" => "Assurance RC PRO",
+    "assurenceDecennale_Document" => "Assurance Décennale"
+];
 
+$styles = array_fill_keys(array_keys($documents), "");
+
+$sql_doc = "SELECT * FROM document_entreprise WHERE idEntreprise_Document = '$id'";
+$result_doc = mysqli_query($connexion, $sql_doc);
+$row_doc = mysqli_fetch_assoc($result_doc) ?: [];
+
+foreach ($documents as $key => $title) {
+    if (empty($row_doc[$key])) {
+        $styles[$key] = "background-color: rgb(255, 78, 78);";
+    }
+}
+?>
+
+<div class="documents">
+    <?php foreach ($documents as $id => $title): ?>
+        <div class="document">
+            <a href="#" id="<?= $id ?>" class="doc"><img src="../img/doc.png"></a>
+            <button class="telecharger"><img src="../img/telecharger.png"></button>
+            <p><?= $title ?></p>
+        </div>
+    <?php endforeach; ?>
 </div>
 </body>
 </html>
