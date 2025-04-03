@@ -123,7 +123,7 @@ function display_salarie(){
         <th>Date de naissance</th>
         <th>Nationalité</th>
         <th>Poste</th>
-        <th>Mission</th>
+        <th>Type Mission</th>
         <th>Documents</th>
         <th>Action</th>
       </tr>
