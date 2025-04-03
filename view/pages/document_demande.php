@@ -40,7 +40,7 @@ if ($statusDemande == 'En Attente' ){
         display: flex; 
         gap: 10px;
     }
-    p {
+    .titledoc {
         position: absolute;
         top: 100%;  
         left: auto; 
@@ -101,6 +101,12 @@ if ($statusDemande == 'En Attente' ){
     color: #470EE9;
     border : none;
   }
+
+  #info_chefProjet_demande {
+    display: block;
+    text-align: left;
+    padding: 10px;
+}
     
 </style>
 <nav aria-label="breadcrumb">
@@ -134,7 +140,7 @@ if ($statusDemande == 'En Attente' ){
             <td><?php echo $pays; ?></td>
             <td><?php echo $telephone; ?></td>
             <td><?php echo $iban; ?></td>
-            <td class="<?php echo $missionClass; ?>"><?php echo $typesMission; ?></td>
+            <td><div class="<?php echo $missionClass; ?>"><?php echo $typesMission; ?></div></td>
             <td><button type='button' class='icon-button' id='btn_chefProjet_demande' data-chefProjet-demande="<?php echo $chefProjet; ?>" data-id-demande="<?php echo $id; ?>"><img src='../img/view.png'/></button></td>
         </tr>
     </tbody>
@@ -151,7 +157,7 @@ if ($statusDemande == 'En Attente' ){
       </div>
       <div class="modal-body">
         <div style="font-size:18px; color: #470EE9;">
-          <center id="info_chefProjet_demande"></center>  
+          <div id="info_chefProjet_demande" style="text-align: center;"></div>  
         </div>
         <div class="modal-footer">
           <button type="button" id="btn_annule" class="buttonannule">Fermer</button>
@@ -166,37 +172,36 @@ if ($statusDemande == 'En Attente' ){
     <button type="button" id="btn_telecharger" class="btn_telecharger" data-demande="<?= $id ?>">Télécharger tous</button>
 </div>
 <div class="documents">
-<div class="document">
-    <a href="#" id="kbis_Document" class="doc"><img src="../img/doc.png" ></a>
-    <button id="telecharger" class="telecharger"><img src="../img/telecharger.png" ></button>
-    <p> KBIS </p>
-</div>
-<div class="document">
-    <a href="#" id="pieceIdentitieGerant_Document" class="doc"><img src="../img/doc.png" ></a>
-    <button id="telecharger" class="telecharger"><img src="../img/telecharger.png" ></button>
-    <p> Pièce d'Identité   </p>
-</div>
-<div class="document">
-    <a href="#" id="attestationRegulariteFiscale_Document" class="doc"><img src="../img/doc.png" ></a>
-    <button id="telecharger" class="telecharger"><img src="../img/telecharger.png" ></button>
-    <p> Attestation de Régularité Fiscale </p>
-</div>
-<div class="document">
-    <a href="#" id="attestationURSSAF_Document" class="doc"><img src="../img/doc.png" ></a>
-    <button id="telecharger" class="telecharger"><img src="../img/telecharger.png" ></button>
-    <p> Attestation URSSAF </p>
-</div>
-<div class="document">
-    <a href="#" id="assuranceRcPro_Document" class="doc"><img src="../img/doc.png" ></a>
-    <button id="telecharger" class="telecharger"><img src="../img/telecharger.png" ></button>
-    <p>Assurance RC PRO  </p>
-</div>
-<div class="document">
-    <a href="#" id="assurenceDecennale_Document" class="doc"><img src="../img/doc.png" ></a>
-    <button id="telecharger" class="telecharger"><img src="../img/telecharger.png" ></button>
-    <p>Assurance Décennale </p>
-</div>
-
+    <div class="document">
+        <a href="#" id="kbis_Document" class="doc"><img src="../img/doc.png" ></a>
+        <button id="telecharger" class="telecharger"><img src="../img/telecharger.png" ></button>
+        <div class="titledoc"> KBIS </div>
+    </div>
+    <div class="document">
+        <a href="#" id="pieceIdentitieGerant_Document" class="doc"><img src="../img/doc.png" ></a>
+        <button id="telecharger" class="telecharger"><img src="../img/telecharger.png" ></button>
+        <div class="titledoc"> Pièce d'Identité   </div>
+    </div>
+    <div class="document">
+        <a href="#" id="attestationRegulariteFiscale_Document" class="doc"><img src="../img/doc.png" ></a>
+        <button id="telecharger" class="telecharger"><img src="../img/telecharger.png" ></button>
+        <div class="titledoc"> Attestation de Régularité Fiscale </div>
+    </div>
+    <div class="document">
+        <a href="#" id="attestationURSSAF_Document" class="doc"><img src="../img/doc.png" ></a>
+        <button id="telecharger" class="telecharger"><img src="../img/telecharger.png" ></button>
+        <div class="titledoc"> Attestation URSSAF </div>
+    </div>
+    <div class="document">
+        <a href="#" id="assuranceRcPro_Document" class="doc"><img src="../img/doc.png" ></a>
+        <button id="telecharger" class="telecharger"><img src="../img/telecharger.png" ></button>
+        <div class="titledoc">Assurance RC PRO  </div>
+    </div>
+    <div class="document">
+        <a href="#" id="assurenceDecennale_Document" class="doc"><img src="../img/doc.png" ></a>
+        <button id="telecharger" class="telecharger"><img src="../img/telecharger.png" ></button>
+        <div class="titledoc">Assurance Décennale </div>
+    </div>
 </div>
 </body>
 </html>

@@ -500,7 +500,7 @@ function get_soustraitant_chefProjet(){
     global $connexion;
     $ID= $_POST['ID'];
     $ID_chefProjet = $_POST['ID_chefProjet'];
-    $sql = "SELECT nom_Salarie , prenom_Salarie , dateNaissance_Salarie , nationalite_Salarie , poste_Salarie FROM entreprise , salarie WHERE id_Salarie  = '$ID_chefProjet'";
+    $sql = "SELECT nom_Salarie , prenom_Salarie , dateNaissance_Salarie , nationalite_Salarie , poste_Salarie FROM salarie WHERE id_Salarie  = '$ID_chefProjet'";
     $result = mysqli_query($connexion,$sql);
     while ($row = mysqli_fetch_assoc($result)) {
         $soustraitant_chefProjet_data = [];

@@ -1,4 +1,6 @@
 $(document).ready(function() {
+    var path = window.location.pathname;
+    var page = path.split("/").pop();
     ReloadButtonExit();
     ReloadButtonExitX();
     login();
@@ -6,7 +8,9 @@ $(document).ready(function() {
     update_profile();
     update_profile_image();
     // Salarie
-    view_salarie_record()
+    if (page == "salarie.php") {
+        view_salarie_record();
+    }
     ajout_salarie();
     get_salarie_data();
     update_salarie();
@@ -14,7 +18,9 @@ $(document).ready(function() {
     get_salarie_document();
     update_salarie_document();
     // Sous-traitant 
-    view_soustraitant_record(); 
+    if (page == "sous-traitant.php") {
+        view_soustraitant_record(); 
+    }
     ajout_soustraitant(); 
     get_soustraitant_data();
     update_soustraitant();
@@ -23,7 +29,9 @@ $(document).ready(function() {
     get_soustraitant_chefprojet_demande_data();
     get_soustraitant_document();
     // demande 
-    view_demande_record();
+    if (page == "demande.php") {
+        view_demande_record();
+    }
     update_status_demande();
     ajout_demande();
     supprimer_demande();
@@ -112,12 +120,13 @@ function searchpagination(id, title, EnteteDroite, titremodule, titre) {
     EnteteDroite.prepend(searchInput); 
     EnteteDroite.append(addButton);
 }
-function searchpagination_withoutbuttom(id, title, EnteteDroite, titremodule) {
+function searchpagination_withoutbuttom(id, title, EnteteDroite, titremodule, titre) {
     $('.dataTables_length').parent().parent().css('align-items', 'center');
     // Création du titre avec breadcrumb
     let headerHTML = `<nav aria-label="breadcrumb">
         <ol class="breadcrumb mb-0 p-0">
             <div class="breadcrumb-item" style="font-size: 23px; font-weight: bold;">${titremodule}</div>
+            <div class="breadcrumb-item active" style="font-size: 19px; color:#470EE9; font-weight: bold;" aria-current="page">${titre}</div>
         </ol></nav>`;
     $('.dataTables_length').html(headerHTML);
     // Appliquer un conteneur flex pour bien aligner les éléments et ajouter un espacement
@@ -840,7 +849,6 @@ function get_soustraitant_chefprojet_data() {
             },
             dataType: "JSON",
             success: function (data) {
-                console.log(data);
                 var html = "<p style='text-align: left; color:black'><strong>Nom :</strong> " + data[0] + "</p></br>";
                 html += "<p style='text-align: left;color:black'><strong>Prénom :</strong> " + data[1] + "</p></br>";
                 html += "<p style='text-align: left;color:black'><strong>Date de naissance :</strong> " + data[2] + "</p></br>";
@@ -911,7 +919,7 @@ function view_demande_record() {
           if (data.status == "success") {
             $("#table_listeDemande").html(data.html);
             $('#listeDemande').DataTable({ "info": false});
-            searchpagination_withoutbuttom("ajout_demande","Ajouter un demande",$('#listeDemande_filter'),"Tous les demandes");
+            searchpagination_withoutbuttom("ajout_demande","Ajouter un demande",$('#listeDemande_filter'),"Demandes","Liste des demandes");
           }
         } catch (e) { 
           console.error("Invalid Response!" , data);
@@ -925,8 +933,6 @@ function view_demande_record() {
     $(document).on("click", "#btn_chefProjet_demande", function () {
         var ID = $(this).attr("data-id-demande");
         var ID_chefProjet = $(this).attr("data-chefProjet-demande");
-        console.log(ID_chefProjet);
-        console.log(ID);
         $.ajax({
             url: "../../models/getSoustraitantChefProjet.php",
             method: "post",
@@ -936,7 +942,6 @@ function view_demande_record() {
             },
             dataType: "JSON",
             success: function (data) {
-                console.log(data);
                 var html = "<p style='text-align: left; color:black'><strong>Nom :</strong> " + data[0] + "</p></br>";
                 html += "<p style='text-align: left;color:black'><strong>Prénom :</strong> " + data[1] + "</p></br>";
                 html += "<p style='text-align: left;color:black'><strong>Date de naissance :</strong> " + data[2] + "</p></br>";

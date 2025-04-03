@@ -60,8 +60,8 @@ $login = $_SESSION['Login'];
   <div class="table-responsive-xxl" id="table_listeSalarie"></div>
 </div>
 <!-- Model ajout -->
-<div class="modal fade" id="ajoutSalarie" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog">
+<div class="modal fade bd-example-modal-lg" id="ajoutSalarie" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h2 class="modal-title" style="color: #470EE9; margin: 0;">Ajouter un salarié</h2>
@@ -69,70 +69,84 @@ $login = $_SESSION['Login'];
       </div>
       <div class="modal-body">
         <p id="message_salarie"></p><br><br>
-        <div class="form-group">
-          <label for="nom">Nom*</label>
-          <input type="text" id="nom" name="nom"><br><br>
-        </div>
-        <div class="form-group">
-          <label for="prenom">Prénom*</label>
-          <input type="text" id="prenom" name="prenom"><br><br>
-        </div>
-        <div class="form-group">
-          <label for="dateNaissance">Date de naissance*</label>
-          <input type="date" id="dateNaissance" name="dateNaissance"><br><br>
-        </div>
-        <div class="form-group">
-          <label for="nationalite">Nationalité*</label>
-          <select id="nationalite" name="nationalite">
-          <option value="">Sélectionnez une nationalité</option>
-            <?php 
-            global $connexion;
-            $sql = "SELECT libelle_Nationalite FROM nationalite";
-            $result = mysqli_query($connexion, $sql);
-            if ($result) {
-                while($row = mysqli_fetch_assoc($result)) {
-                    echo "<option value='". $row['libelle_Nationalite'] ."'>" . $row['libelle_Nationalite'] . "</option>";
+        <form autocomplete="off" class="form-horizontal">
+          <div id="fiche_2row">
+            <div class="form-group">
+              <label for="nom">Nom*</label>
+              <input type="text" id="nom" name="nom"><br><br>
+            </div>
+            <div class="form-group">
+              <label for="prenom">Prénom*</label>
+              <input type="text" id="prenom" name="prenom"><br><br>
+            </div>
+          </div>
+          <div id="fiche_2row">
+            <div class="form-group">
+              <label for="dateNaissance">Date de naissance*</label>
+              <input type="date" id="dateNaissance" name="dateNaissance"><br><br>
+            </div>
+            <div class="form-group">
+              <label for="nationalite">Nationalité*</label>
+              <select id="nationalite" name="nationalite">
+              <option value="">Sélectionnez une nationalité</option>
+                <?php 
+                global $connexion;
+                $sql = "SELECT libelle_Nationalite FROM nationalite";
+                $result = mysqli_query($connexion, $sql);
+                if ($result) {
+                    while($row = mysqli_fetch_assoc($result)) {
+                        echo "<option value='". $row['libelle_Nationalite'] ."'>" . $row['libelle_Nationalite'] . "</option>";
+                    }
                 }
-            }
-            ?>
-          </select><br><br>
-        </div>
-        <div class="form-group">
-          <label for="poste">Poste*</label>
-          <input type="text" id="poste" name="poste"><br><br>
-        </div>
-        <div class="form-group">
-         <label for="typeMission">Type de mission*</label>
-          <select id="typeMission" name="typeMission" required>
-            <option value="">Sélectionnez une mission</option>
-            <option value="européenne">Européenne</option>
-            <option value="française">Française</option>
-          </select><br><br>
-        </div>
-        <div class="form-group">
-          <label for="piece_identite">Piece d'identité*</label>
-          <input type="file" id="piece_identite" name="piece_identite"><br><br>
-        </div>
-        <div class="form-group">
-          <label for="dpae">DPAE*</label>
-          <input type="file" id="dpae" name="dpae"><br><br>
-        </div>
-        <div class="form-group">
-          <label for="permit">Permis de conduire</label>
-          <input type="file" id="permit" name="permit"><br><br>
-        </div>
-        <div class="form-group">
-          <label for="certificat_a1">Certificat A1*</label>
-          <input type="file" id="certificat_a1" name="certificat_a1"><br><br>
-        </div>
-        <div class="form-group">
-          <label for="certificat_zoll">Certificat Zoll*</label>
-          <input type="file" id="certificat_zoll" name="certificat_zoll"><br><br>
-        </div>
-        <div class="form-group">
-          <label for="photo">Photo*</label>
-          <input type="file" id="photo" name="photo"><br><br>
-        </div>
+                ?>
+              </select><br><br>
+            </div>
+          </div>
+          <div id="fiche_2row">
+            <div class="form-group">
+              <label for="poste">Poste*</label>
+              <input type="text" id="poste" name="poste"><br><br>
+            </div>
+            <div class="form-group">
+             <label for="typeMission">Type de mission*</label>
+              <select id="typeMission" name="typeMission" required>
+                <option value="">Sélectionnez une mission</option>
+                <option value="européenne">Européenne</option>
+                <option value="française">Française</option>
+              </select><br><br>
+            </div>
+          </div>
+          <div id="fiche_2row">
+            <div class="form-group">
+              <label for="piece_identite">Piece d'identité*</label>
+              <input type="file" id="piece_identite" name="piece_identite"><br><br>
+            </div>
+            <div class="form-group">
+              <label for="dpae">DPAE*</label>
+              <input type="file" id="dpae" name="dpae"><br><br>
+            </div>
+          </div>
+          <div id="fiche_2row">
+            <div class="form-group">
+              <label for="permit">Permis de conduire</label>
+              <input type="file" id="permit" name="permit"><br><br>
+            </div>
+            <div class="form-group">
+              <label for="certificat_a1">Certificat A1*</label>
+              <input type="file" id="certificat_a1" name="certificat_a1"><br><br>
+            </div>
+          </div>
+          <div id="fiche_2row">
+            <div class="form-group">
+              <label for="certificat_zoll">Certificat Zoll*</label>
+              <input type="file" id="certificat_zoll" name="certificat_zoll"><br><br>
+            </div>
+            <div class="form-group">
+              <label for="photo">Photo*</label>
+              <input type="file" id="photo" name="photo"><br><br>
+            </div>
+          </div>
+        </form>
       </div>
       <div class="modal-footer">
         <button class="buttonvalidate" id="ajouter_salarie">Ajouter</button>
