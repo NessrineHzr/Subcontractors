@@ -173,6 +173,7 @@ if ($statusDemande == 'En Attente' ){
     <h3>Documents envoyés </h3><br>
     <button type="button" id="btn_telecharger" class="btn_telecharger" data-demande="<?= $id ?>">Télécharger tous</button>
 </div>
+<<<<<<< HEAD
 <div class="documents">
 <div class="documents">
     <div class="document">
@@ -226,7 +227,43 @@ if ($statusDemande == 'En Attente' ){
         <div class="titledoc">Numéro TVA</div>
     </div>
 </div>
+=======
+<?php
+$documents = [
+    "kbis_Document" => "KBIS",
+    "pieceIdentitieGerant_Document" => "Pièce d'Identité",
+    "attestationRegulariteFiscale_Document" => "Attestation de Régularité Fiscale",
+    "attestationURSSAF_Document" => "Attestation URSSAF",
+    "assuranceRcPro_Document" => "Assurance RC PRO",
+    "assurenceDecennale_Document" => "Assurance Décennale"
+];
+>>>>>>> 5ae2041ae5cf4a40e0f1d91c43fae695532e0f4f
 
+$styles = array_fill_keys(array_keys($documents), "");
+
+$sql_doc = "SELECT * FROM document WHERE idDemande_Document = '$id'";
+$result_doc = mysqli_query($connexion, $sql_doc);
+$row_doc = mysqli_fetch_assoc($result_doc) ?: [];
+
+foreach ($documents as $key => $title) {
+    if (empty($row_doc[$key])) {
+        $styles[$key] = "background-color: rgb(255, 78, 78);";
+    }
+}
+?>
+
+<div class="documents">
+    <?php foreach ($documents as $key => $title): ?>
+        <div class="document">
+            <a href="#" id="<?= $key ?>" class="doc" style="<?= $styles[$key] ?>">
+                <img src="../img/doc.png">
+            </a>
+            <button id="telecharger" class="telecharger">
+                <img src="../img/telecharger.png">
+            </button>
+            <div class="titledoc"><?= $title ?></div>
+        </div>
+    <?php endforeach; ?>
 </div>
 </body>
 </html>

@@ -404,7 +404,11 @@ body {
     margin: 8% auto; 
     padding: 20px;
     border: 1px solid #888;
+<<<<<<< HEAD
     width: 60%;
+=======
+    width: 70%;
+>>>>>>> 5ae2041ae5cf4a40e0f1d91c43fae695532e0f4f
     height: 70%;
     border-radius: 5px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
