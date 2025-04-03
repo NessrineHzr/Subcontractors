@@ -339,15 +339,13 @@ body {
 
 /** modal header body footer */
 .modal-body {
-    margin: 7%;
-    justify-content: center;
+    margin: 2%;
     align-items: center;
     display: grid;
-    grid-template-columns: auto auto;
     gap: 10px;
 }
 .modal-footer {
-    margin: 7%;
+    margin: 2%;
     display: flex;
     justify-content: flex-end;
     gap: 10px;
@@ -355,7 +353,7 @@ body {
 }
 
 .modal-header {
-    margin: 7%;
+    margin: 2%;
     display: flex;
     justify-content: space-between; 
     align-items: center;
@@ -370,6 +368,13 @@ body {
     align-items: center;
     justify-content: center;
 }
+
+#fiche_2row{
+    display: grid !important;
+    grid-template-rows: repeat(1, auto);
+    grid-template-columns: repeat(2, auto);
+    grid-column-gap: 1%;
+  }
 /* boutton close */
 #btn_close {
     background: none;
@@ -399,7 +404,8 @@ body {
     margin: 8% auto; 
     padding: 20px;
     border: 1px solid #888;
-    width: 35%;
+    width: 70%;
+    height: 70%;
     border-radius: 5px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     position: relative;

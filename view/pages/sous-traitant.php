@@ -11,8 +11,8 @@ $login = $_SESSION['Login'];
   <div class="table-responsive-xxl" id="table_listeSousTraitant"></div>
 </div>
 <!-- Model ajout -->
-<div class="modal fade" id="ajoutSoustraitant" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog">
+<div class="modal fade bd-example-modal-lg" id="ajoutSoustraitant" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h2 class="modal-title" style="color: #470EE9; margin: 0;">Ajouter un sous-traitant</h2>
@@ -20,74 +20,86 @@ $login = $_SESSION['Login'];
       </div>
       <div class="modal-body">
         <p id="message_soustraitant"></p><br><br>
-        <div class="form-group">
-        <label for="nom">Nom*</label>
-        <input type="text" id="nom" name="nom"><br><br>
-        </div>
-        <div class="form-group">
-        <label for="nomGerant">Nom Gérant*</label>
-        <input type="text" id="nomGerant" name="nomGerant"><br><br>
-        </div>
-        <div class="form-group">
-        <label for="adresse">Adresse*</label>
-        <input type="text" id="adresse" name="adresse"><br><br>
-        </div>
-        <div class="form-group">
-        <label for="pays">Pays*</label>
-        <select id="pays" name="pays">
-        <option value="">Sélectionnez une pays</option>
-          <?php 
-          global $connexion;
-          $sql = "SELECT libelle_Nationalite FROM nationalite";
-          $result = mysqli_query($connexion, $sql);
-          if ($result) {
-              while($row = mysqli_fetch_assoc($result)) {
-                  echo "<option value='". $row['libelle_Nationalite'] ."'>" . $row['libelle_Nationalite'] . "</option>";
-              }
-          }
-          ?>
-        </select><br><br>
-        </div>
-        <div class="form-group">
-        <label for="siret">Siret*</label>
-        <input type="text" id="siret" name="siret"><br><br>
-        </div>
-        <div class="form-group">
-        <label for="email">Email*</label>
-        <input type="email" id="email" name="email"><br><br>
-        </div>
-        <div class="form-group">
-        <label for="telephone">Téléphone*</label>
-        <input type="text" id="telephone" name="telephone"><br><br>
-        </div>
-        <div class="form-group">
-        <label for="iban">IBAN*</label>
-        <input type="text" id="iban" name="iban"><br><br>
-        </div>
-        <div class="form-group">
-        <label for="typeMission">Type de mission*</label>
-        <select id="typeMission" name="typeMission" required>
-          <option value="">Sélectionnez une mission</option>
-          <option value="Européenne">Européenne</option>
-          <option value="Française">Française</option>
-        </select><br><br>
-        </div>
-        <div class="form-group">
-        <label for="chefProjet">Chef Projet*</label>
-        <select id="chefProjet" name="chefProjet">
-        <option value="">Sélectionnez un Chef</option>
-          <?php 
-          global $connexion;
-          $sql = "SELECT id_Salarie ,nom_Salarie ,prenom_Salarie FROM salarie WHERE etat_Salarie='1'";
-          $result = mysqli_query($connexion, $sql);
-          if ($result) {
-              while($row = mysqli_fetch_assoc($result)) {
-                  echo "<option value='". $row['id_Salarie'] ."'>" . $row['nom_Salarie'] . " " . $row['prenom_Salarie'] . "</option>";
-              }
-          }
-          ?>
-        </select><br><br>
-        </div>
+        <form autocomplete="off" class="form-horizontal">
+          <div id="fiche_2row">
+            <div class="form-group">
+              <label for="nom">Nom*</label>
+              <input type="text" id="nom" name="nom"><br><br>
+            </div>
+            <div class="form-group">
+              <label for="nomGerant">Nom Gérant*</label>
+              <input type="text" id="nomGerant" name="nomGerant"><br><br>
+            </div>
+          </div>
+          <div id="fiche_2row">
+            <div class="form-group">
+              <label for="pays">Pays*</label>
+              <select id="pays" name="pays">
+              <option value="">Sélectionnez une pays</option>
+                <?php 
+                global $connexion;
+                $sql = "SELECT libelle_Nationalite FROM nationalite";
+                $result = mysqli_query($connexion, $sql);
+                if ($result) {
+                    while($row = mysqli_fetch_assoc($result)) {
+                        echo "<option value='". $row['libelle_Nationalite'] ."'>" . $row['libelle_Nationalite'] . "</option>";
+                    }
+                }
+                ?>
+              </select><br><br>
+            </div>
+            <div class="form-group">
+              <label for="adresse">Adresse*</label>
+              <input type="text" id="adresse" name="adresse"><br><br>
+            </div>
+          </div>
+          <div id="fiche_2row">
+            <div class="form-group">
+              <label for="telephone">Téléphone*</label>
+              <input type="text" id="telephone" name="telephone"><br><br>
+            </div>
+            <div class="form-group">
+              <label for="email">Email*</label>
+              <input type="email" id="email" name="email"><br><br>
+            </div>
+          </div>
+          <div id="fiche_2row">
+            <div class="form-group">
+              <label for="siret">Siret*</label>
+              <input type="text" id="siret" name="siret"><br><br>
+            </div>
+            <div class="form-group">
+              <label for="iban">IBAN*</label>
+              <input type="text" id="iban" name="iban"><br><br>
+            </div>
+          </div>
+          <div id="fiche_2row">
+            <div class="form-group">
+              <label for="typeMission">Type de mission*</label>
+              <select id="typeMission" name="typeMission" required>
+                <option value="">Sélectionnez une mission</option>
+                <option value="Européenne">Européenne</option>
+                <option value="Française">Française</option>
+              </select><br><br>
+            </div>
+            <div class="form-group">
+              <label for="chefProjet">Chef Projet*</label>
+              <select id="chefProjet" name="chefProjet">
+                <option value="">Sélectionnez un Chef</option>
+                <?php 
+                global $connexion;
+                $sql = "SELECT id_Salarie ,nom_Salarie ,prenom_Salarie FROM salarie WHERE etat_Salarie='1'";
+                $result = mysqli_query($connexion, $sql);
+                if ($result) {
+                    while($row = mysqli_fetch_assoc($result)) {
+                        echo "<option value='". $row['id_Salarie'] ."'>" . $row['nom_Salarie'] . " " . $row['prenom_Salarie'] . "</option>";
+                    }
+                }
+                ?>
+              </select><br><br>
+            </div>
+          </div>
+        </form>  
       </div>
       <div class="modal-footer">
         <button class="buttonvalidate" id="ajouter_soustraitant">Ajouter</button>
