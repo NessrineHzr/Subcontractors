@@ -516,32 +516,32 @@ function get_soustraitant_chefProjet(){
 function get_documentSoustraitant(){
     global $connexion;
     $ID = $_POST['ID'];
-    $query = "SELECT * FROM document WHERE idEntreprise_Document= '$ID' AND etat_Document='1'";
+    $query = "SELECT * FROM document_entreprise WHERE idEntreprise_DocumentEntreprise= '$ID' AND etat_DocumentEntreprise='1'";
     $result = mysqli_query($connexion, $query);
     while ($row = mysqli_fetch_assoc($result)) {
         $document_data = [];
-        $document_data[0] = $row['id_Document'];
-        $document_data[1] = $row['idEntreprise_Document'];
-        $document_data[2] = $row['kbis_Document'];
-        $document_data[3] = $row['dateValiditeKbis_Document'];
-        $document_data[4] = $row['pieceIdentitieGerant_Document'];
-        $document_data[5] = $row['dateValiditePIGerant_Document'];
-        $document_data[6] = $row['attestationRegulariteFiscale_Document'];
-        $document_data[7] = $row['dateValiditeAttestRegulariteFiscale_Document'];
-        $document_data[8] = $row['attestationURSSAF_Document'];
-        $document_data[9] = $row['dateValiditeAttestURSSAF_Document'];
-        $document_data[10] = $row['assuranceRcPro_Document'];
-        $document_data[11] = $row['dateValiditeAssuranceRcPro_Document'];
-        $document_data[12] = $row['siret_Document'];
-        $document_data[13] = $row['dateValiditeSiret_Document'];
-        $document_data[14] = $row['caisseBTP_Document'];
-        $document_data[15] = $row['dateValiditeCaisseBTP_Document'];
-        $document_data[16] = $row['numeroFiscal_Document'];
-        $document_data[17] = $row['dateValiditeNumFiscal_Document'];
-        $document_data[18] = $row['numeroTVA_Document'];
-        $document_data[19] = $row['dateValiditeNumTVA_Document'];
-        $document_data[20] = $row['assurenceDecennale_Document'];
-        $document_data[21] = $row['dateValiditeAssurenceDecennale_Document'];
+        $document_data[0] = $row['id_DocumentEntreprise'];
+        $document_data[1] = $row['idEntreprise_DocumentEntreprise'];
+        $document_data[2] = $row['kbis_DocumentEntreprise'];
+        $document_data[3] = $row['dateValiditeKbis_DocumentEntreprise'];
+        $document_data[4] = $row['pieceIdentitieGerant_DocumentEntreprise'];
+        $document_data[5] = $row['dateValiditePIGerant_DocumentEntreprise'];
+        $document_data[6] = $row['attestationRegulariteFiscale_DocumentEntreprise'];
+        $document_data[7] = $row['dateValiditeAttestRegulariteFiscale_DocumentEntreprise'];
+        $document_data[8] = $row['attestationURSSAF_DocumentEntreprise'];
+        $document_data[9] = $row['dateValiditeAttestURSSAF_DocumentEntreprise'];
+        $document_data[10] = $row['assuranceRcPro_DocumentEntreprise'];
+        $document_data[11] = $row['dateValiditeAssuranceRcPro_DocumentEntreprise'];
+        $document_data[12] = $row['siret_DocumentEntreprise'];
+        $document_data[13] = $row['dateValiditeSiret_DocumentEntreprise'];
+        $document_data[14] = $row['caisseBTP_DocumentEntreprise'];
+        $document_data[15] = $row['dateValiditeCaisseBTP_DocumentEntreprise'];
+        $document_data[16] = $row['numeroFiscal_DocumentEntreprise'];
+        $document_data[17] = $row['dateValiditeNumFiscal_DocumentEntreprise'];
+        $document_data[18] = $row['numeroTVA_DocumentEntreprise'];
+        $document_data[19] = $row['dateValiditeNumTVA_DocumentEntreprise'];
+        $document_data[20] = $row['assurenceDecennale_DocumentEntreprise'];
+        $document_data[21] = $row['dateValiditeAssurenceDecennale_DocumentEntreprise'];
    
     }
     echo json_encode($document_data);
@@ -670,31 +670,31 @@ function ajouter_demande(){
     $dateValiditeNumTVA = isset($_POST['dateValiditeNumTVA']) ? $_POST['dateValiditeNumTVA'] : null;
     $dateValiditeAssurenceDecennale = isset($_POST['dateValiditeAssurenceDecennale']) ? $_POST['dateValiditeAssurenceDecennale'] : null;
     
-    $sql2 = "INSERT INTO document (
-        idDemande_Document,
-        kbis_Document,
-        dateValiditeKbis_Document,
-        pieceIdentitieGerant_Document,
-        dateValiditePIGerant_Document,
-        attestationRegulariteFiscale_Document,
-        dateValiditeAttestRegulariteFiscale_Document,
-        attestationURSSAF_Document,
-        dateValiditeAttestURSSAF_Document,
-        assuranceRcPro_Document,
-        dateValiditeAssuranceRcPro_Document,
-        siret_Document,
-        dateValiditeSiret_Document,
-        caisseBTP_Document,
-        dateValiditeCaisseBTP_Document,
-        numeroFiscal_Document,
-        dateValiditeNumFiscal_Document,
-        numeroTVA_Document,
-        dateValiditeNumTVA_Document,
-        assurenceDecennale_Document,
-        dateValiditeAssurenceDecennale_Document,
-        date_created_Document,
-        date_updated_Document,
-        etat_Document
+    $sql2 = "INSERT INTO document_demande (
+        idDemande_DocumentDemande,
+        kbis_DocumentDemande,
+        dateValiditeKbis_DocumentDemande,
+        pieceIdentitieGerant_DocumentDemande,
+        dateValiditePIGerant_DocumentDemande,
+        attestationRegulariteFiscale_DocumentDemande,
+        dateValiditeAttestRegulariteFiscale_DocumentDemande,
+        attestationURSSAF_DocumentDemande,
+        dateValiditeAttestURSSAF_DocumentDemande,
+        assuranceRcPro_DocumentDemande,
+        dateValiditeAssuranceRcPro_DocumentDemande,
+        siret_DocumentDemande,
+        dateValiditeSiret_DocumentDemande,
+        caisseBTP_DocumentDemande,
+        dateValiditeCaisseBTP_DocumentDemande,
+        numeroFiscal_DocumentDemande,
+        dateValiditeNumFiscal_DocumentDemande,
+        numeroTVA_DocumentDemande,
+        dateValiditeNumTVA_DocumentDemande,
+        assurenceDecennale_DocumentDemande,
+        dateValiditeAssurenceDecennale_DocumentDemande,
+        date_created_DocumentDemande,
+        date_updated_DocumentDemande,
+        etat_DocumentDemande
     ) VALUES (
         '$demande_id',
         '$kbis_Document',

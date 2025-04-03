@@ -195,28 +195,33 @@ $login = $_SESSION['Login'];
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h2 class="modal-title" style="color: #470EE9; ">Modifier les informations du salarié</h2>
+        <h2 class="modal-title" style="color: #470EE9;">Modifier les informations du salarié</h2>
         <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
       </div>
       <div class="modal-body">
-          <input type="hidden" id="id_Salarie" name="id_Salarie">
-          <p id="messageup_salarie"></p><br>
-        <div class="form-group">
-          <label for="nom_Salarie">Nom</label>
-          <input type="text" id="nom_Salarie"><br><br>
+        <input type="hidden" id="id_Salarie" name="id_Salarie">
+        <p id="messageup_salarie"></p><br>
+        
+        <div id="fiche_2row">
+          <div class="form-group">
+            <label for="nom_Salarie">Nom</label>
+            <input type="text" id="nom_Salarie"><br><br>
+          </div>
+          <div class="form-group">
+            <label for="prenom_Salarie">Prénom</label>
+            <input type="text" id="prenom_Salarie"><br><br>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="prenom_Salarie">Prénom</label>
-          <input type="text" id="prenom_Salarie"><br><br>
-        </div>
-        <div class="form-group">
-          <label for="dateNaissance_Salarie">Date de naissance</label>
-          <input type="date" id="dateNaissance_Salarie"><br><br>
-        </div>
-        <div class="form-group">
-          <label for="nationalite_Salarie">Nationalité</label>
-          <select id="nationalite_Salarie" name="nationalite_Salarie">
-            <option value="">Sélectionnez la nationalité</option>
+
+        <div id="fiche_2row">
+          <div class="form-group">
+            <label for="dateNaissance_Salarie">Date de naissance</label>
+            <input type="date" id="dateNaissance_Salarie"><br><br>
+          </div>
+          <div class="form-group">
+            <label for="nationalite_Salarie">Nationalité</label>
+            <select id="nationalite_Salarie" name="nationalite_Salarie">
+              <option value="">Sélectionnez la nationalité</option>
               <?php 
                 global $connexion;
                 $sql = "SELECT libelle_Nationalite FROM nationalite";
@@ -228,22 +233,26 @@ $login = $_SESSION['Login'];
                 }
               ?>
             </select><br><br>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="poste_Salarie">Poste</label>
-          <input type="text" id="poste_Salarie"><br><br>
-        </div>
-        <div class="form-group">
-          <label for="typeMission_Salarie">Mission</label>
-          <select id="typeMission_Salarie">
-            <option value="Européenne">Européenne</option>
-            <option value="Française">Française</option>
-          </select> 
+
+        <div id="fiche_2row">
+          <div class="form-group">
+            <label for="poste_Salarie">Poste</label>
+            <input type="text" id="poste_Salarie"><br><br>
+          </div>
+          <div class="form-group">
+            <label for="typeMission_Salarie">Mission</label>
+            <select id="typeMission_Salarie">
+              <option value="Européenne">Européenne</option>
+              <option value="Française">Française</option>
+            </select> 
+          </div>
         </div>
       </div>
       <div class="modal-footer">
-          <button id="update_salarie" class="buttonvalidate">Enregistrer</button>
-          <button class="buttonannule" id="btn_annule">Annuler</button>
+        <button id="update_salarie" class="buttonvalidate">Enregistrer</button>
+        <button class="buttonannule" id="btn_annule">Annuler</button>
       </div>
     </div>
   </div>
@@ -423,7 +432,7 @@ $login = $_SESSION['Login'];
             event.preventDefault(); // Empêcher la navigation immédiate
             const inputValue = document.getElementById(inputId).value.trim();
             if (inputValue) {
-                window.location.href = `../file/${inputValue}`;
+                window.open(`../file/${inputValue}`, "_blank");
             }
         };
     }

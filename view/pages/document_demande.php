@@ -39,6 +39,7 @@ if ($statusDemande == 'En Attente' ){
     .documents {
         display: flex; 
         gap: 10px;
+        flex-wrap: wrap;
     }
     .titledoc {
         position: absolute;
@@ -47,6 +48,7 @@ if ($statusDemande == 'En Attente' ){
         font-size: 16px; 
     }
     .document {
+        width: 18%;
         display: flex;
         align-items: center;
         position: relative;
@@ -172,36 +174,59 @@ if ($statusDemande == 'En Attente' ){
     <button type="button" id="btn_telecharger" class="btn_telecharger" data-demande="<?= $id ?>">Télécharger tous</button>
 </div>
 <div class="documents">
+<div class="documents">
     <div class="document">
-        <a href="#" id="kbis_Document" class="doc"><img src="../img/doc.png" ></a>
-        <button id="telecharger" class="telecharger"><img src="../img/telecharger.png" ></button>
-        <div class="titledoc"> KBIS </div>
+        <a href="#" id="kbis_Document" class="doc"><img src="../img/doc.png"></a>
+        <button id="telecharger" class="telecharger"><img src="../img/telecharger.png"></button>
+        <div class="titledoc">KBIS</div>
     </div>
     <div class="document">
-        <a href="#" id="pieceIdentitieGerant_Document" class="doc"><img src="../img/doc.png" ></a>
-        <button id="telecharger" class="telecharger"><img src="../img/telecharger.png" ></button>
-        <div class="titledoc"> Pièce d'Identité   </div>
+        <a href="#" id="pieceIdentitieGerant_Document" class="doc"><img src="../img/doc.png"></a>
+        <button id="telecharger" class="telecharger"><img src="../img/telecharger.png"></button>
+        <div class="titledoc">Pièce d'Identité Gérant</div>
     </div>
     <div class="document">
-        <a href="#" id="attestationRegulariteFiscale_Document" class="doc"><img src="../img/doc.png" ></a>
-        <button id="telecharger" class="telecharger"><img src="../img/telecharger.png" ></button>
-        <div class="titledoc"> Attestation de Régularité Fiscale </div>
+        <a href="#" id="attestationRegulariteFiscale_Document" class="doc"><img src="../img/doc.png"></a>
+        <button id="telecharger" class="telecharger"><img src="../img/telecharger.png"></button>
+        <div class="titledoc">Attestation de Régularité Fiscale</div>
     </div>
     <div class="document">
-        <a href="#" id="attestationURSSAF_Document" class="doc"><img src="../img/doc.png" ></a>
-        <button id="telecharger" class="telecharger"><img src="../img/telecharger.png" ></button>
-        <div class="titledoc"> Attestation URSSAF </div>
+        <a href="#" id="attestationURSSAF_Document" class="doc"><img src="../img/doc.png"></a>
+        <button id="telecharger" class="telecharger"><img src="../img/telecharger.png"></button>
+        <div class="titledoc">Attestation URSSAF</div>
     </div>
     <div class="document">
-        <a href="#" id="assuranceRcPro_Document" class="doc"><img src="../img/doc.png" ></a>
-        <button id="telecharger" class="telecharger"><img src="../img/telecharger.png" ></button>
-        <div class="titledoc">Assurance RC PRO  </div>
+        <a href="#" id="assuranceRcPro_Document" class="doc"><img src="../img/doc.png"></a>
+        <button id="telecharger" class="telecharger"><img src="../img/telecharger.png"></button>
+        <div class="titledoc">Assurance RC PRO</div>
     </div>
     <div class="document">
-        <a href="#" id="assurenceDecennale_Document" class="doc"><img src="../img/doc.png" ></a>
-        <button id="telecharger" class="telecharger"><img src="../img/telecharger.png" ></button>
-        <div class="titledoc">Assurance Décennale </div>
+        <a href="#" id="assurenceDecennale_Document" class="doc"><img src="../img/doc.png"></a>
+        <button id="telecharger" class="telecharger"><img src="../img/telecharger.png"></button>
+        <div class="titledoc">Assurance Décennale</div>
     </div>
+    <div class="document">
+        <a href="#" id="siret_Document" class="doc"><img src="../img/doc.png"></a>
+        <button id="telecharger" class="telecharger"><img src="../img/telecharger.png"></button>
+        <div class="titledoc">SIRET</div>
+    </div>
+    <div class="document">
+        <a href="#" id="caisseBTP_Document" class="doc"><img src="../img/doc.png"></a>
+        <button id="telecharger" class="telecharger"><img src="../img/telecharger.png"></button>
+        <div class="titledoc">Caisse BTP</div>
+    </div>
+    <div class="document">
+        <a href="#" id="numeroFiscal_Document" class="doc"><img src="../img/doc.png"></a>
+        <button id="telecharger" class="telecharger"><img src="../img/telecharger.png"></button>
+        <div class="titledoc">Numéro Fiscal</div>
+    </div>
+    <div class="document">
+        <a href="#" id="numeroTVA_Document" class="doc"><img src="../img/doc.png"></a>
+        <button id="telecharger" class="telecharger"><img src="../img/telecharger.png"></button>
+        <div class="titledoc">Numéro TVA</div>
+    </div>
+</div>
+
 </div>
 </body>
 </html>
