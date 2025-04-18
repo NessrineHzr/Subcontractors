@@ -4,6 +4,9 @@ $(document).ready(function() {
     ReloadButtonExit();
     ReloadButtonExitX();
     login();
+    // Compte
+    update_etat_compte();
+    ajout_compte()
     // Profile
     update_profile();
     update_profile_image();
@@ -28,6 +31,7 @@ $(document).ready(function() {
     get_soustraitant_chefprojet_data();
     get_soustraitant_chefprojet_demande_data();
     get_soustraitant_document();
+    ajout_soustraitant_document();
     // demande 
     if (page == "demande.php") {
         view_demande_record();
@@ -36,6 +40,18 @@ $(document).ready(function() {
     ajout_demande();
     supprimer_demande();
     download_document_demande();
+    // dashboard 
+    view_demande_dashboard_record();
+    view_document_dashboard_record();
+    view_all_document_dashboard_record();
+    update_document_dashboard();
+    calcul_stat_dashboard();
+    // notification
+    view_notification_record();
+    view_all_notification_record(); 
+    get_notification();
+    // contact
+    ajout_contact_message();
 
 });
 
@@ -63,6 +79,16 @@ function toggleDropdown() {
     arrow.classList.toggle("open");
 }
 
+// Notification
+function toggleNotification() {
+    const notifList = document.getElementById('notificationList');
+    // Vérifie si la liste est affichée ou cachée et bascule son état
+    if (notifList.style.display === "none" || notifList.style.display === "") {
+      notifList.style.display = "block";
+    } else {
+      notifList.style.display = "none";
+    }
+  }
  // Initialisation de Select2 sur le champ nationalité
  $('#nationalite').select2({
     placeholder: 'Sélectionnez une nationalité', 
@@ -142,7 +168,23 @@ function searchpagination_withoutbuttom(id, title, EnteteDroite, titremodule, ti
     EnteteDroite.append(addButton);
 }
 
+function searchpagination_title( EnteteDroite, titremodule, titre) {
+    $('.dataTables_length').parent().parent().css('align-items', 'center');
+    // Création du titre avec breadcrumb
+    let headerHTML = `<nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0 p-0">
+            <div class="breadcrumb-item" style="font-size: 23px; font-weight: bold;">${titremodule}</div>
+            <div class="breadcrumb-item active" style="font-size: 19px; color:#470EE9; font-weight: bold;" aria-current="page">${titre}</div>
+        </ol></nav>`;
+    $('.dataTables_length').html(headerHTML);
+    EnteteDroite.addClass('d-flex align-items-center');
+    // Ajout du champ de recherche stylisé avec une marge à droite
+    let searchInput = EnteteDroite.find("input");
+    searchInput.addClass('form-control rounded-pill ps-5 border-0 shadow-sm');
+    searchInput.css("margin-right", "5px"); 
+    EnteteDroite.prepend(searchInput); 
 
+}
 //////////////////////// Module login //////////////////////
 
 function login() {
@@ -163,7 +205,7 @@ function login() {
                 data = $.parseJSON(data);
                 console.log(data); 
                 if (data.success) {
-                    window.location.href = "file.php";
+                    window.location.href = "verif.php";
                 } else {
                     $("#erreur").html("<div class='alert alert-danger alert-dismissible fade show' role='alert'><i class='fas fa-exclamation-circle me-2'></i>Login ou mot de passe incorrect</div>");
                     $(document).on("click", "#reessayer", function () {
@@ -176,6 +218,96 @@ function login() {
         });
     });
 }
+////////////////// Module Compte //////////////////
+
+// Modifier etat compte
+function update_etat_compte() {
+    $(document).on("click", ".btn_status", function (event) {
+        event.preventDefault(); 
+        var id = $(this).attr("data-id");
+        var status = $(this).attr("data-status");
+        var form_data = new FormData();
+        form_data.append("id", id);
+        form_data.append("status", status);
+        console.log(id);
+        console.log(status);
+        $.ajax({
+            url: "../../models/updateEtatCompte.php", 
+            type: "POST",
+            processData: false,
+            contentType: false,
+            data: form_data,
+            success: function (data) {
+                window.location.reload(); 
+            },
+        });
+    });
+}
+
+// Ajouter un compte
+function ajout_compte(){
+    $(document).on("click", "#ajout_compte", function () {
+        $("#ajoutCompte").modal("show");
+    });
+    $(document).on("click", "#ajouter_compte", function () {
+        $("#ajoutCompte").scrollTop(0);
+        
+        var login = $("#login").val();
+        var mdp = $("#mdp").val();
+        var nom = $("#nom").val();
+        var prenom = $("#prenom").val();
+        var email = $("#email").val();
+        var telephone = $("#telephone").val();
+        var adresse = $("#adresse").val();
+
+        if (login === "" || mdp === "" || nom === "" || prenom === "" || email === "" || telephone === "" || adresse === "") {
+            $("#message_soustraitant").addClass("echec-modal").html("Veuillez remplir tous les champs obligatoires !");
+        } else {
+            var form_data = new FormData();
+            form_data.append("login", login);
+            form_data.append("mdp", mdp);
+            form_data.append("nom", nom);
+            form_data.append("prenom", prenom);
+            form_data.append("email", email);
+            form_data.append("telephone", telephone);;
+            form_data.append("adresse", adresse);
+            $.ajax({
+                url: "../../models/ajouterCompte.php", 
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: form_data,
+                success: function(data) {
+                    if (data.includes("login_exist")) {
+                        $("#message_soustraitant").addClass("echec-modal").html("Ce login est deja utilisé !");
+                    } else if (data.includes('text-echec')) {
+                        $("#ajoutCompte").modal("hide");
+                        $("#addsoustraitant_echec").removeClass("text-checked").addClass("text-echec").html(data);
+                        $("#EchecAddSoustraitant").modal("show");
+                        setTimeout(function () {
+                            if ($("#EchecAddSoustraitant").length > 0) {
+                                $("#EchecAddSoustraitant").modal("hide");
+                            }
+                        }, 4000);
+                        window.location.reload(); 
+                    } else {
+                        $("#ajoutCompte").modal("hide");
+                        $("#addsoustraitant_success").addClass("text-checked").html(data);
+                        $("#SuccessAddSoustraitant").modal("show");
+                        $("#addsoustraitant_success").removeClass("text-echec").addClass("text-checked");
+                        setTimeout(function () {
+                            if ($("#SuccessAddSoustraitant").length > 0) {
+                                $("#SuccessAddSoustraitant").modal("hide");
+                            }
+                        }, 4000);
+                        window.location.reload(); 
+                    }
+                } 
+            });
+        }
+    });
+}
+
 ///////////// Module Profile //////////////////
 
 // Modifier Profil
@@ -342,7 +474,9 @@ function ajout_salarie(){
                 contentType: false,
                 data: form_data,
                 success: function(data) {
-                    if (data.includes('text-echec')) {
+                    if (data.includes("salarie_exist")) {
+                        $("#message_salarie").addClass("echec-modal").html("Le salarie est déja existe !");
+                    } else if (data.includes('text-echec')) {
                         $("#ajoutSalarie").modal("hide");
                         $("#addsalarie_echec").removeClass("text-checked").addClass("text-echec").html(data);
                         $("#EchecAddSalarie").modal("show");
@@ -593,7 +727,6 @@ function update_salarie_document() {
             contentType: false,
             data: form_data,
             success: function (response) {
-                window.location.reload();
             },
             error: function () {
                 alert("Une erreur est survenue lors de l'envoi du document.");
@@ -632,6 +765,7 @@ function ajout_soustraitant(){
         
         var nom = $("#nom").val();
         var nomGerant = $("#nomGerant").val();
+        var prenomGerant = $("#prenomGerant").val();
         var adresse = $("#adresse").val();
         var pays = $("#pays").val();
         var siret = $("#siret").val();
@@ -641,12 +775,13 @@ function ajout_soustraitant(){
         var typesMission = $("#typeMission").val();
         var chefProjet = $("#chefProjet").val();
 
-        if (nom === "" || nomGerant === "" || adresse === "" || pays === "" || siret === "" || email === "" || telephone === "" || iban === "" || typeMission === "" || chefProjet === "") {
+        if (nom === "" || nomGerant === "" || prenomGerant === "" || adresse === "" || pays === "" || siret === "" || email === "" || telephone === "" || iban === "" || typeMission === "" || chefProjet === "") {
             $("#message_soustraitant").addClass("echec-modal").html("Veuillez remplir tous les champs obligatoires !");
         } else {
             var form_data = new FormData();
             form_data.append("nom", nom);
             form_data.append("nomGerant", nomGerant);
+            form_data.append("prenomGerant", prenomGerant);
             form_data.append("adresse", adresse);
             form_data.append("pays", pays);
             form_data.append("siret", siret);
@@ -662,7 +797,9 @@ function ajout_soustraitant(){
                 contentType: false,
                 data: form_data,
                 success: function(data) {
-                    if (data.includes('text-echec')) {
+                    if (data.includes('soustraitant_exist')) {
+                        $("#message_soustraitant").addClass("echec-modal").html("Le sous-traitant est déjà exist !");
+                    }else if (data.includes('text-echec')) {
                         $("#ajoutSoustraitant").modal("hide");
                         $("#addsoustraitant_echec").removeClass("text-checked").addClass("text-echec").html(data);
                         $("#EchecAddSoustraitant").modal("show");
@@ -705,14 +842,15 @@ function get_soustraitant_data() {
               $("#id_Entreprise").val(data[0]);
               $("#nom_Entreprise").val(data[1]);
               $("#nomGerant_Entreprise").val(data[2]);
-              $("#adresse_Entreprise").val(data[3]);
-              $("#pays_Entreprise").val(data[4]);
-              $("#siret_Entreprise").val(data[5]);
-              $("#email_Entreprise").val(data[6]);
-              $("#telephone_Entreprise").val(data[7]);
-              $("#iban_Entreprise").val(data[8]);
-              $("#typesMission_Entreprise").val(data[9]);
-              $("#chefProjet_Entreprise").val(data[10]);
+              $("#prenomGerant_Entreprise").val(data[3]);
+              $("#adresse_Entreprise").val(data[4]);
+              $("#pays_Entreprise").val(data[5]);
+              $("#siret_Entreprise").val(data[6]);
+              $("#email_Entreprise").val(data[7]);
+              $("#telephone_Entreprise").val(data[8]);
+              $("#iban_Entreprise").val(data[9]);
+              $("#typesMission_Entreprise").val(data[10]);
+              $("#chefProjet_Entreprise").val(data[11]);
               $("#modifSoustraitant").modal("show");
             },
         });
@@ -726,6 +864,7 @@ function update_soustraitant() {
         var id = $("#id_Entreprise").val();
         var nom = $("#nom_Entreprise").val();
         var nomGerant = $("#nomGerant_Entreprise").val();
+        var prenomGerant = $("#prenomGerant_Entreprise").val();
         var adresse = $("#adresse_Entreprise").val();
         var pays = $("#pays_Entreprise").val();
         var siret = $("#siret_Entreprise").val();
@@ -734,13 +873,14 @@ function update_soustraitant() {
         var iban = $("#iban_Entreprise").val();
         var typesMission = $("#typesMission_Entreprise").val();
         var chefProjet = $("#chefProjet_Entreprise").val();
-        if (nom === "" || nomGerant === "" || adresse === "" || pays === "" || siret === "" || email === "" || telephone === "" || iban === "" || typesMission === "" || chefProjet === "") {
+        if (nom === "" || nomGerant === "" || prenomGerant === "" || adresse === "" || pays === "" || siret === "" || email === "" || telephone === "" || iban === "" || typesMission === "" || chefProjet === "") {
             $("#messageup_soustraitant").addClass("echec-modal").html("Veuillez remplir tous les champs obligatoires !");
         }else{
             var form_data = new FormData();
             form_data.append("id", id);
             form_data.append("nom", nom);
             form_data.append("nomGerant", nomGerant);
+            form_data.append("prenomGerant", prenomGerant);
             form_data.append("adresse", adresse);
             form_data.append("pays", pays);
             form_data.append("siret", siret);
@@ -874,14 +1014,6 @@ function get_soustraitant_document() {
             $("#id_Document").val(data[0]);
             $("#idEntreprise_Document").val(data[1]);
             $("#kbis_Document").val(data[2]);
-            if (!data[2]) {
-                $("#kbis_Document").css("background-color", "#FF4E4E");
-                $("#kbis_Document").attr("href", "javascript:void(0)");
-            } else {
-                $("#kbis_Document").css("border", "#FFF0DB");
-                $("#kbis_Document").attr("href", data[2]);
-            }
-
             $("#dateValiditeKbis_Document").val(data[3]);
             $("#pieceIdentitieGerant_Document").val(data[4]);
             $("#dateValiditePIGerant_Document").val(data[5]);
@@ -907,6 +1039,93 @@ function get_soustraitant_document() {
     });
 }
 
+function ajout_soustraitant_document(){
+    $(document).on("click", "#btn_relancer", function () {
+        $("#ajoutDocument").modal("show");
+    });
+    $(document).on("click", "#ajouter_document", function () {
+        $("#ajoutDocument").scrollTop(0);
+        var ID = $(this).attr("data-document");
+        var dateValiditeKbis = $("#dateValiditeKbis_Document").val();
+        var dateValiditePIGerant = $("#dateValiditePIGerant_Document").val();
+        var dateValiditeAttestRegulariteFiscale = $("#dateValiditeAttestRegulariteFiscale_Document").val();
+        var dateValiditeAttestURSSAF = $("#dateValiditeAttestURSSAF_Document").val();
+        var dateValiditeAssuranceRcPro = $("#dateValiditeAssuranceRcPro_Document").val();
+        var dateValiditeSiret = $("#dateValiditeSiret_Document").val();
+        var dateValiditeCaisseBTP = $("#dateValiditeCaisseBTP_Document").val();
+        var dateValiditeNumFiscal = $("#dateValiditeNumFiscal_Document").val();
+        var dateValiditeNumTVA = $("#dateValiditeNumTVA_Document").val();
+        var dateValiditeAssurenceDecennale = $("#dateValiditeAssurenceDecennale_Document").val();
+        var kbis = $("#kbis_Document")[0].files[0];
+        var pieceIdentitieGerant = $("#pieceIdentitieGerant_Document")[0].files[0];
+        var attestationRegulariteFiscale = $("#attestationRegulariteFiscale_Document")[0].files[0];
+        var attestationURSSAF = $("#attestationURSSAF_Document")[0].files[0];
+        var assuranceRcPro = $("#assuranceRcPro_Document")[0].files[0];
+        var siret = $("#siret_Document")[0].files[0];
+        var caisseBTP = $("#caisseBTP_Document")[0].files[0];
+        var numeroFiscal = $("#numeroFiscal_Document")[0].files[0];
+        var numeroTVA = $("#numeroTVA_Document")[0].files[0];
+        var assurenceDecennale = $("#assurenceDecennale_Document")[0].files[0];
+        var form_data = new FormData();
+        form_data.append("dateValiditeKbis", dateValiditeKbis);
+        form_data.append("dateValiditePIGerant", dateValiditePIGerant);
+        form_data.append("dateValiditeAttestRegulariteFiscale", dateValiditeAttestRegulariteFiscale);
+        form_data.append("dateValiditeAttestURSSAF", dateValiditeAttestURSSAF);
+        form_data.append("dateValiditeAssuranceRcPro", dateValiditeAssuranceRcPro);
+        form_data.append("dateValiditeSiret", dateValiditeSiret);
+        form_data.append("dateValiditeCaisseBTP", dateValiditeCaisseBTP);
+        form_data.append("dateValiditeNumFiscal", dateValiditeNumFiscal);
+        form_data.append("dateValiditeNumTVA", dateValiditeNumTVA);
+        form_data.append("dateValiditeAssurenceDecennale", dateValiditeAssurenceDecennale);
+        form_data.append("kbis", kbis);
+        form_data.append("pieceIdentitieGerant", pieceIdentitieGerant);
+        form_data.append("attestationRegulariteFiscale", attestationRegulariteFiscale);
+        form_data.append("attestationURSSAF", attestationURSSAF);
+        form_data.append("assuranceRcPro", assuranceRcPro);
+        form_data.append("siret", siret);
+        form_data.append("caisseBTP", caisseBTP);
+        form_data.append("numeroFiscal", numeroFiscal);
+        form_data.append("numeroTVA", numeroTVA);
+        form_data.append("assurenceDecennale", assurenceDecennale);
+        form_data.append("ID", ID);
+       
+        $.ajax({
+            url: "../../models/ajouterDocumentSoustraitant.php", 
+            type: "POST",
+            processData: false,
+            contentType: false,
+            data: form_data,
+            success: function(data) {
+                if (data.includes('text-echec')) {
+                    $("#ajoutDocument").modal("hide");
+                    $("#adddemande_echec").removeClass("text-checked").addClass("text-echec").html(data);
+                    $("#EchecAddDemande").modal("show");
+                    setTimeout(function () {
+                        if ($("#EchecAddDemande").length > 0) {
+                            $("#EchecAddDemande").modal("hide");
+                            window.location.reload();
+                        }
+                    }, 4000);
+                    view_demande_record();
+                } else {
+                    $("#ajoutDocument").modal("hide");
+                    $("#adddemande_success").addClass("text-checked").html(data);
+                    $("#SuccessAddDemande").modal("show");
+                    $("#adddemande_success").removeClass("text-echec").addClass("text-checked");
+                    setTimeout(function () {
+                        if ($("#SuccessAddDemande").length > 0) {
+                            $("#SuccessAddDemande").modal("hide");
+                            window.location.reload();
+                        }
+                    }, 4000);
+                    view_demande_record();
+                }
+            },
+        });
+    });
+}
+
+
 ///////////////////////////// Module demandes /////////////////////////////
 
 function view_demande_record() {
@@ -918,16 +1137,20 @@ function view_demande_record() {
           data = $.parseJSON(data);
           if (data.status == "success") {
             $("#table_listeDemande").html(data.html);
-            $('#listeDemande').DataTable({ "info": false});
-            searchpagination_withoutbuttom("ajout_demande","Ajouter un demande",$('#listeDemande_filter'),"Demandes","Liste des demandes");
+            $('#listeDemande').DataTable({ "info": false });
+              if (role == 2) {
+              searchpagination_withoutbuttom("ajout_demande", "Ajouter un demande", $('#listeDemande_filter'), "Demandes", "Liste des demandes");
+            } else {
+              searchpagination_title($('#listeDemande_filter'),"Demandes", "Liste des demandes");
+            }
           }
-        } catch (e) { 
-          console.error("Invalid Response!" , data);
+        } catch (e) {
+          console.error("Invalid Response!", data);
         }
       },
     });
   }
- 
+  
 // Affichier chefProjet demande
   function get_soustraitant_chefprojet_demande_data() {
     $(document).on("click", "#btn_chefProjet_demande", function () {
@@ -1121,4 +1344,298 @@ function download_document_demande() {
         var id = $(this).attr("data-demande");
         window.location.href = "../../models/downloadDocumentDemande.php?id=" + id;
     });    
+}
+
+///////////////////// Module Dashboard /////////////////
+ 
+// affiche demande dashboard
+function view_demande_dashboard_record() {
+    $.ajax({
+      url: "../../models/viewDemandeDashboard.php",
+      method: "post",
+      success: function (data) {
+        try {
+          data = $.parseJSON(data);
+          if (data.status == "success") {
+            $("#table_listeDemandeDashboard").html(data.html);
+          }
+        } catch (e) { 
+          console.error("Invalid Response!" , data);
+        }
+      },
+    });
+  }
+
+  // affiche documents arrive en fin de validité
+  function view_document_dashboard_record() {
+    $.ajax({
+      url: "../../models/viewDocumentDashboard.php",
+      method: "post",
+      success: function (data) {
+        try {
+          data = $.parseJSON(data);
+          if (data.status == "success") {
+            $("#table_listeDocumentDashboard").html(data.html);
+          }
+        } catch (e) { 
+          console.error("Invalid Response!" , data);
+        }
+      },
+    });
+  }
+  function view_all_document_dashboard_record() {
+    $(document).on("click", "#btn_selectionner", function () {
+        $.ajax({
+            url: "../../models/viewAllDocumentDashboard.php",
+            method: "post",
+            success: function (data) {
+              try {
+                data = $.parseJSON(data);
+                if (data.status == "success") {
+                  $("#table_listeAllDocumentDashboard").html(data.html);
+                  $("#afficheDoc").modal("show");
+                }
+              } catch (e) {
+                console.error("Erreur de parsing JSON", e);
+              }
+            },
+          });          
+  });
+}
+
+// Update Documents Dashboard
+
+function update_document_dashboard() {
+    $(document).on("click", ".btn_relancer", function () {
+        var documentName = $(this).data("doc");
+        var id = $(this).data("id");
+        var champdate = $(this).data("champdate");
+        var notif = $(this).data("notif");
+    $("#DocInput").on("change", function (event) {
+        event.preventDefault(); 
+        var file_input = $("#DocInput").prop("files")[0];
+            var form_data = new FormData();
+            form_data.append("document", file_input);
+            form_data.append("id", id);
+            form_data.append("documentName", documentName);
+            form_data.append("notif", notif);
+            $.ajax({
+                url: "../../models/updateDocumentDashboard.php",
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: form_data,
+                success: function (data) {
+                    $("#updateValidityModal").modal("show");
+                    $(document).on("click", "#submitValidity", function () {
+                        var validityDate = $("#validityDate").val();
+                        var form_data = new FormData();
+                        form_data.append("validityDate", validityDate);
+                        form_data.append("id", id);
+                        form_data.append("champdate", champdate);
+                        form_data.append("notif", notif);
+                        $.ajax({
+                            url: "../../models/updateValidityDate.php",
+                            type: "POST",
+                            processData: false,
+                            contentType: false,
+                            data: form_data,
+                            success: function (data) {
+                                if (data.includes('text-echec')) {
+                                    $("#updateValidityModal").modal("hide");
+                                    $("#Validity_echec").removeClass("text-checked").addClass("text-echec").html(data);
+                                    $("#EchecUpdateValidity").modal("show");
+                                    setTimeout(function () {
+                                        if ($("#EchecValidity").length > 0) {
+                                            $("#EchecValidity").modal("hide");
+                                        }
+                                    }, 4000);
+                                    view_document_dashboard_record();
+                                    view_all_document_dashboard_record();                            
+                                } else {
+                                    $("#updateValidityModal").modal("hide");
+                                    $("#Validity_success").addClass("text-checked").html(data);
+                                    $("#successUpdateValidity").modal("show");
+                                    $("#Validity_success").removeClass("text-echec").addClass("text-checked");
+                                    setTimeout(function () {
+                                        if ($("#SuccessValidity").length > 0) {
+                                            $("#updateValidityModal").modal("hide");
+                                        }
+                                    }, 4000);
+                                    view_document_dashboard_record();
+                                    view_all_document_dashboard_record();                            
+                                }
+                            }
+                        });
+                    });
+                },
+                error: function () {
+                    alert("Une erreur est survenue lors de l'envoi de document .");
+                }
+            });
+    });
+    $("#DocInput").click();
+});
+}
+
+// calcul stat dashboard 
+function calcul_stat_dashboard(){
+    const listeElement = document.getElementById('liste');
+    if (!listeElement) return; 
+    listeElement.addEventListener('change', function () {        
+        var period = this.value;
+        var form_data = new FormData();
+        form_data.append("period",period);
+        $.ajax({
+            url: "../../models/calculStatDashboard.php",
+            type: "POST",
+            processData: false,
+            contentType: false,
+            data: form_data,
+            success: function (data) {
+                try {
+                    var response = JSON.parse(data);
+                    if(response.status === 'success'){
+                        $('#stat_nbr1').text(response.html);
+                        $('#stat_nbr2').text(response.demande);
+                    } else {
+                        console.error("Erreur dans la réponse :", response);
+                    }
+                } catch(e) {
+                    console.error("Erreur de parsing JSON :", e);
+                }
+            },
+        });
+    });
+    document.getElementById('liste').dispatchEvent(new Event('change'));
+}
+window.addEventListener('DOMContentLoaded', calcul_stat_dashboard);
+
+///////////////// Module Notification ///////////////////
+
+function view_notification_record(){
+    $(document).on('click', '#notificationIcon', function () {
+        $('#notificationList').toggle();
+        if($('#notificationList').is(':visible')){
+            $('#nbr_notif').hide();
+        } else {
+            $('#nbr_notif').show();
+        }
+        $.ajax({
+            url: "../../models/viewNotification.php",
+            method: "POST",
+            success: function (data) {
+                try {
+                    data = $.parseJSON(data);
+                    if (data.status == "success") {
+                        $("#notificationList").html(data.html);
+                        $("#nbr_notif").html(data.nbr_notif);
+                    }
+                } catch (e) {
+                    console.error("Erreur de parsing JSON", e);
+                }
+            },
+        });
+    });
+    $(document).on('click', function (e) {
+        var container = $("#notificationList, #notificationIcon");
+        if (!container.is(e.target) && container.has(e.target).length === 0) {
+            $("#notificationList").hide();
+            if(parseInt($('#nbr_notif').text()) > 0){
+                $('#nbr_notif').show();
+            }
+        }
+    });
+}
+
+function view_all_notification_record(){
+    $(document).on("click", "#btn_affiche", function () {
+        $("#afficheNotification").modal("show");
+        $.ajax({
+            url: "../../models/viewAllNotification.php",
+            method: "POST",
+            success: function (data) {
+              try {
+                data = $.parseJSON(data);
+                if (data.status == "success") {
+                  $("#affiche_notif").html(data.html);
+                }
+              } catch (e) {
+                console.error("Erreur de parsing JSON", e);
+              }
+            },
+        });
+
+
+    });  
+}
+
+// affiche notification
+function get_notification(){
+    $(document).on("click", ".msg_notif", function () {
+        var id = $(this).data("id");
+        var time = $(this).data("time");
+        var form_data = new FormData();
+        form_data.append("id", id);
+        form_data.append("time", time);
+        console.log(id);
+        $.ajax({
+            url: "../../models/getNotification.php",
+            type: "POST",
+            processData: false,
+            contentType: false,
+            data: form_data,
+            success: function (data) {
+                try {
+                    data = $.parseJSON(data);
+                    if (data.status == "success") {
+                        $("#afficheNotification").modal("show");
+                        $("#affiche_notif").html(data.html);
+                    }
+                } catch (e) {
+                    console.error("Erreur de parsing JSON", e);
+                }
+            },
+        });
+    });
+}
+
+////////////// Module contact //////////////////
+ function ajout_contact_message(){
+    $(document).on("click", "#btn_contact", function () {
+        var nom = $("#nom").val();
+        var telephone = $("#telephone").val();
+        var email = $("#email").val();
+        var objet = $("#objet").val();
+        var message = $("#message").val();
+        if (nom == "" || telephone == "" || email == "" || objet == "" || message == "") {
+            $("#message_contact").addClass("echec-modal").html("Veuillez remplir tous les champs !");
+            exit;
+        }
+        var form_data = new FormData();
+        form_data.append("nom", nom);
+        form_data.append("telephone", telephone);
+        form_data.append("email", email);
+        form_data.append("objet", objet);
+        form_data.append("message", message);
+        $.ajax({
+            url: "../../models/ajoutContact.php",
+            type: "POST",
+            processData: false,
+            contentType: false,
+            data: form_data,
+            success: function (data) {
+                if (data.includes('text-echec')) {
+                    $("#echec").removeClass("text-checked").addClass("text-echec").html(data);
+                    $("#envoyer_echec").modal("show");
+                    setTimeout(4000);
+                } else {
+                    $("#success").addClass("text-checked").html(data);
+                    $("#envoyer_success").modal("show");
+                    $("#success").removeClass("text-echec").addClass("text-checked");
+                    setTimeout(4000);                            
+                }
+            }
+        });
+    });
 }

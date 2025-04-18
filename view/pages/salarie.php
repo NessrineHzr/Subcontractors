@@ -46,15 +46,12 @@ $login = $_SESSION['Login'];
         background-color: transparent;
         display: flex;
     }
-
     .telecharger img {
         width: 30px;
         height: 30px;
         margin-top: -105px;
         transform: translateX(85px);
-
     }
-
 </style>
 <div class="table" action="" method="post">
   <div class="table-responsive-xxl" id="table_listeSalarie"></div>
@@ -111,8 +108,8 @@ $login = $_SESSION['Login'];
              <label for="typeMission">Type de mission*</label>
               <select id="typeMission" name="typeMission" required>
                 <option value="">Sélectionnez une mission</option>
-                <option value="européenne">Européenne</option>
-                <option value="française">Française</option>
+                <option value="Européenne">Européenne</option>
+                <option value="Française">Française</option>
               </select><br><br>
             </div>
           </div>
@@ -235,7 +232,6 @@ $login = $_SESSION['Login'];
             </select><br><br>
           </div>
         </div>
-
         <div id="fiche_2row">
           <div class="form-group">
             <label for="poste_Salarie">Poste</label>
@@ -357,8 +353,8 @@ $login = $_SESSION['Login'];
       <div class="modal-body" >
         <div class="file-container">
           <input type="hidden" id="id_Salarie" name="id_Salarie">
-          
           <div class="documents">
+
           <div class="document">
             <label for="pieceid_Salarie" class="titre">Pièce d'identité :</label>
             <input id="pieceid_Salarie" type="hidden">

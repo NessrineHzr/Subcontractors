@@ -1,6 +1,7 @@
 <?php
 include('../header_menu.php');
 $login = $_SESSION['Login'];
+$role =$_SESSION['Role'];
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 $sql2="SELECT idEntreprise_Demande ,nom_Entreprise ,status_Demande, id_Demande FROM entreprise ,demande  WHERE id_Entreprise=idEntreprise_Demande AND id_Demande = '$id'";
 $result2 = mysqli_query($connexion, $sql2);
@@ -11,11 +12,11 @@ if ($row = mysqli_fetch_assoc($result2)) {
     $idEntrepriseDemande = $row['idEntreprise_Demande'];
     $statusDemande = $row['status_Demande'];
 }
-$sql = "SELECT id_Entreprise, nomGerant_Entreprise, adresse_Entreprise, pays_Entreprise, telephone_Entreprise, iban_Entreprise, typesMission_Entreprise, chefProjet_Entreprise FROM entreprise WHERE etat_Entreprise = '1' AND id_Entreprise='$idEntrepriseDemande'";
+$sql = "SELECT id_Entreprise, nomGerant_Entreprise, prenomGerant_Entreprise, adresse_Entreprise, pays_Entreprise, telephone_Entreprise, iban_Entreprise, typesMission_Entreprise, chefProjet_Entreprise FROM entreprise WHERE etat_Entreprise = '1' AND id_Entreprise='$idEntrepriseDemande'";
 $result = mysqli_query($connexion, $sql);
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        $nomGerant = $row['nomGerant_Entreprise'];
+        $nomGerant = $row['nomGerant_Entreprise'] . " " . $row['prenomGerant_Entreprise'];
         $adresse = $row['adresse_Entreprise'];
         $pays = $row['pays_Entreprise'];
         $telephone = $row['telephone_Entreprise'];
@@ -30,7 +31,6 @@ if ($statusDemande == 'En Attente' ){
     $sql2 = "UPDATE demande SET status_demande='En Cours',date_updated_Demande='$date_courant' WHERE idEntreprise_Demande='$idEntrepriseDemande'";
     $result2 = $connexion->query($sql2);
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -66,7 +66,6 @@ if ($statusDemande == 'En Attente' ){
         width: 40px;
         height: 50px;
     }
-
     .telecharger {
         border: none;
         background-color: transparent;
@@ -74,7 +73,6 @@ if ($statusDemande == 'En Attente' ){
         justify-content: center;
         align-items: center;
     }
-
     .telecharger img {
         width: 60px;
         height: 60px;
@@ -102,28 +100,27 @@ if ($statusDemande == 'En Attente' ){
     background-color: #EFEAFF;
     color: #470EE9;
     border : none;
-  }
-
-  #info_chefProjet_demande {
+    }
+    #info_chefProjet_demande {
     display: block;
     text-align: left;
     padding: 10px;
-}
-    
+    }
 </style>
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb mb-0 p-0">
-      <div class="breadcrumb-item" style="font-size: 23px; font-weight: bold;"><a href="demande.php">Tous les demandes</a></div>
-      <div class="breadcrumb-item active" style="font-size: 19px; color:#470EE9; font-weight: bold;" aria-current="page">Demande de <?php echo $nom; ?> </div>
+        <li class="breadcrumb-item" style="font-size: 23px; font-weight: bold;">Demandes</li>
+        <li class="breadcrumb-item active" style="font-size: 19px; color:#470EE9; font-weight: bold;" aria-current="page"><a href="demande.php">Liste des demandes </a></li>
+        <li class="breadcrumb-item active" style="font-size: 18px; color:#470EE9; font-weight: bold;" aria-current="page" >Demande de <?php echo $nom; ?></li>
     </ol>
-    <?php if ($statusDemande == 'En attente' || $statusDemande == 'En Cours') { ?>
+    <?php if ($role == "1" && ($statusDemande == 'En Attente' || $statusDemande == 'En Cours')) { ?>
         <button style='float: right; margin-left: 10px;' type="button" id="btn_accepter" class="buttonvalidate" data-demande="<?= $id ?>">Accepter</button>
         <button style='float: right;' type="button" id="btn_refuser" class="buttonannule" data-demande="<?= $id ?>">Refuser</button>
     <?php } ?>
     </nav><br><br>
 <h3>Informations </h3><br><br>
 
-<table id="listeDemandeEntreprise" class="table-salarie">
+<table id="table_listeDemande" class="table-salarie">
   <thead>
       <tr>
         <th>Nom Gérant</th>
@@ -148,7 +145,6 @@ if ($statusDemande == 'En Attente' ){
     </tbody>
 </table>
 <br><br>
-
 <!-- Model affiche info chef projet -->
 <div class="modal fade" id="affiche_chefProjet_demande" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -173,78 +169,23 @@ if ($statusDemande == 'En Attente' ){
     <h3>Documents envoyés </h3><br>
     <button type="button" id="btn_telecharger" class="btn_telecharger" data-demande="<?= $id ?>">Télécharger tous</button>
 </div>
-<<<<<<< HEAD
-<div class="documents">
-<div class="documents">
-    <div class="document">
-        <a href="#" id="kbis_Document" class="doc"><img src="../img/doc.png"></a>
-        <button id="telecharger" class="telecharger"><img src="../img/telecharger.png"></button>
-        <div class="titledoc">KBIS</div>
-    </div>
-    <div class="document">
-        <a href="#" id="pieceIdentitieGerant_Document" class="doc"><img src="../img/doc.png"></a>
-        <button id="telecharger" class="telecharger"><img src="../img/telecharger.png"></button>
-        <div class="titledoc">Pièce d'Identité Gérant</div>
-    </div>
-    <div class="document">
-        <a href="#" id="attestationRegulariteFiscale_Document" class="doc"><img src="../img/doc.png"></a>
-        <button id="telecharger" class="telecharger"><img src="../img/telecharger.png"></button>
-        <div class="titledoc">Attestation de Régularité Fiscale</div>
-    </div>
-    <div class="document">
-        <a href="#" id="attestationURSSAF_Document" class="doc"><img src="../img/doc.png"></a>
-        <button id="telecharger" class="telecharger"><img src="../img/telecharger.png"></button>
-        <div class="titledoc">Attestation URSSAF</div>
-    </div>
-    <div class="document">
-        <a href="#" id="assuranceRcPro_Document" class="doc"><img src="../img/doc.png"></a>
-        <button id="telecharger" class="telecharger"><img src="../img/telecharger.png"></button>
-        <div class="titledoc">Assurance RC PRO</div>
-    </div>
-    <div class="document">
-        <a href="#" id="assurenceDecennale_Document" class="doc"><img src="../img/doc.png"></a>
-        <button id="telecharger" class="telecharger"><img src="../img/telecharger.png"></button>
-        <div class="titledoc">Assurance Décennale</div>
-    </div>
-    <div class="document">
-        <a href="#" id="siret_Document" class="doc"><img src="../img/doc.png"></a>
-        <button id="telecharger" class="telecharger"><img src="../img/telecharger.png"></button>
-        <div class="titledoc">SIRET</div>
-    </div>
-    <div class="document">
-        <a href="#" id="caisseBTP_Document" class="doc"><img src="../img/doc.png"></a>
-        <button id="telecharger" class="telecharger"><img src="../img/telecharger.png"></button>
-        <div class="titledoc">Caisse BTP</div>
-    </div>
-    <div class="document">
-        <a href="#" id="numeroFiscal_Document" class="doc"><img src="../img/doc.png"></a>
-        <button id="telecharger" class="telecharger"><img src="../img/telecharger.png"></button>
-        <div class="titledoc">Numéro Fiscal</div>
-    </div>
-    <div class="document">
-        <a href="#" id="numeroTVA_Document" class="doc"><img src="../img/doc.png"></a>
-        <button id="telecharger" class="telecharger"><img src="../img/telecharger.png"></button>
-        <div class="titledoc">Numéro TVA</div>
-    </div>
-</div>
-=======
 <?php
 $documents = [
-    "kbis_Document" => "KBIS",
-    "pieceIdentitieGerant_Document" => "Pièce d'Identité",
-    "attestationRegulariteFiscale_Document" => "Attestation de Régularité Fiscale",
-    "attestationURSSAF_Document" => "Attestation URSSAF",
-    "assuranceRcPro_Document" => "Assurance RC PRO",
-    "assurenceDecennale_Document" => "Assurance Décennale"
+    "kbis_DocumentDemande" => "KBIS",
+    "pieceIdentitieGerant_DocumentDemande" => "Pièce d'Identité",
+    "attestationRegulariteFiscale_DocumentDemande" => "Attestation de Régularité Fiscale",
+    "attestationURSSAF_DocumentDemande" => "Attestation URSSAF",
+    "assuranceRcPro_DocumentDemande" => "Assurance RC PRO",
+    "assurenceDecennale_DocumentDemande" => "Assurance Décennale",
+    "siret_DocumentDemande" => "SIRET",
+    "caisseBTP_DocumentDemande" => "Caisse BTP",
+    "numeroFiscal_DocumentDemande" => "Numéro Fiscal",
+    "numeroTVA_DocumentDemande" => "Numéro TVA"
 ];
->>>>>>> 5ae2041ae5cf4a40e0f1d91c43fae695532e0f4f
-
 $styles = array_fill_keys(array_keys($documents), "");
-
-$sql_doc = "SELECT * FROM document WHERE idDemande_Document = '$id'";
+$sql_doc = "SELECT * FROM document_demande WHERE idDemande_DocumentDemande = '$id'";
 $result_doc = mysqli_query($connexion, $sql_doc);
 $row_doc = mysqli_fetch_assoc($result_doc) ?: [];
-
 foreach ($documents as $key => $title) {
     if (empty($row_doc[$key])) {
         $styles[$key] = "background-color: rgb(255, 78, 78);";

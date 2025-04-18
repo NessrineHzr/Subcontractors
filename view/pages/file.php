@@ -1,9 +1,0 @@
-<?php
-include('../header_menu.php');
-
-
-echo "Hello ".$_SESSION['Login'];
-
-
-include('../footer.php');
-?>

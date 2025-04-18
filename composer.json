@@ -1,5 +1,6 @@
 {
     "require": {
-        "ext-zip": "^1.11"
+        "ext-zip": "^1.11",
+        "phpmailer/phpmailer": "^6.9"
     }
 }

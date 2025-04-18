@@ -5,8 +5,6 @@ $login = $_SESSION['Login'];
 <!DOCTYPE html>
 <html lang="fr">
 <body>
-<style>
-</style>
 <div class="table" action="" method="post">
   <div class="table-responsive-xxl" id="table_listeSousTraitant"></div>
 </div>
@@ -20,15 +18,19 @@ $login = $_SESSION['Login'];
       </div>
       <div class="modal-body">
         <p id="message_soustraitant"></p><br><br>
-        <form autocomplete="off" class="form-horizontal">
-          <div id="fiche_2row">
             <div class="form-group">
               <label for="nom">Nom*</label>
               <input type="text" id="nom" name="nom"><br><br>
             </div>
+        <form autocomplete="off" class="form-horizontal">
+          <div id="fiche_2row">
             <div class="form-group">
               <label for="nomGerant">Nom Gérant*</label>
               <input type="text" id="nomGerant" name="nomGerant"><br><br>
+            </div>
+            <div class="form-group">
+              <label for="prenomGerant">Prénom Gérant*</label>
+              <input type="text" id="prenomGerant" name="prenomGerant"><br><br>
             </div>
           </div>
           <div id="fiche_2row">
@@ -154,15 +156,19 @@ $login = $_SESSION['Login'];
       <div class="modal-body">
         <input type="hidden" id="id_Entreprise" name="id_Entreprise">
         <p id="messageup_soustraitant"></p><br><br>
-        <form autocomplete="off" class="form-horizontal">
-          <div id="fiche_2row">
             <div class="form-group">
               <label for="nom_Entreprise">Nom*</label>
               <input type="text" id="nom_Entreprise" name="nom_Entreprise"><br><br>
             </div>
+        <form autocomplete="off" class="form-horizontal">
+          <div id="fiche_2row">
             <div class="form-group">
               <label for="nomGerant_Entreprise">Nom Gérant*</label>
               <input type="text" id="nomGerant_Entreprise" name="nomGerant_Entreprise"><br><br>
+            </div>
+            <div class="form-group">
+              <label for="prenomGerant_Entreprise">Prénom Gérant*</label>
+              <input type="text" id="prenomGerant_Entreprise" name="prenomGerant_Entreprise"><br><br>
             </div>
           </div>
           <div id="fiche_2row">
@@ -240,7 +246,7 @@ $login = $_SESSION['Login'];
     </div>
   </div>
 </div>
- <!-- End Modal modification -->
+<!-- End Modal modification -->
 <!-- Model alert modification succès -->
 <div class="modal fade" id="SuccessUpSoustraitant" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">

@@ -1,13 +1,18 @@
 <?php
 include('../header_menu.php');
+$id = $_SESSION['ID'];
 $login = $_SESSION['Login'];
+$role = $_SESSION['Role'];
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <body>
+
 <div class="table" action="" method="post">
   <div class="table-responsive-xxl" id="table_listeDemande"></div>
 </div>
+
 <!-- Model ajout -->
 <div class="modal fade bd-example-modal-lg" id="ajoutDemande" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
@@ -19,28 +24,6 @@ $login = $_SESSION['Login'];
       <div class="modal-body">
         <p id="message_demande"></p><br><br>
         <form autocomplete="off" class="form-horizontal">
-          <div id="fiche_2row">
-            <div class="form-group">
-              <label for="nom">Nom*</label>
-              <select id="nom" name="nom">
-                <option value="">Sélectionnez votre nom</option>
-                <?php 
-                global $connexion;
-                $sql = "SELECT id_Entreprise ,nom_Entreprise FROM entreprise WHERE etat_Entreprise='1'";
-                $result = mysqli_query($connexion, $sql);
-                if ($result) {
-                  while($row = mysqli_fetch_assoc($result)) {
-                    echo "<option value='". $row['id_Entreprise'] ."'>" . $row['nom_Entreprise'] . "</option>";
-                  }
-                }
-                ?>
-              </select><br><br>
-            </div>
-            <div class="form-group">
-              <label for="societe">Société*</label>
-              <input type="text" id="societe" name="societe"><br><br>
-            </div>
-          </div>
           <!-- KBIS -->
           <div id="fiche_2row">
             <div class="form-group">
@@ -251,6 +234,9 @@ $login = $_SESSION['Login'];
 <!-- end Model alert supprimer echec -->
 
 </body>
+<script>
+   var role = <?php echo $role ?>;
+</script>
 </html>
 <?php
 include('../footer.php');

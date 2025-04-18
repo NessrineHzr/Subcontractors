@@ -2,6 +2,9 @@
 include('../header_menu.php');
 
   $ID = $_SESSION['ID'];
+  $name= $_SESSION['Nom'];
+  $role= $_SESSION['Role'];
+  if ($role == "1") {
   $query = "SELECT * FROM utilisateur WHERE id_Utilisateur = '$ID'";
   $result = mysqli_query($connexion, $query);
   if($row = mysqli_fetch_assoc($result)) {
@@ -15,6 +18,22 @@ include('../header_menu.php');
   } else {
       echo (['error' => 'Utilisateur non trouvé']);
   }
+}elseif ($role == "2") {
+  $query = "SELECT * FROM entreprise, utilisateur WHERE id_Entreprise = '$ID' AND login_Utilisateur = email_Entreprise";
+  $result = mysqli_query($connexion, $query);
+  if($row = mysqli_fetch_assoc($result)) {
+      $nomEntreprise= $row['nom_Entreprise'];
+      $nom= $row['nomGerant_Entreprise'];
+      $prenom= $row['prenomGerant_Entreprise'];
+      $email= $row['email_Entreprise'];
+      $telephone= $row['telephone_Utilisateur'];
+      $adresse= $row['adresse_Utilisateur'];
+      $ancien_mdp= $row['mdp_Utilisateur'];   
+      $img= $row['image_Utilisateur'];   
+  } else {
+      echo (['error' => 'Utilisateur non rencontré']);
+  }
+}
 ?>
 
 <!DOCTYPE html>
@@ -86,9 +105,9 @@ include('../header_menu.php');
       <label for="file_input" class="btn_edit_image_profil"><img src='../img/edit.png'/></label>
       <input type="file" id="file_input" hidden>
         <!-- <input type="file" id="file_input"> -->
-        <img id="profile_image" src="../img/profil/<?php echo $img; ?>" alt="Image de profil">
-        <?php echo($nom); ?>
-        <?php echo($prenom); ?>
+        <img id="profile_image" src="../img/profil/<?php echo $img; ?>" alt="">
+        <?php if ($role == "2") { echo($name); } else echo($nom); ?>
+        <?php if($role=="1"){ echo($prenom); }?>
       </div>
       <div class="icons_profile" style="text-align: center;">
         <i class="fa-solid fa-envelope"></i><br>
