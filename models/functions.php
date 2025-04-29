@@ -30,16 +30,14 @@ function message($nom_fonction , $result){
     }
 }
 
-// PHPMailer
 
+// PHPMailer
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-
+// Envoi de mail
 function envoyer_mail($destinataire, $nom_complet, $login, $mdp){
     require_once __DIR__ . '/../vendor/autoload.php';
-
     $mail = new PHPMailer(true);
-
     try {
         // Config SMTP
         $mail->isSMTP();
@@ -69,11 +67,11 @@ function envoyer_mail($destinataire, $nom_complet, $login, $mdp){
         error_log("Erreur d'envoi de mail: {$mail->ErrorInfo}");
     }
 }
+
+// Envoi de mail contact
 function envoyer_mail_contact($email, $nom, $objet, $message){
     require_once __DIR__ . '/../vendor/autoload.php';
-
     $mail = new PHPMailer(true);
-
     try {
         // Config SMTP
         $mail->isSMTP();
@@ -101,11 +99,10 @@ function envoyer_mail_contact($email, $nom, $objet, $message){
     }
 }
 
+// Envoi de mail document
 function mail_document($destinataire, $nom ,$doc ,$date){
     require_once __DIR__ . '/../vendor/autoload.php';
-
     $mail = new PHPMailer(true);
-
     try {
         // Config SMTP
         $mail->isSMTP();
@@ -133,7 +130,9 @@ function mail_document($destinataire, $nom ,$doc ,$date){
     }
 }
 
+
  ////////////////////// Module Login /////////////////
+
 function login(){
     global $connexion;
     $username =($_POST['username']);
@@ -172,11 +171,11 @@ function update_etat_compte(){
     $id = $_POST['id'];
     $status = $_POST['status'];
 
-   echo $sql = "UPDATE utilisateur SET etat_Utilisateur='$status' WHERE id_Utilisateur='$id'";
+    $sql = "UPDATE utilisateur SET etat_Utilisateur='$status' WHERE id_Utilisateur='$id'";
     $result = $connexion->query($sql);
     echo message(__FUNCTION__, $result);  
 }
- 
+//
 function ajouter_compte(){
     global $connexion;
     $date_courrant=date('Y-m-d H:i:s');
@@ -195,20 +194,21 @@ function ajouter_compte(){
                 echo "login_exist";
                 exit;
             }else{
-                $sql = "INSERT INTO utilisateur (login_Utilisateur , mdp_Utilisateur,nom_Utilisateur, prenom_Utilisateur, email_Utilisateur, telephone_Utilisateur, adresse_Utilisateur, role_Utilisateur, date_created_Utilisateur, etat_Utilisateur) 
-                VALUES ('$login','$mdp','$nom', '$prenom', '$email', '$telephone', '$adresse','1', '$date_courrant', '1')";
-                $result = $connexion->query($sql);
-                if ($result) {
-                    envoyer_mail($email, "$prenom $nom", $login, $_POST['mdp']);
-                }
-                echo message(__FUNCTION__, $result);
+                $sql = "INSERT INTO utilisateur (login_Utilisateur , mdp_Utilisateur,nom_Utilisateur, prenom_Utilisateur, email_Utilisateur, telephone_Utilisateur, adresse_Utilisateur, image_Utilisateur, role_Utilisateur, date_created_Utilisateur, etat_Utilisateur) 
+                VALUES ('$login','$mdp','$nom', '$prenom', '$email', '$telephone', '$adresse','default.jpg','1', '$date_courrant', '1')";
             }
         }
         
     }
+    $result = $connexion->query($sql);
+                if ($result) {
+                    envoyer_mail($email, "$prenom $nom", $login, $_POST['mdp']);
+                }
+                echo message(__FUNCTION__, $result);
 }
 
 /////////////////////// Module Profile /////////////////////////
+
 function update_profile(){
     global $connexion;
     $date_courrant=date('Y-m-d H:i:s');
@@ -240,6 +240,7 @@ if ($role == "1") {
         echo json_encode(['error' => message(__FUNCTION__, $result)]);
     }
 }
+//
 function update_image() {
     global $connexion;
     $ID= $_SESSION['ID'];
@@ -259,7 +260,7 @@ function update_image() {
             return null;
         }
 
-        $newFileName = $nom . '.' . $fileExtension;
+        $newFileName = 'User' . '_' . $ID . '.' . $fileExtension;
         $destPath = $uploadDir . $newFileName;
 
         if (move_uploaded_file($fileTmpPath, $destPath)) {
@@ -275,8 +276,6 @@ function update_image() {
         }
     }
 }
-
-
 
 ///////////////////////////// Module Salarie ////////////////////////////
 
@@ -317,8 +316,8 @@ function display_salarie(){
                 <td><button type='button' class='icon-button' id='btn_document_salarie' data-document='" . $row['id_Salarie'] . "'><img src='../img/view.png'/></button></td>
                 <td>
                     <center>
-                        <button type='button' class='modifier' id='btn_modif_salarie' data-id='" . $row['id_Salarie'] . "'>Modifier</button>
-                        <button type='button' class='supprimer' id='btn_supprime_salarie' data-id1='" . $row['id_Salarie'] . "'>Supprimer</button>
+                        <button type='button' class='modifier_icon' id='btn_modif_salarie' data-id='" . $row['id_Salarie'] . "'><i class='fa-solid fa-pencil'></i></button>
+                        <button type='button' class='supprimer_icon' id='btn_supprime_salarie' data-id1='" . $row['id_Salarie'] . "'><i class='fa-solid fa-trash-can'></i></button>
                     </center>
                 </td>
             </tr>";
@@ -327,7 +326,7 @@ function display_salarie(){
     $value .= "</tbody></table>";
     echo json_encode(['status' => 'success', 'html' => $value]);
 }
-
+//
 function ajouter_salarie() {
     global $connexion;
     $id = $_SESSION['ID'];
@@ -401,7 +400,7 @@ function ajouter_salarie() {
         echo message(__FUNCTION__, $result);
     }
 }
-
+//
 function get_salarie(){
     global $connexion;
     $SalarieID = $_POST['SalarieID'];
@@ -419,7 +418,7 @@ function get_salarie(){
     }
     echo json_encode($salarie_data);
 }
-
+//
 function update_salarie(){
     global $connexion;
     $nomS = $_SESSION['Nom'];
@@ -439,7 +438,7 @@ function update_salarie(){
     $result_notif = $connexion->query($sql_notif);
     echo message(__FUNCTION__, $result);  
 }
-
+//
 function supprimer_salarie(){
     global $connexion;
     $nom= $_SESSION['Nom'];
@@ -454,7 +453,7 @@ function supprimer_salarie(){
     $result_notif = $connexion->query($sql_notif);
     echo message(__FUNCTION__, $result);
 }
-
+//
 function get_documentSalarie(){
     global $connexion;
     $SalarieID = $_POST['SalarieID'];
@@ -472,7 +471,7 @@ function get_documentSalarie(){
     }
     echo json_encode($document_data);
 }
-
+//
 function update_document(){
     global $connexion;
     $ID = $_POST['SalarieID'];
@@ -550,7 +549,9 @@ function update_document(){
         echo "<div class='text-echec'>L'employé avec l'ID '$ID' n'a pas été trouvé.</div>";
     }
 }
+
 /////////////// Module Sous-traitant ///////////////
+
 function display_sousTraitant(){
     global $connexion;
     $value = '<table id="listeSousTraitant" class="table-salarie">
@@ -594,8 +595,8 @@ function display_sousTraitant(){
             </a></td>
             <td>
                     <center>
-                        <button type='button' class='modifier' id='btn_modif_soustraitant' data-id='" . $row['id_Entreprise'] . "'>Modifier</button>
-                        <button type='button' class='supprimer' id='btn_supprime_soustraitant' data-id1='" . $row['id_Entreprise'] . "'>Supprimer</button>
+                        <button type='button' class='modifier_icon' id='btn_modif_soustraitant' data-id='" . $row['id_Entreprise'] . "'><i class='fa-solid fa-pencil'></i></button>
+                        <button type='button' class='supprimer_icon' id='btn_supprime_soustraitant' data-id1='" . $row['id_Entreprise'] . "'><i class='fa-solid fa-trash-can'></i></button>
                     </center>
                 </td>
             </tr>";            
@@ -604,7 +605,7 @@ function display_sousTraitant(){
     $value .= "</tbody></table>";
     echo json_encode(['status' => 'success', 'html' => $value]);
 }
-
+//
 function ajouter_soustraitant(){
     global $connexion;
     $nom = $_POST['nom'];
@@ -639,7 +640,7 @@ function ajouter_soustraitant(){
         echo message(__FUNCTION__, $result); 
     }
 }
-
+//
 function get_soustraitant(){
     global $connexion;
     $ID = $_POST['ID'];
@@ -669,7 +670,7 @@ function get_soustraitant(){
     $soustraitant_data[11] = $chefProjet;
     echo json_encode($soustraitant_data);
 }
-
+//
 function update_soustraitant(){
     global $connexion;
     $id = $_POST['id'];
@@ -695,7 +696,7 @@ function update_soustraitant(){
     $result = $connexion->query($sql);
     echo message(__FUNCTION__, $result);
 }
-
+//
 function supprimer_soustraitant(){
     global $connexion;
     $ID = $_POST['ID'];
@@ -705,7 +706,7 @@ function supprimer_soustraitant(){
     $result = $connexion->query($sql);
     echo message(__FUNCTION__, $result);
 }
-
+//
 function get_soustraitant_chefProjet(){
     global $connexion;
     $ID= $_POST['ID'];
@@ -721,8 +722,7 @@ function get_soustraitant_chefProjet(){
     }
     echo json_encode($soustraitant_chefProjet_data); 
 }
-
-
+//
 function get_documentSoustraitant(){
     global $connexion;
     $ID = $_POST['ID'];
@@ -756,9 +756,8 @@ function get_documentSoustraitant(){
     }
     echo json_encode($document_data);
 }
-
+//
 function ajouter_documentSoustraitant(){
-
     global $connexion;
     $entreprise_id = $_POST['ID'];
     $sql1 = "SELECT nom_Entreprise FROM entreprise WHERE id_Entreprise = '$entreprise_id'";
@@ -862,6 +861,7 @@ function ajouter_documentSoustraitant(){
 }
 
 ////////////////// Module demande /////////////////
+
 function display_demande(){
     global $connexion;
     $role  = $_SESSION['Role'];
@@ -921,8 +921,8 @@ function display_demande(){
             }
     
             if($role == "2" && $row['status_Demande'] == "En Attente") {
-                $value .= "<button type='button' class='supprimer' id='btn_supprime_demande' data-demande='" . $row['id_Demande'] . "'>
-                    Supprimer
+                $value .= "<button type='button' class='supprimer_icon' id='btn_supprime_demande' data-demande='" . $row['id_Demande'] . "'>
+                    <i class='fa-solid fa-trash-can'></i>
                 </button>";
             }
     
@@ -933,8 +933,7 @@ function display_demande(){
     $value .= "</tbody></table>";
     echo json_encode(['status' => 'success', 'html' => $value]);
 }
-
-
+//
 function update_status_demande(){
     global $connexion;
     $nom = $_SESSION['Nom'];
@@ -980,12 +979,13 @@ function ajouter_demande(){
         echo message(__FUNCTION__, false);
         exit;
     }
+    $demande_id = mysqli_insert_id($connexion);
+
     // Notification
     $sql_notif="INSERT INTO notifications (idEntreprise_Notification, type_Notification, message_Notification, date_created_Notification, etat_Notification) 
     VALUES ('0', 'Neveaulle Demande', 'Vous avez une nouvelle demande de $nom .', '$date_courant', '0')";
     $result_notif = $connexion->query($sql_notif);
 
-    $demande_id = mysqli_insert_id($connexion);
     $folderPath = "../view/file/" . $demande_id . "/";
     if (!is_dir($folderPath)) {
         mkdir($folderPath, 0777, true);
@@ -1080,7 +1080,7 @@ function ajouter_demande(){
     $result2 = $connexion->query($sql2);
     echo message(__FUNCTION__, $result2);
 }
-
+//
 function supprimer_demande() {
     global $connexion;
     $id = $_POST['ID'];
@@ -1098,6 +1098,7 @@ function supprimer_demande() {
 }
 
 ////////////////// Module dashboard //////////////////
+
 function display_demande_dashboard(){
     global $connexion;
     $role = $_SESSION['Role']; 
@@ -1180,8 +1181,7 @@ function display_demande_dashboard(){
     }
     echo json_encode(['status' => 'success', 'html' => $value]);
 }
-
-
+//
 function display_document_dashboard(){
     global $connexion;
     $role = $_SESSION['Role'];
@@ -1326,7 +1326,7 @@ function display_document_dashboard(){
     $value .= "</tbody></table>";
     echo json_encode(['status' => 'success', 'html' => $value]);
 }
-
+//
 function display_all_document_dashboard(){
     global $connexion;
     $role = $_SESSION['Role'];
@@ -1469,8 +1469,7 @@ function display_all_document_dashboard(){
     $value .= "</tbody></table>";
     echo json_encode(['status' => 'success', 'html' => $value]);
 }
-    
-
+//
 function update_document_dashboard(){
     $DocInput= 'document';
     $entreprise_id = $_POST['id'];
@@ -1484,7 +1483,7 @@ function update_document_dashboard(){
     $success = move_uploaded_file($newFile['tmp_name'], $destPath . $documentName);
     echo message(__FUNCTION__, $success);
 }
-
+//
 function update_Validity_Date(){
     global $connexion;
     $date_courrant=date('Y-m-d H:i:s');
@@ -1539,8 +1538,8 @@ function update_Validity_Date(){
         $total_dem = $row_dem['total'];
     
         echo json_encode(['status' => 'success', 'html' => $total_ent, 'demande' => $total_dem]);
-    }
-    
+}
+//  
 function calcul_chart_dashboard(){
     global $connexion;
     $role = $_SESSION['Role']; 
@@ -1578,11 +1577,11 @@ function display_notification(){
     $header = "<div class='entete'>
                 <h3>Notifications</h3>
                 <button type='button' id='btn_affiche' class='btn_affiche' >Voir tout</button><br>
-                </div>";
+                </div><br>";
     if($role == "1"){
-        $sql = "SELECT * FROM notifications WHERE idEntreprise_Notification = '0' ORDER BY date_created_Notification desc limit 5 ";
+        $sql = "SELECT * FROM notifications WHERE idEntreprise_Notification = '0' ORDER BY date_created_Notification desc limit 4 ";
     }else {
-        $sql = "SELECT * FROM notifications WHERE idEntreprise_Notification = '$id' ORDER BY date_created_Notification desc limit 5";
+        $sql = "SELECT * FROM notifications WHERE idEntreprise_Notification = '$id' ORDER BY date_created_Notification desc limit 4";
     }
     $result = mysqli_query($connexion, $sql);
     if ($result && mysqli_num_rows($result) > 0) {
@@ -1634,7 +1633,7 @@ function display_notification(){
     $html = array_merge([$header], $res);
     echo json_encode(['status' => 'success', 'html' => $html]);
 }
-
+//
 function display_all_notification(){
     global $connexion;
     $role  = $_SESSION['Role'];
@@ -1695,7 +1694,7 @@ function display_all_notification(){
     }    
     echo json_encode(['status' => 'success', 'html' => $html]);
 }
-
+//
 function get_notification(){
     global $connexion;
     $id = $_POST['id'];
@@ -1716,6 +1715,7 @@ function get_notification(){
 }
 
 ////////////// Module contact //////////////////
+
 function ajouter_message(){
     global $connexion;
     $nom = $_POST['nom'];
@@ -1735,7 +1735,436 @@ function ajouter_message(){
     echo $response;
 }
 
+///////////////// Module Facture /////////////////
 
+function display_facture(){
+    global $connexion;
+    $value = '<table id="listeFacture" class="table-salarie">
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Date</th>
+        <th>Montant</th>
+        <th>Status</th>
+        <th>Facture</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>';
+
+    $sql = "SELECT * FROM facture WHERE etat_Facture = '1'";
+    $result = mysqli_query($connexion,$sql);
+    if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            $sql_nom="SELECT nom_Entreprise FROM entreprise WHERE id_Entreprise = '$row[idEntreprise_Facture]'";
+            $result_nom = mysqli_query($connexion,$sql_nom);
+            $row_nom = mysqli_fetch_assoc($result_nom);
+            if ($row['status_Facture'] == 'En attente de paiement') {
+                $statusClass = 'status status_facture';
+            } else { $statusClass = 'status status_acceptee';}
+
+            $value .= "<tr>
+            <td>" . $row_nom['nom_Entreprise'] . "</td>
+            <td>" . $row['date_Facture'] . "</td>
+            <td>" . $row['montant_Facture'] . " dt</td>
+            <td><div class='$statusClass'>" . $row['status_Facture'] . "</div></td>
+            <td>
+                <center><a href='facture_pdf.php?id=" . $row['id_Facture'] . "&entreprise=" . $row['idEntreprise_Facture'] . "' target='_blank'>
+                    <button type='button' class='icon-button' id='btn_facture' data-id='" . $row['id_Facture'] . "' data-entreprise='" . $row['idEntreprise_Facture'] . "'>
+                        <img src='../img/view.png' /></button></a>
+                </center>
+            </td>
+            <td>
+                <center>
+                    <button type='button' class='modifier_icon' id='btn_modif_facture' data-id='" . $row['id_Facture'] . "' data-entreprise='" . $row_nom['nom_Entreprise'] . "'><i class='fa-solid fa-pencil'></i></button>
+                    <button type='button' class='supprimer_icon' id='btn_supprime_facture' data-id='" . $row['id_Facture'] . "'><i class='fa-solid fa-trash-can'></i></i></button>
+                </center>
+            </td>
+            </tr>";            
+        }
+    } 
+    $value .= "</tbody></table>";
+    echo json_encode(['status' => 'success', 'html' => $value]);
+}
+//
+function ajouter_facture(){
+    global $connexion;
+    $id_entreprise = $_POST['id_entreprise'];
+    $date = $_POST['date'];
+    $montant = $_POST['montant'];
+    $sql = "INSERT INTO facture (idEntreprise_Facture, date_Facture, montant_Facture) VALUES ('$id_entreprise', '$date', '$montant')";
+    $result = mysqli_query($connexion, $sql);
+    echo message(__FUNCTION__, $result);
+}
+//
+function get_facture() {
+    global $connexion;
+    $id = $_POST['id'];
+    $entreprise = $_POST['entreprise'];
+    $sql = "SELECT * FROM facture WHERE id_Facture = '$id'";
+    $result = mysqli_query($connexion, $sql);
+    while ($row = mysqli_fetch_assoc($result)) {
+        $facture_data = [];
+        $facture_data[0] = $row['id_Facture'];
+        $facture_data[1] = $entreprise;
+        $facture_data[2] = $row['date_Facture'];
+        $facture_data[3] = $row['montant_Facture'];
+    }
+    echo json_encode($facture_data);
+}
+//
+function update_facture(){
+    global $connexion;
+    $id = $_POST['id'];
+    $nom = $_POST['nom'];
+    $date = $_POST['date'];
+    $montant = $_POST['montant'];
+    $date_courant = date('Y-m-d H:i:s');
+    $sql = "UPDATE facture SET idEntreprise_Facture = '$nom', date_Facture = '$date', montant_Facture = '$montant', date_updated_Facture = '$date_courant' WHERE id_Facture = '$id'";
+    $result = $connexion->query($sql);
+    echo message(__FUNCTION__, $result);
+}
+//
+function supprimer_facture(){
+    global $connexion;
+    $id = $_POST['id'];
+    $date_courant = date('Y-m-d H:i:s');
+    $sql = "UPDATE facture SET etat_Facture = '0', date_updated_Facture = '$date_courant' WHERE id_Facture = '$id'";
+    $result = $connexion->query($sql);
+    echo message(__FUNCTION__, $result);
+    
+}
+//
+function ajouter_reglement(){
+    global $connexion;
+    $idFacture = $_POST['id'];
+    $file = $_FILES['file'];
+    $montant = $_POST['montant'];
+
+    $sql = "INSERT INTO reglement (idFacture_Reglement, montant_Reglement)  VALUES ('$idFacture', '$montant')";
+    $result = mysqli_query($connexion, $sql);
+    if (!$result) {
+        echo message(__FUNCTION__, false);
+        return;
+    }
+    $idReglement = mysqli_insert_id($connexion);
+    $uploadDir = '../view/file/facture';
+    $file_name = 'PieceJointe_Reglement_' . $idReglement . '.pdf';
+    $destination = $uploadDir . '/' . $file_name;
+
+    move_uploaded_file($file['tmp_name'], $destination);
+    $sql2 = "UPDATE reglement SET pieceJointe_Reglement = '$file_name' WHERE id_Reglement = '$idReglement'";
+    $result2 = mysqli_query($connexion, $sql2);
+    echo message(__FUNCTION__, $result2);
+    $sql_status = "UPDATE facture SET status_Facture='Reglée' WHERE id_Facture = '$idFacture'";
+    $result_status = mysqli_query($connexion, $sql_status);
+}
+
+///////////////// Module Reglement ////////////////
+
+function display_reglement(){
+ global $connexion;
+    $value = '<table id="listeReglement" class="table-salarie">
+    <thead>
+      <tr>
+        <th>Référence Réglement</th>
+        <th>Référence Facture</th>
+        <th>Montant</th>
+        <th>Pièce jointe</th>
+      </tr>
+    </thead>
+    <tbody>';
+
+    $sql = "SELECT * FROM reglement WHERE etat_Reglement = '1'";
+    $result = mysqli_query($connexion,$sql);
+    if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            if (strlen($row['id_Reglement']) == 1) {
+                $id_R ="R00" . $row['id_Reglement'];
+            } elseif (strlen($row['id_Reglement']) == 2) {
+                $id_R ="R0" . $row['id_Reglement'];
+            } else {
+                $id_R = "R" . $row['id_Reglement'];
+            }
+            if (strlen($row['idFacture_Reglement']) == 1) {
+                $id_F ="F00" . $row['idFacture_Reglement'];
+            } elseif (strlen($row['idFacture_Reglement']) == 2) {
+                $id_F ="F0" . $row['idFacture_Reglement'];
+            } else {
+                $id_F = "F" . $row['idFacture_Reglement'];
+            }
+            $sql_file = "SELECT pieceJointe_Reglement FROM reglement WHERE id_Reglement = '$row[id_Reglement]'";
+            $result_file = mysqli_query($connexion, $sql_file);
+            $row_file = mysqli_fetch_assoc($result_file);
+            $pieceJointe = $row_file['pieceJointe_Reglement'];
+            $value .= "<tr>
+            <td>" . $id_R . "</td>
+            <td>" . $id_F . "</td>
+            <td>" . $row['montant_Reglement'] . " dt</td>
+            <td>
+                <center>
+                    <button type='button' class='icon-button' id='btn_reglement' data-id='" . $row['id_Reglement'] . "' data-file='" . $pieceJointe . "'>
+                        <img src='../img/view.png' /></button>
+                </center>
+            </td>
+            </tr>";            
+        }
+    } 
+    $value .= "</tbody></table>";
+    echo json_encode(['status' => 'success', 'html' => $value]);
+}
+
+///////////////// Module Message ////////////////
+
+function display_message() {
+    global $connexion;
+    $id_utilisateur = $_SESSION['ID'];
+    $emetteur = $_SESSION['Login'];
+    $role = $_SESSION['Role'];
+    $html = '';
+    // Utilisateurs ayant échangé au moins un message
+    $sql_msg = "SELECT u.login_Utilisateur,u.nom_Utilisateur,u.prenom_Utilisateur,u.image_Utilisateur,m.messages_Messages AS last_msg ,m.date_created_Messages AS last_date,m.vu_Messages AS vu, login_emetteur_Messages FROM utilisateur u
+    JOIN (SELECT CASE WHEN etat_Messages = '1' AND login_emetteur_Messages = '$emetteur' THEN login_recepteur_Messages ELSE login_emetteur_Messages END AS other_user, MAX(date_created_Messages) AS max_date FROM messages
+    WHERE login_emetteur_Messages = '$emetteur' OR login_recepteur_Messages = '$emetteur' AND etat_Messages = '1' GROUP BY other_user) AS last_dates ON last_dates.other_user = u.login_Utilisateur
+    JOIN messages m
+    ON ((m.login_emetteur_Messages  = '$emetteur' AND m.login_recepteur_Messages = last_dates.other_user) OR (m.login_recepteur_Messages = '$emetteur' AND m.login_emetteur_Messages  = last_dates.other_user))
+    AND m.date_created_Messages = last_dates.max_date
+    WHERE u.role_Utilisateur = '2' AND u.etat_Utilisateur = '1'
+    ORDER BY last_dates.max_date DESC";
+    $res_msg = mysqli_query($connexion, $sql_msg);
+
+    if ($res_msg && mysqli_num_rows($res_msg) > 0) {
+        while ($row = mysqli_fetch_assoc($res_msg)) {
+            $class = ($row['vu'] == 1) ? 'message-item' : 'message-item-lu';
+            $login   =$row['login_Utilisateur'];
+            $img     = $row['image_Utilisateur']
+                     ? '../img/profil/'. $row['image_Utilisateur']
+                     : '../img/profil/default.jpg';
+            $nom= $row['prenom_Utilisateur'] . ' ' . $row['nom_Utilisateur'];
+            $date    = date('d M Y H:i', strtotime($row['last_date']));
+            $msg = mb_substr($row['last_msg'], 0, 40, 'UTF-8')
+                     . (mb_strlen($row['last_msg'], 'UTF-8') > 40 ? ' …' : '');
+            if($row['login_emetteur_Messages'] == $emetteur){
+                $msg = "vous : " . $msg;}
+            $html .= "
+            <button type='button' id='btn_message' class='$class' style='padding: 10px;' data-login='$login' data-nom='$nom' data-img='$img'>
+              <img src='$img' alt='Avatar' class='profile-image'>
+              <div class='message-details'>
+                <div class='entete'>
+                  <span class='message-name'>$nom</span>
+                  <span class='message-date'>$date</span>
+                </div>
+                <p class='message-content'>". $msg ."</p>
+              </div>
+            </button>";
+        }
+    }
+    // Utilisateurs sans message
+    $sql_no_msg = "SELECT login_Utilisateur, nom_Utilisateur, prenom_Utilisateur, image_Utilisateur FROM utilisateur
+          WHERE role_Utilisateur = '2' AND etat_Utilisateur = '1' AND login_Utilisateur NOT IN (
+          SELECT DISTINCT CASE WHEN login_emetteur_Messages = '$emetteur' THEN login_recepteur_Messages ELSE login_emetteur_Messages END
+          FROM messages WHERE login_emetteur_Messages = '$emetteur' OR login_recepteur_Messages = '$emetteur') 
+          ORDER BY prenom_Utilisateur, nom_Utilisateur ";
+    $res_no = mysqli_query($connexion, $sql_no_msg);
+
+    if ($res_no && mysqli_num_rows($res_no) > 0) {
+        while ($row = mysqli_fetch_assoc($res_no)) {
+            $login   = $row['login_Utilisateur'];
+            $img     = $row['image_Utilisateur']
+                     ? '../img/profil/'. $row['image_Utilisateur']
+                     : '../img/profil/default.jpg';
+            $nom= $row['prenom_Utilisateur'] . ' ' . $row['nom_Utilisateur'];
+            $msg = 'Commencer une discussion';
+            $html .= "
+            <button type='button' id='btn_message' class='message-item' style='padding: 10px;' data-login='$login' data-nom='$nom' data-img='$img'>
+              <img src='$img' alt='Avatar' class='profile-image'>
+              <div class='message-details'>
+                <div class='entete'>
+                  <span class='nom_m'>$nom</span>
+                </div>
+                <p class='message-content'>$msg</p>
+              </div>
+            </button>";
+        }
+    }
+echo json_encode(['status' => 'success','html'   => $html]);
+}
+//
+function get_message(){
+    global $connexion;
+    $html = '';
+    $login = $_SESSION['Login'];
+    $login_utilisateur = $_POST['login'];
+    $nom_utilisateur = $_POST['nom'];
+    $img_utilisateur = $_POST['img'];
+
+    $html .= '
+    <div class="header_msg">
+        <img src="' . $img_utilisateur . '" class="profile-image" />
+        <span class="nom_m">' . $nom_utilisateur . '</span>
+    </div><hr style="border-top: 2px solid rgba(72, 14, 233, 0.5); margin-top: 15px;"><br><br>';
+    $html .= '<div class="body_msg" style="max-height:350px; overflow-y:auto;">';
+    $sql ="SELECT * FROM messages 
+    WHERE ((login_emetteur_Messages = '$login_utilisateur' AND login_recepteur_Messages = '$login') OR (login_emetteur_Messages = '$login' AND login_recepteur_Messages = '$login_utilisateur')) and etat_Messages = '1' ORDER BY date_created_Messages ASC";
+    $result = mysqli_query($connexion, $sql);
+    if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            $date    = date('d M Y H:i', strtotime($row['date_created_Messages']));
+            $msg = $row['messages_Messages'];
+            if( $msg == '' ) {
+                $msg = 'Commencer une discussion !';
+            }
+            $id_msg = $row['id_Messages'];
+            $login_emetteur = $row['login_emetteur_Messages'];
+            $login_recepteur = $row['login_recepteur_Messages'];
+            $align = ($login_emetteur == $login) ? 'right' : 'left';
+            $html .= '
+            <div class="' . $align . '">
+                <p>' . $msg . '</p>
+                <span class="time">' . $date  . '</span>
+            </div>';
+            $sql_msg="UPDATE messages SET vu_Messages = '1' WHERE login_emetteur_Messages='$login_utilisateur' AND id_Messages = '$id_msg'";
+            $result_msg = mysqli_query($connexion, $sql_msg);
+        }
+    }else {
+        $html .= '
+          <div class="no-message">
+            Commencer une discussion !
+          </div>
+        ';
+    }
+    $html .= '</div>';
+    $html .= '
+    <div class="footer_msg">
+        <input type="text" id="new_message" class="new_message" placeholder="  Écrire un message ..." />
+        <button type="button" id="send_message" data-login="' . $login_utilisateur . '" data-nom="' . $nom_utilisateur . '" data-img="' . $img_utilisateur . '"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+    </div>';    
+    
+    echo $html;
+}
+//
+function send_message(){
+    global $connexion;
+    $login = $_SESSION['Login'];
+    $login_utilisateur = $_POST['login'];
+    $message = $_POST['message'];
+    $sql = "INSERT INTO messages (login_emetteur_Messages, login_recepteur_Messages, messages_Messages) VALUES ('$login', '$login_utilisateur', '$message')";
+    $result = mysqli_query($connexion, $sql);
+    echo json_encode(['status' => 'success']);
+}
+// icon message
+function display_message_liste(){
+    global $connexion;
+    $id_utilisateur = $_SESSION['ID'];
+    $emetteur = $_SESSION['Login'];
+    $role = $_SESSION['Role'];
+    $header = "<div class='entete'>
+                <h3>Messages</h3>
+                <button type='button' id='btn_affiche' class='btn_affiche' ><a href='messagerie.php' style='all: unset;'>Voir tout</a></button><br>
+                </div><br>";
+    $sql_msg = "SELECT u.login_Utilisateur,u.nom_Utilisateur,u.prenom_Utilisateur,u.image_Utilisateur,m.messages_Messages AS last_msg ,m.date_created_Messages AS last_date,m.vu_Messages AS vu, login_emetteur_Messages FROM utilisateur u
+    JOIN (SELECT CASE WHEN etat_Messages = '1' AND login_emetteur_Messages = '$emetteur' THEN login_recepteur_Messages ELSE login_emetteur_Messages END AS other_user, MAX(date_created_Messages) AS max_date FROM messages
+    WHERE login_emetteur_Messages = '$emetteur' OR login_recepteur_Messages = '$emetteur' GROUP BY other_user) AS last_dates ON last_dates.other_user = u.login_Utilisateur
+    JOIN messages m
+    ON ((m.login_emetteur_Messages  = '$emetteur' AND m.login_recepteur_Messages = last_dates.other_user) OR (m.login_recepteur_Messages = '$emetteur' AND m.login_emetteur_Messages  = last_dates.other_user))
+    AND m.date_created_Messages = last_dates.max_date
+    WHERE u.role_Utilisateur = '2' AND u.etat_Utilisateur = '1'
+    ORDER BY last_dates.max_date DESC limit 4";
+    $res_msg = mysqli_query($connexion, $sql_msg);
+    $res = [];
+    if ($res_msg && mysqli_num_rows($res_msg) > 0) {
+        while ($row = mysqli_fetch_assoc($res_msg)) {
+            $class = ($row['vu'] == 0 && $row['login_emetteur_Messages'] != $emetteur) ? 'message-item-lu' : 'message-item';
+            $login   =$row['login_Utilisateur'];
+            $img     = $row['image_Utilisateur']
+                     ? '../img/profil/'. $row['image_Utilisateur']
+                     : '../img/profil/default.jpg';
+            $nom= $row['prenom_Utilisateur'] . ' ' . $row['nom_Utilisateur'];
+            $date    = date('d M Y H:i', strtotime($row['last_date']));
+            $msg = mb_substr($row['last_msg'], 0, 40, 'UTF-8')
+                     . (mb_strlen($row['last_msg'], 'UTF-8') > 40 ? ' …' : '');
+            if($row['login_emetteur_Messages'] == $emetteur){
+                $msg = "vous : " . $msg;}
+            $res[] .= "
+            <a href='messagerie.php' style='all: unset;'><button type='button' id='btn_message_soustraitant' class='$class' style='padding: 10px;' data-login='$login' data-nom='$nom' data-img='$img'>
+              <img src='$img' alt='Avatar' class='profile-image'>
+              <div class='message-details'>
+                <div class='entete'>
+                  <span class='message-name'>$nom</span>
+                  <span class='message-date'>$date</span>
+                </div>
+                <p class='message-content'>". $msg ."</p>
+              </div></button></a>";
+        }
+    }
+    $html = array_merge([$header], $res);
+    echo json_encode(['status' => 'success', 'html' => $html]);
+}
+// Message soustraitant
+function display_message_soustraitant(){
+    global $connexion;
+    $id_utilisateur = $_SESSION['ID'];
+    $login_emetteur = $_SESSION['Login'];
+    $html = '';
+    $sql_utilisateur = "SELECT login_Utilisateur, nom_Utilisateur, prenom_Utilisateur, image_Utilisateur FROM utilisateur WHERE role_Utilisateur = '1' AND etat_Utilisateur = '1'";
+    $res_utilisateur = mysqli_query($connexion, $sql_utilisateur);
+
+    if ($res_utilisateur && mysqli_num_rows($res_utilisateur) > 0) {
+        while ($row = mysqli_fetch_assoc($res_utilisateur)) {
+            $login_recepteur = $row['login_Utilisateur'];
+            $nom = $row['prenom_Utilisateur'] . ' ' . $row['nom_Utilisateur'];
+            $img = $row['image_Utilisateur']
+                     ? '../img/profil/'. $row['image_Utilisateur']
+                     : '../img/profil/default.jpg';
+    }}
+    $html ='<div class="msg">
+        <div class="header_msg">
+        <img src="' . $img . '" class="profile-image" />
+        <span class="nom_m">' . $nom . '</span></div>
+        <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
+    </div>
+    <hr style="border-top: 1px solid rgba(72, 14, 233, 0.5);"><br><br>';
+    $html .='<div class="body_msg" style="max-height:350px; overflow-y:auto;">';
+    $sql ="SELECT * FROM messages 
+    WHERE ((login_emetteur_Messages = '$login_emetteur' AND login_recepteur_Messages = '$login_recepteur') OR (login_emetteur_Messages = '$login_recepteur' AND login_recepteur_Messages = '$login_emetteur')) and etat_Messages = '1' ORDER BY date_created_Messages ASC";
+    $result = mysqli_query($connexion, $sql);
+    if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            $date    = date('d M Y H:i', strtotime($row['date_created_Messages']));
+            $msg = $row['messages_Messages'];
+            if( $msg == '' ) {
+                $msg = 'Commencer une discussion !';
+            }
+            $id_msg = $row['id_Messages'];
+            $login= $row['login_emetteur_Messages'];
+            $login_utilisateur = $row['login_recepteur_Messages'];
+            $align = ($login_emetteur == $login) ? 'right' : 'left';
+            $html .= '
+            <div class="' . $align . '">
+                <p>' . $msg . '</p>
+                <span class="time">' . $date  . '</span>
+            </div>';
+            $sql_msg="UPDATE messages SET vu_Messages = '1' WHERE id_Messages = '$id_msg'";
+            $result_msg = mysqli_query($connexion, $sql_msg);
+        }
+    }else {
+        $html .= '
+          <div class="no-message">
+            Commencer une discussion !
+          </div>
+        ';
+    }
+    $html .= '</div>';
+    $html .= '
+    <div class="footer_msg">
+        <input type="text" id="new_message" class="new_message" placeholder="  Écrire un message ..." />
+        <button type="button" class="send_message" id="send_message_soustraitant" data-login="' . $login_recepteur . '" ><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+    </div>';    
+    
+    echo json_encode(['status'=> 'success','html'=> $html]);
+}
+
+/////////////////////////////////////////////////////////
 
 
 

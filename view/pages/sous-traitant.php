@@ -8,6 +8,7 @@ $login = $_SESSION['Login'];
 <div class="table" action="" method="post">
   <div class="table-responsive-xxl" id="table_listeSousTraitant"></div>
 </div>
+
 <!-- Model ajout -->
 <div class="modal fade bd-example-modal-lg" id="ajoutSoustraitant" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-lg">
@@ -342,7 +343,7 @@ $login = $_SESSION['Login'];
       <div class="modal-header">
         <h2 class="modal-title" style="color: #470EE9; margin: 0;">Information de chef de projet</h2>
         <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
-      </div>
+      </div><br>
       <div class="modal-body">
         <div style="font-size:18px; color: #470EE9;">
           <center id="info_chefProjet"></center>  

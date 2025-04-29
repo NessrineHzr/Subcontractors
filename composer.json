@@ -1,6 +1,11 @@
 {
     "require": {
         "ext-zip": "^1.11",
-        "phpmailer/phpmailer": "^6.9"
+        "phpmailer/phpmailer": "^6.9",
+        "setasign/fpdf": "^1.8",
+        "dompdf/dompdf": "^0.8.3",
+        "spipu/html2pdf": "^5.2",
+        "mpdf/mpdf": "^6.1",
+        "vlucas/phpdotenv": "^3.6"
     }
 }

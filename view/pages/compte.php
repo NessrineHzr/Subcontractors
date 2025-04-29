@@ -7,14 +7,6 @@ $result = mysqli_query($connexion, $sql);
 <!DOCTYPE html>
 <html lang="fr">
 <body>
-<style>
-.entete {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-</style>
 <div class="entete">
   <h2 style="font-size: 23px;" class="nom">Tous les comptes</h2><br><br>
   <button class='btn-add' id="ajout_compte" style='font-size: 15px;'>Ajouter un compte</button>
@@ -114,7 +106,6 @@ $result = mysqli_query($connexion, $sql);
 </div>
 <!-- end Model alert ajout echec -->
 
-
 <table id="table_listeCompte" class="table-salarie">
   <thead>
     <tr>
@@ -148,10 +139,10 @@ $result = mysqli_query($connexion, $sql);
       $statusClass = ($status == '1') ? 'mission mission-europeenne' : 'mission';
       $typesStatus = ($status == '1') ? 'Actif' : 'Inactif';
       if ($status == '1') {
-        $btnLabel = "Désactiver";
+        $btnLabel = "<i class='fas fa-user-lock'></i>";
         $newStatus = 0;
       } else {
-        $btnLabel = "Activer";
+        $btnLabel = "<i class='fa-solid fa-unlock'></i>";
         $newStatus = 1;
       }
     ?>
@@ -168,7 +159,7 @@ $result = mysqli_query($connexion, $sql);
           </div>
         </td>
         <td style="text-align: center;">
-          <button type="button" style="width: 100px;" class="btn_status modifier" data-id="<?php echo $id; ?>" data-status="<?php echo $newStatus; ?>"><?php echo $btnLabel; ?></button>
+          <button type="button"  class="btn_status modifier_icon" data-id="<?php echo $id; ?>" data-status="<?php echo $newStatus; ?>"><?php echo $btnLabel; ?></button>
         </td>
       </tr>
     <?php
@@ -176,8 +167,6 @@ $result = mysqli_query($connexion, $sql);
   ?>
   </tbody>
 </table>
-
-<br><br>
 </body>
 </html>
 <?php

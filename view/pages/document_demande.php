@@ -35,78 +35,6 @@ if ($statusDemande == 'En Attente' ){
 <!DOCTYPE html>
 <html lang="fr">
 <body>
-<style>
-    .documents {
-        display: flex; 
-        gap: 10px;
-        flex-wrap: wrap;
-    }
-    .titledoc {
-        position: absolute;
-        top: 100%;  
-        left: auto; 
-        font-size: 16px; 
-    }
-    .document {
-        width: 18%;
-        display: flex;
-        align-items: center;
-        position: relative;
-    }
-    .doc {
-        background-color: #FFF0DB; 
-        padding: 50px;
-        border: none;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-    }
-    .doc img {
-        width: 40px;
-        height: 50px;
-    }
-    .telecharger {
-        border: none;
-        background-color: transparent;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .telecharger img {
-        width: 60px;
-        height: 60px;
-        transform: translateX(-60px);
-        margin-top: 150px;
-    }
-    .titre {
-    display: flex;
-    align-items: center; 
-    justify-content: space-between; 
-    }
-    .titre h3 {
-    margin: 0;
-    }
-    .btn_telecharger {
-    font-size: 15px;
-    width: 150px;
-    height: 19px;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: auto;
-    border-radius: 60px;
-    background-color: #EFEAFF;
-    color: #470EE9;
-    border : none;
-    }
-    #info_chefProjet_demande {
-    display: block;
-    text-align: left;
-    padding: 10px;
-    }
-</style>
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb mb-0 p-0">
         <li class="breadcrumb-item" style="font-size: 23px; font-weight: bold;">Demandes</li>
@@ -117,9 +45,10 @@ if ($statusDemande == 'En Attente' ){
         <button style='float: right; margin-left: 10px;' type="button" id="btn_accepter" class="buttonvalidate" data-demande="<?= $id ?>">Accepter</button>
         <button style='float: right;' type="button" id="btn_refuser" class="buttonannule" data-demande="<?= $id ?>">Refuser</button>
     <?php } ?>
-    </nav><br><br>
-<h3>Informations </h3><br><br>
+</nav><br><br>
 
+<!-- partie info -->
+<h3>Informations </h3><br><br>
 <table id="table_listeDemande" class="table-salarie">
   <thead>
       <tr>
@@ -165,6 +94,8 @@ if ($statusDemande == 'En Attente' ){
   </div>
 </div> 
 <!-- end Model affiche info chef projet -->
+
+ <!-- partie documents -->
 <div class="titre">
     <h3>Documents envoyés </h3><br>
     <button type="button" id="btn_telecharger" class="btn_telecharger" data-demande="<?= $id ?>">Télécharger tous</button>
@@ -192,7 +123,6 @@ foreach ($documents as $key => $title) {
     }
 }
 ?>
-
 <div class="documents">
     <?php foreach ($documents as $key => $title): ?>
         <div class="document">
@@ -242,7 +172,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 });
-
 </script>
 <?php
 include('../footer.php');

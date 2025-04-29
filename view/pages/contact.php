@@ -6,108 +6,6 @@ $id = $_SESSION['ID'];
 <!DOCTYPE html>
 <html lang="fr">
 <body>
-<style>
-.containe {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
-/* class contact */
-.contact {
-  margin-right: 100px;
-  margin-left: 40px;
-  width: 80%;
-}
-.contact h2 {
-  color: #470EE9;
-}
-.contact p {
-  font-family: 'Poppins', sans-serif;
-}
-
-.icon_contact i {
-    font-size: 14.5px;
-    color: white;
-    background-color: #470EE9;
-    width: 5%;
-    aspect-ratio: 1 / 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.icon_contact .ligne {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-.icon_contact p {
-  margin: 0;
-}
-
- 
-/* class message */
-.info {
-  margin-right: 40px;
-  margin-top :20px;
-  width: 80%;
-}
-
-.info .form-group {
-  margin-bottom: 20px;
-}
-
-.info label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 8px;
-  color: #470EE9;
-}
-
-.info input,
-.info textarea {
-  width: 100%;
-  padding: 15px 15px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
-}
-
-.info input:focus,
-.info textarea:focus {
-  outline: none;
-  border-color: #470EE9;
-}
-
-.info button {
-  padding: 12px 25px;
-  border: 2px solid #470EE9;
-  background: #470EE9;
-  color: white;
-  font-size: 16px;
-  font-weight: bold ;
-  border-radius: 6px;
-}
-
-.info button:hover {
-  background:rgb(88, 41, 220);
-}
-
-/* Responsive  */
-@media (max-width: 768px) {
-  .containe {
-    grid-template-columns: 1fr;
-    height: auto;
-  }
-  .contact {
-    border-right: none;
-    border-bottom: 1px solid #ddd;
-  }
-}
-
-</style>
-<Body>
-
 <div class="containe">
     <div class="contact">
         <h2>Contactez-nous</h2><br>
@@ -192,13 +90,12 @@ $id = $_SESSION['ID'];
     <div class="maps">
       <iframe 
        src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d10995768.775361102!2d9.733834!3d47.713275!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e6112300fd7043%3A0x9874a370fc165879!2s45%20Rue%20de%20Courtry%2C%2093470%20Coubron%2C%20France!5e0!3m2!1sfr!2sus!4v1744983698615!5m2!1sfr!2sus" 
-       width="100%" height="360" style="border: 1px; margin-top: 50px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+       width="100%" height="360" style="border: 1px; margin-top: 35px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
       </iframe>
     </div>
   </div>
 </div>
-  
-</Body>
+</body>
 </html>
 <?php
 include('../footer.php');

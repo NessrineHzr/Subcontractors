@@ -7,48 +7,6 @@ $result = $connexion->query($sql);
 <!DOCTYPE html>
 <html lang="fr">
 <body>
-<style>
-.container {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr); 
-    gap: 30px;
-    justify-items: center;
-}
-
-.card {
-    position: relative;
-    width: 240px;
-    height: 150px;
-    overflow: hidden;
-    border-radius: 5px;
-    transition: transform 0.2s ease;
-}
-
-.card:hover {
-    transform: scale(1.05);
-}
-
-.card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 5px;
-}
-
-.card button {
-    border: none;
-}
-.card .nom {
-    position: absolute;
-    top: 20%;
-    left: 30%;
-    transform: translate(-40%, -40%);
-    color: white;
-    padding: 8px 12px;
-    font-weight: bold;
-    font-size: 18px;
-}
-</style>
 <h2 style="font-size: 23px;">Documents sous-traitants</h2><br><br><br>
 <div class="container">
 <?php

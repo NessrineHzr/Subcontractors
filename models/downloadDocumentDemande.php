@@ -1,8 +1,15 @@
 <?php
+include('../config/base_de_donnee.php');
+
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+$sql="SELECT nom_Entreprise FROM entreprise, demande WHERE idEntreprise_Demande=id_Entreprise AND id_Demande='$id'";
+$result = mysqli_query($connexion, $sql);
+if ($row = mysqli_fetch_assoc($result)) {
+    $nom = $row['nom_Entreprise'];
+}
 $folderPath = "../view/file/" . $id;
-$zipName = "demande_" . $id . ".zip";
-$dossier = "demande_" . $id  ;
+$zipName = "demande_" . $nom . ".zip";
+$dossier = "demande_" . $nom  ;
 // Création de l'archive ZIP
 $zip = new ZipArchive();
 

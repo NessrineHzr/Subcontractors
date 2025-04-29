@@ -5,54 +5,6 @@ $login = $_SESSION['Login'];
 <!DOCTYPE html>
 <html lang="fr">
 <body>
-<style>
-    .titre {
-        font-size: 17px;
-        color: #470EE9;
-        margin-bottom: 25px;
-        text-align: left;
-    }
-    .documents {
-        display: flex; 
-        flex-wrap: wrap;
-    }
-    .document {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: left;
-        justify-content: space-between;
-        width: 150px;
-        position: relative;
-        padding: 17px;
-    }
-    .image-container {
-        display: flex;
-        flex-direction: column;
-    }
-    .doc {
-        background-color: #FFF0DB; 
-        padding: 30px;
-        border: none;
-        display: flex;
-        position: relative;
-    }
-    .doc img {
-        width: 40px;
-        height: 50px;
-    }
-    .telecharger {
-        border: none;
-        background-color: transparent;
-        display: flex;
-    }
-    .telecharger img {
-        width: 30px;
-        height: 30px;
-        margin-top: -105px;
-        transform: translateX(85px);
-    }
-</style>
 <div class="table" action="" method="post">
   <div class="table-responsive-xxl" id="table_listeSalarie"></div>
 </div>
@@ -353,9 +305,9 @@ $login = $_SESSION['Login'];
       <div class="modal-body" >
         <div class="file-container">
           <input type="hidden" id="id_Salarie" name="id_Salarie">
-          <div class="documents">
+          <div class="documents_s">
 
-          <div class="document">
+          <div class="document_s">
             <label for="pieceid_Salarie" class="titre">Pièce d'identité :</label>
             <input id="pieceid_Salarie" type="hidden">
             <div class="image-container">
@@ -365,7 +317,7 @@ $login = $_SESSION['Login'];
             </div>
           </div>
 
-          <div class="document">
+          <div class="document_s">
             <label for="dpae_Salarie" class="titre">DPAE :</label>
             <input id="dpae_Salarie" type="hidden">
             <div class="image-container">
@@ -375,7 +327,7 @@ $login = $_SESSION['Login'];
             </div>
           </div>
 
-          <div class="document">
+          <div class="document_s">
             <label for="permis_Salarie" class="titre">Permis de conduire :</label>
             <input id="permis_Salarie" type="hidden">
             <div class="image-container">
@@ -385,7 +337,7 @@ $login = $_SESSION['Login'];
             </div>
           </div>
 
-          <div class="document">
+          <div class="document_s">
             <label for="certifa1_Salarie" class="titre">Certificat A1 :</label>
             <input id="certifa1_Salarie" type="hidden">
             <div class="image-container">
@@ -395,7 +347,7 @@ $login = $_SESSION['Login'];
             </div>
           </div>
 
-          <div class="document">
+          <div class="document_s">
             <label for="certifzoll_Salarie" class="titre">Certificat Zoll :</label>
             <input id="certifzoll_Salarie" type="hidden">
             <div class="image-container">
@@ -405,7 +357,7 @@ $login = $_SESSION['Login'];
             </div>
           </div>
 
-          <div class="document">
+          <div class="document_s">
             <label for="photo_Salarie" class="titre">Photo :</label>
             <input id="photo_Salarie" type="hidden">
             <div class="image-container">
@@ -439,7 +391,6 @@ $login = $_SESSION['Login'];
     document.getElementById('link_certifzoll').addEventListener('click', handleLinkClick('certifzoll_Salarie'));
     document.getElementById('link_photo').addEventListener('click', handleLinkClick('photo_Salarie'));
 </script>
-
 <?php
 include('../footer.php');
 ?>

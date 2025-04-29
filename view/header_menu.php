@@ -27,7 +27,10 @@ if($role == "1"){
 }
 $res = mysqli_query($connexion, $sql);
 $nbr = $res->fetch_row()[0];
-
+// message 
+$sql_msg="SELECT COUNT(*) FROM messages WHERE etat_Messages = '1' AND vu_Messages = '0' AND login_recepteur_Messages = '$login' ";
+$res_msg = mysqli_query($connexion, $sql_msg);
+$nbr_msg = $res_msg->fetch_row()[0];
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -43,95 +46,29 @@ $nbr = $res->fetch_row()[0];
     <!-- DataTables JS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
-
+    <!-- FontAwesome pour l'icône de chat -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-<style>
-
-
-    /* Style pour le badge (optionnel) */
-    .icon.notification .notification {
-      position: absolute;
-      top: -5px;
-      right: -5px;
-      background: red;
-      color: white;
-      border-radius: 50%;
-      padding: 2px 5px;
-      font-size: 15px;
-    }
-    .entete {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-    }
-    .notification-list {
-      position: absolute;
-      top: 110px; 
-      width: 330px;
-      background: #fff;
-      border: 1px solid #ccc;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      display: none; 
-      z-index: 100;
-      padding: 15px;
-    }
-
-    .notification-item {
-    padding: 10px;
-    border-bottom: 1px solid #eee;
-    }
-
-    .notification-item button {
-        background: none;
-        border: none;
-        text-align: left;
-        font-size: 15px;
-        width: 100%;
-    }
-
-    .notification-item button:hover {
-        background-color:rgba(243, 243, 243, 0.9);
-    }
-    .btn_non_lu {
-        background-color:rgba(240, 240, 240, 0.8);
-        padding: 10px;
-        border-bottom: 1px solid #eee;
-    }
-    .btn_non_lu button {
-        background: none;
-        border: none;
-        text-align: left;
-        font-size: 15px;
-        width: 100%;
-    }
-    .btn_non_lu button:hover {
-        background-color:rgba(255, 255, 255, 0.9);
-    }
-    .btn_affiche {
-    font-size: 15px;
-    width: 100px;
-    height: 20px;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: auto;
-    border-radius: 60px;
-    background-color: #EFEAFF;
-    color: #470EE9;
-    border : none;
-    }
-    .time{
-        color:#470EE9;
-        text-align: right;
-    }
-  </style>
+  <!-- BOUTON POUR OUVRIR LE CHAT -->
+  <div id="chat-toggle" title="Chatbot">
+    <i class="fas fa-comments"></i>
+  </div>
+  <!-- CONTENEUR DU CHAT -->
+  <div id="chat-box">
+    <div id="chat-header">
+      <span>Assistant</span>
+      <button id="chat-close" style="background:none;border:none;color:#fff;font-size:1.2rem;">&times;</button>
+    </div>
+    <div id="chat-log"></div>
+    <div id="chat-input-container">
+      <input id="chat-input" type="text" placeholder="Écrire un message…" autocomplete="off"/>
+      <button id="chat-send">Envoyer</button>
+    </div>
+  </div>
     <aside class="sidebar">
         <img src="../img/logo_projet.jpg" alt="Description de l'image" width="100" height="50">
         <nav class="nav-menu">
@@ -140,9 +77,11 @@ $nbr = $res->fetch_row()[0];
             <a href="demande.php" class="nav-link"><i class="fas fa-file-alt"></i><span>Demandes</span></a>
             <?php if($role=="1"){?><a href="sous-traitant.php" class="nav-link"><i class="fas fa-user-tie"></i><span>Sous-traitants</span></a><?php }?>
             <a href="salarie.php" class="nav-link"><i class="fas fa-users"></i><span>Salariés</span></a>
+            <?php if($role=="1"){?><a href="facture.php" class="nav-link"><i class="fas fa-file-invoice-dollar"></i><span>Facture</span></a><?php }?>
+            <?php if($role=="1"){?><a href="reglement.php" class="nav-link"><i class="fas fa-file-invoice"></i><span>Réglement</span></a><?php }?>
             <?php if($role=="1"){?><a href="contact.php" class="nav-link"><i class="fa-solid fa-address-book"></i><span>Contact</span></a><?php }?>
             <?php if($role=="1"){?><a href="document.php" class="nav-link"><i class="fas fa-folder"></i><span>Documents</span></a><?php }?>
-            <?php if($role=="1"){?><a href="" class="nav-link"><i class="fas fa-envelope"></i><span>Messageries</span></a><?php }?>
+            <?php if($role=="1"){?><a href="messagerie.php" class="nav-link"><i class="fas fa-envelope"></i><span>Messageries</span></a><?php }?>
         </nav>
     </aside>
     <main class="main-content">
@@ -153,18 +92,29 @@ $nbr = $res->fetch_row()[0];
                     <input type="text" placeholder="Rechercher...">
                 </div>
                 <div class="icons">
-                    <div class="icon message">
+
+                    <!-- messagerie -->
+                    <?php if($role=="1"){?><div class="icon message" id="message_icon"> <?php }?>
+                    <?php if($role=="2"){?><div class="icon message" id="message_icon_soustraitant"> <?php }?>
                         <i class="far fa-comment-dots"></i>
-                        <div class="notification"></div>
+                        <?php if($nbr_msg != 0){?>
+                            <div class="message" id="nbr_msg"><?php echo $nbr_msg ; ?></div>
+                        <?php }?>                    
                     </div>
+                    <?php if($role=="1"){?><div id="message_list" class="notification-list"></div><?php }?>
+                    <div id="model_message_list" class="model_message_list" style="display:none;">
+                        <div id="message_list_soustraitant" class="message-box"></div>
+                    </div>
+
+                    <!-- notification -->   
                     <div class="icon notification" id="notificationIcon">
                         <i class="fa-regular fa-bell"></i>
                         <?php if($nbr != 0){?>
                             <div class="notification" id="nbr_notif"><?php echo $nbr ; ?></div>
                         <?php }?>
                     </div>
-
                     <div id="notificationList" class="notification-list"></div>
+
                     <!-- Model affiche notification -->
                     <div class="modal fade" id="afficheNotification" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" >
                         <div class="modal-dialog" role="document">
@@ -184,17 +134,12 @@ $nbr = $res->fetch_row()[0];
                     <!-- end Model affiche notification -->
 
                     <div class="user-info" onclick="toggleDropdown()">
-                        <!-- Icône utilisateur -->
                         <img id="profile_image" class="user-icon" src="../img/profil/<?php echo $img; ?>">
-                        <!-- <i class="fas fa-user-circle user-icon"></i> -->
-                        <!-- Infos utilisateur -->
                         <div class="user-details">
                             <span class="login"><?php echo $Nom; ?></span>
                             <span class="role"><?php echo $role_log; ?></span>
                         </div>
-                        <!-- Flèche de la liste déroulante -->
                         <i class="fas fa-chevron-down arrow"></i>
-                        <!-- Liste déroulante -->
                         <div class="dropdown">
                             <a href="profile.php" id="information">Mes informations</a>
                             <a href="../../controllers/logout.php">Déconnexion</a>
@@ -203,5 +148,72 @@ $nbr = $res->fetch_row()[0];
                 </div>
             </div>
 
+<!-- chatbot -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script>
+  $(function() {
+    const $toggle = $('#chat-toggle'),
+          $box    = $('#chat-box'),
+          $close  = $('#chat-close'),
+          $log    = $('#chat-log'),
+          $input  = $('#chat-input'),
+          $send   = $('#chat-send');
 
-        
+    // Démarrage : cacher le chat
+    $box.hide();
+    // Ouvrir / fermer le chat
+    $toggle.on('click', () => {
+      $box.toggle();
+      $input.focus();
+    });
+    $close.on('click', () => {
+      $box.hide();
+    });
+    // Fonction pour ajouter une bulle dans le log
+    function append(who, text) {
+      const cls = who === 'user' ? 'msg-user'
+                : who === 'bot'  ? 'msg-bot'
+                : 'msg-loading';
+      $log.append(`<div class="${cls}">${who === 'user' ? 'Toi: ' : 'Bot: '}${text}</div>`);
+      $log.scrollTop($log[0].scrollHeight);
+    }
+    // Envoi du message
+    async function sendMessage() {
+      const txt = $input.val().trim();
+      if (!txt) return;
+      append('user', txt);
+      append('loading', '…');
+      $input.val('');
+      try {
+        const res = await fetch('../../view/pages/chat.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: txt })
+        });
+        const data = await res.json();
+        $log.find('.msg-loading').last().remove();
+        if (data.error) {
+          append('bot', 'Erreur : ' + data.error);
+        } else {
+          append('bot', data.reply);
+        }
+      } catch (e) {
+        $log.find('.msg-loading').last().remove();
+        append('bot', 'Erreur réseau');
+        console.error(e);
+      }
+    }
+    // Quand on clique sur "envoyer" ou appuie sur Entrée
+    $send.on('click', sendMessage);
+    $input.on('keypress', function(e) {
+      if (e.which === 13) {
+        sendMessage();
+      }
+    });
+  });
+</script>
+
+
+
+
+

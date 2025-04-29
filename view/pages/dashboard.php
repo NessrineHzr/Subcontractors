@@ -10,130 +10,7 @@ $Nom = $_SESSION['Nom'];
 <body>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="../../public/js/chart.js"></script>
-<style>
-.entete {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-.nom {
-  margin: 0;
-  font-size: 24px;
-  font-weight: bold;
-}
-.cadre {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    height: 100%;
-}
-.cadre1 {
-    border-radius: 10px;
-    font-weight: bold;
-    width: 76%;
-    padding: 2%;
-    box-sizing: border-box; 
-}
-.cadre2{
-    border-radius: 10px;
-    font-size: 23px;
-    width: 23%;
-    padding: 20px;
-}
-.btn_voir {
-    font-size: 15px;
-    width: 100px;
-    height: 19px;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: auto;
-    border-radius: 60px;
-    background-color: #EFEAFF;
-    color: #470EE9;
-    border : none;
-  }
-  .btn_selectionner {
-    font-size: 15px;
-    width: 170px;
-    height: 21px;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: auto;
-    border-radius: 60px;
-    background-color: #EFEAFF;
-    color: #470EE9;
-    border : none;
-  }
-  .selectt select {
-  font-weight: bold;  
-  font-size: 18px;   
-  border: 2px solid transparent; 
-  padding: 20px 35px;  
-  background-color: white; 
-  border-radius: 5px;   
-}
-.stats {
-  margin-top: 20px; 
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-}
-.stat-item {
-  background-color: white;
-  padding: 20px 30px;
-  border-radius: 10px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-  flex: 1 1 400px;
-}
-.stat-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
-}
-.stat-text {
-  display: flex;
-  flex-direction: column;
-}
-.stat-nbr {
-  font-size: 36px;
-  font-weight: bold;
-  color: #470EE9;
-  margin-bottom: 5px;
-}
-.stat-label {
-  font-size: 18px;
-  font-weight: bold;
-}
-.stat-img {
-  width: 70px;
-  height: 70px;
-  object-fit: contain;
-}
-.adhesion {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-}
-@media (max-width: 768px) {
-  .cadre {
-    flex-direction: column;
-    flex-wrap: wrap;
-  }
-  .cadre1 {
-    width: 60%;
-  }
-  .cadre2 {
-    width: 60%;
-  }
-}
-</style>
+
 <div class="cadre">
     <div class="cadre1">
         <div class="entete">
@@ -426,7 +303,6 @@ $Nom = $_SESSION['Nom'];
   </div>
 </div>
 <!-- end Model alert ajout echec -->
-
 <!-- Model affiche document -->
         <div class="modal fade bd-example-modal-lg" id="afficheDoc" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-lg">
@@ -554,7 +430,6 @@ $Nom = $_SESSION['Nom'];
         </div>
   </div>
 </div>
-
 </body>
 </html>
 <?php

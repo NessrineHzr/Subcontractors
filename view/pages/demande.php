@@ -4,11 +4,9 @@ $id = $_SESSION['ID'];
 $login = $_SESSION['Login'];
 $role = $_SESSION['Role'];
 ?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <body>
-
 <div class="table" action="" method="post">
   <div class="table-responsive-xxl" id="table_listeDemande"></div>
 </div>
@@ -232,7 +230,6 @@ $role = $_SESSION['Role'];
   </div>
 </div>
 <!-- end Model alert supprimer echec -->
-
 </body>
 <script>
    var role = <?php echo $role ?>;

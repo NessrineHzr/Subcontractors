@@ -12,78 +12,6 @@ if ($row = mysqli_fetch_assoc($result)) {
 <!DOCTYPE html>
 <html lang="fr">
 <body>
-<style>
-    .documents {
-        display: flex; 
-        gap: 10px;
-        flex-wrap: wrap;
-    }
-    .titledoc {
-        position: absolute;
-        top: 100%;  
-        left: auto; 
-        font-size: 16px; 
-    }
-    .document {
-        width: 18%;
-        display: flex;
-        align-items: center;
-        position: relative;
-    }
-    .doc {
-        background-color: #FFF0DB; 
-        padding: 50px;
-        border: none;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-    }
-    .doc img {
-        width: 40px;
-        height: 50px;
-    }
-    .telecharger {
-        border: none;
-        background-color: transparent;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .telecharger img {
-        width: 60px;
-        height: 60px;
-        transform: translateX(-60px);
-        margin-top: 150px;
-    }
-    .titre {
-    display: flex;
-    align-items: center; 
-    justify-content: space-between; 
-    }
-    .titre h3 {
-    margin: 0;
-    }
-    .btn_telecharger {
-    font-size: 15px;
-    width: 150px;
-    height: 19px;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: auto;
-    border-radius: 60px;
-    background-color: #EFEAFF;
-    color: #470EE9;
-    border : none;
-    }
-    #info_chefProjet_demande {
-    display: block;
-    text-align: left;
-    padding: 10px;
-    }
-</style>
 <div class="col-sm-12 col-md-6 d-flex align-items-center">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb mb-0 p-0">
@@ -128,7 +56,6 @@ $row_doc = mysqli_fetch_assoc($result_doc) ?: [];
     <?php endif; 
          endforeach; ?>
 </div>
-
 </body>
 </html>
 <script>
@@ -165,6 +92,5 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 });
-
 </script>
 <?php include('../footer.php'); ?>

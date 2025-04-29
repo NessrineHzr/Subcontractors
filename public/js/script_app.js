@@ -52,7 +52,29 @@ $(document).ready(function() {
     get_notification();
     // contact
     ajout_contact_message();
-
+    // facture
+    if (page == "facture.php") {
+        view_facture_record();
+    }
+    ajout_facture();
+    get_facture_data();
+    update_facture();
+    supprimer_facture();
+    ajout_reglement();
+    // reglement
+    if (page == "reglement.php") {
+        view_reglement_record();
+    }
+    affiche_file_reglement();
+    // message
+    if (page == "messagerie.php") {
+        view_message_record();
+    }
+    get_message();
+    send_message();
+    view_message_liste_record()
+    view_message_soustraitant_record();
+    send_message_soustraitant();
 });
 
 // Fonction pour afficher ou masquer le mot de passe
@@ -146,7 +168,7 @@ function searchpagination(id, title, EnteteDroite, titremodule, titre) {
     EnteteDroite.prepend(searchInput); 
     EnteteDroite.append(addButton);
 }
-function searchpagination_withoutbuttom(id, title, EnteteDroite, titremodule, titre) {
+function searchpagination_with2buttom(id, title, id2, title2, EnteteDroite, titremodule, titre) {
     $('.dataTables_length').parent().parent().css('align-items', 'center');
     // Création du titre avec breadcrumb
     let headerHTML = `<nav aria-label="breadcrumb">
@@ -163,9 +185,11 @@ function searchpagination_withoutbuttom(id, title, EnteteDroite, titremodule, ti
     searchInput.css("margin-right", "5px"); // Ajout d'une marge explicite
     // Bouton "Ajouter" avec espacement
     let addButton = `<button class='btn btn-add' id="${id}" title="${title}">${title}</button>`;
+    let addButton2 = `<button class='btn btn-add' style="margin-left: 5px;" id="${id2}" title="${title2}">${title2}</button>`;
     // Ajout des éléments dans l'ordre souhaité
     EnteteDroite.prepend(searchInput); 
     EnteteDroite.append(addButton);
+    EnteteDroite.append(addButton2);
 }
 
 function searchpagination_title( EnteteDroite, titremodule, titre) {
@@ -734,6 +758,7 @@ function update_salarie_document() {
         });
     });
 }
+
  /////////////////////// Module Sous-traitant //////////////////
 
  function view_soustraitant_record() {
@@ -1000,8 +1025,7 @@ function get_soustraitant_chefprojet_data() {
     });
 }
 
-// Ajouter document sous-traitant 
-
+// Affiche document sous-traitant 
 function get_soustraitant_document() {
     $(document).on("click", "#btn_document_soustraitant", function () {
         var ID = $(this).attr("data-document");
@@ -1039,6 +1063,7 @@ function get_soustraitant_document() {
     });
 }
 
+// Ajouter document sous-traitant 
 function ajout_soustraitant_document(){
     $(document).on("click", "#btn_relancer", function () {
         $("#ajoutDocument").modal("show");
@@ -1139,7 +1164,7 @@ function view_demande_record() {
             $("#table_listeDemande").html(data.html);
             $('#listeDemande').DataTable({ "info": false });
               if (role == 2) {
-              searchpagination_withoutbuttom("ajout_demande", "Ajouter un demande", $('#listeDemande_filter'), "Demandes", "Liste des demandes");
+                searchpagination("ajout_demande", "Ajouter un demande", $('#listeDemande_filter'), "Demandes", "Liste des demandes");
             } else {
               searchpagination_title($('#listeDemande_filter'),"Demandes", "Liste des demandes");
             }
@@ -1256,7 +1281,6 @@ function ajout_demande(){
         form_data.append("numeroTVA", numeroTVA);
         form_data.append("assurenceDecennale", assurenceDecennale);
         
-       
         $.ajax({
             url: "../../models/ajouterDemande.php", 
             type: "POST",
@@ -1338,7 +1362,6 @@ $(document).click(function(event) {
 });
  
 // Telecharger document Demande 
-
 function download_document_demande() {
     $(document).on("click", "#btn_telecharger", function () {
         var id = $(this).attr("data-demande");
@@ -1348,7 +1371,6 @@ function download_document_demande() {
 
 ///////////////////// Module Dashboard /////////////////
  
-// affiche demande dashboard
 function view_demande_dashboard_record() {
     $.ajax({
       url: "../../models/viewDemandeDashboard.php",
@@ -1404,7 +1426,6 @@ function view_demande_dashboard_record() {
 }
 
 // Update Documents Dashboard
-
 function update_document_dashboard() {
     $(document).on("click", ".btn_relancer", function () {
         var documentName = $(this).data("doc");
@@ -1548,8 +1569,10 @@ function view_notification_record(){
     });
 }
 
+// affiche tous les notifications
 function view_all_notification_record(){
     $(document).on("click", "#btn_affiche", function () {
+        $("#notificationList").hide();
         $("#afficheNotification").modal("show");
         $.ajax({
             url: "../../models/viewAllNotification.php",
@@ -1565,14 +1588,13 @@ function view_all_notification_record(){
               }
             },
         });
-
-
     });  
 }
 
-// affiche notification
+// affiche une notification
 function get_notification(){
     $(document).on("click", ".msg_notif", function () {
+        $("#notificationList").hide();
         var id = $(this).data("id");
         var time = $(this).data("time");
         var form_data = new FormData();
@@ -1600,7 +1622,8 @@ function get_notification(){
     });
 }
 
-////////////// Module contact //////////////////
+////////////////// Module contact //////////////////
+
  function ajout_contact_message(){
     $(document).on("click", "#btn_contact", function () {
         var nom = $("#nom").val();
@@ -1639,3 +1662,530 @@ function get_notification(){
         });
     });
 }
+
+////////////////// Module facture //////////////////
+
+function view_facture_record(){
+    $.ajax({
+        url: "../../models/viewFacture.php",
+        method: "post",
+        success: function (data) {
+          try {
+            data = $.parseJSON(data);
+            if (data.status == "success") {
+              $("#table_listeFacture").html(data.html);
+              $('#listeFacture').DataTable({ "info": false});
+              searchpagination_with2buttom("ajout_facture","Ajouter une facture","ajout_reglement","Ajouter une réglement",$('#listeFacture_filter'),"Factures","Liste des Factures");
+            }
+          } catch (e) { 
+            console.error("Invalid Response!" , data);
+          }
+        },
+      });
+}
+
+// Ajouter facture
+function ajout_facture(){
+    $(document).on("click", "#ajout_facture", function () {
+        $("#ajoutFacture").modal("show");
+    });
+    $(document).on("click", "#ajouter_facture", function () {
+        $("#ajoutFacture").scrollTop(0);
+        
+        var nom = $("#nom").val();
+        var date = $("#date").val();
+        var montant = $("#montant").val();
+
+        if (nom === "" || date === "" || montant === "" ) {
+            $("#message_facture").addClass("echec-modal").html("Veuillez remplir tous les champs obligatoires !");
+        } else {
+            var form_data = new FormData();
+            form_data.append("id_entreprise", nom);
+            form_data.append("date", date);
+            form_data.append("montant", montant);
+            $.ajax({
+                url: "../../models/ajouterFacture.php", 
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: form_data,
+                success: function(data) {
+                    if (data.includes('text-echec')) {
+                        $("#ajoutFacture").modal("hide");
+                        $("#addfacture_echec").removeClass("text-checked").addClass("text-echec").html(data);
+                        $("#EchecAddFacture").modal("show");
+                        setTimeout(function () {
+                            if ($("#EchecAddFacture").length > 0) {
+                                $("#EchecAddFacture").modal("hide");
+                            }
+                        }, 4000);
+                        view_facture_record();
+                    } else {
+                        $("#ajoutFacture").modal("hide");
+                        $("#addfacture_success").addClass("text-checked").html(data);
+                        $("#SuccessAddFacture").modal("show");
+                        $("#addfacture_success").removeClass("text-echec").addClass("text-checked");
+                        setTimeout(function () {
+                            if ($("#SuccessAddFacture").length > 0) {
+                                $("#SuccessAddFacture").modal("hide");
+                            }
+                        }, 4000);
+                        view_facture_record();
+                    }
+                } 
+            });
+        }
+    });
+}
+
+// Affichier facture
+function get_facture_data() {
+    $(document).on("click", "#btn_modif_facture", function () {
+      var id = $(this).data("id");
+      var entreprise = $(this).data("entreprise");
+console.log(entreprise);
+      $.ajax({
+        url: "../../models/getFacture.php",
+        method: "POST",
+        data: { id: id, entreprise: entreprise },
+        dataType: "JSON",
+        success: function(data) {
+          $("#id_Facture").val(data[0]);
+          $("#nom_Facture").val(data[1]);
+          $("#date_Facture").val(data[2]);
+          $("#montant_Facture").val(data[3]);
+          $("#modifFacture").modal("show");
+        },
+      });
+    });
+  }
+  
+  // Modifier facture
+  function update_facture() {
+    $(document).on("click", "#modifier_facture", function () {
+      var id      = $("#id_Facture").val();
+      var nom     = $("#nom_Facture").val();
+      var date    = $("#date_Facture").val();
+      var montant = $("#montant_Facture").val();
+      if (nom === "" || date === "" || montant === "" ) {
+        $("#message_facture").addClass("echec-modal").html("Veuillez remplir tous les champs obligatoires !");
+    } else {
+      var form_data = new FormData();
+      form_data.append("id", id);
+      form_data.append("nom", nom);
+      form_data.append("date", date);
+      form_data.append("montant", montant);
+      $.ajax({
+        url: "../../models/updateFacture.php",
+        type: "POST",
+        data: form_data,
+        processData: false,
+        contentType: false,
+        success: function(data) {
+          var isError = data.includes("text-echec");
+          $("#modifFacture").modal("hide");
+  
+          if (isError) {
+            $("#upfacture_echec")
+              .removeClass("text-checked")
+              .addClass("text-echec")
+              .html(data);
+            $("#EchecUpFacture").modal("show");
+          } else {
+            $("#upfacture_success")
+              .removeClass("text-echec")
+              .addClass("text-checked")
+              .html(data);
+            $("#SuccessUpFacture").modal("show");
+          }
+        },
+      });
+    }
+    });
+  }
+  
+$(document).click(function(event) {
+    if (!$(event.target).closest('#modifFacture').length) {
+        $('#modifFacture').modal('hide');
+    }
+});
+
+// Supprimer facture
+function supprimer_facture() {
+    $(document).on("click", "#btn_supprime_facture", function () {
+        var id = $(this).data("id");
+        $("#deleteFacture").modal("show");
+        $(document).on("click", "#btn_delete", function () {
+            $.ajax({
+                url: "../../models/supprimerFacture.php",
+                method: "post",
+                data: {
+                    id :id
+                },
+                success: function (data) {
+                    if (data.includes('text-echec')) {
+                      $("#deleteFacture").modal("hide");
+                      $("#deletefacture_echec").removeClass("text-checked").addClass("text-echec").html(data);
+                      $("#EchecDeleteFacture").modal("show");
+                      setTimeout(function () {
+                        if ($("#EchecDeleteFacture").length > 0) {
+                          $("#EchecDeleteFacture").modal("hide");
+                        }
+                      }, 4000);
+                      view_facture_record();
+                    } else {
+                      $("#deleteFacture").modal("hide");
+                      $("#deletefacture_success").addClass("text-checked").html(data);
+                      $("#SuccessDeleteFacture").modal("show");
+                      $("#deletefacture_success").removeClass("text-echec").addClass("text-checked");
+                      setTimeout(function () {
+                        if ($("#SuccessDeleteFacture").length > 0) {
+                          $("#SuccessDeleteFacture").modal("hide");
+                        }
+                      }, 4000);
+                      view_facture_record();
+                    }
+                },
+            });
+        });
+    });
+}
+$(document).click(function(event) {
+    if (!$(event.target).closest('#deleteFacture').length) {
+        $('#deleteFacture').modal('hide');
+    }
+});
+
+// ajouter reglement
+function ajout_reglement(){
+    $(document).on("click", "#ajout_reglement", function () {
+        $("#ajoutReglement").modal("show");
+    });
+    $(document).on("click", "#ajouter_reglement", function () {
+        $("#ajoutReglement").scrollTop(0);
+        var id = $("#id").val();
+        var file = $("#file")[0].files[0];
+        var montant = $("#mont").val();
+
+        if (id === "" || file === "" || montant === "" ) {
+            $("#message_reglement").addClass("echec-modal").html("Veuillez remplir tous les champs obligatoires !");
+        }else{
+        var form_data = new FormData();
+        form_data.append("id", id);
+        form_data.append("file", file);
+        form_data.append("montant", montant);
+        $.ajax({
+            url: "../../models/ajouterReglement.php", 
+            type: "POST",
+            processData: false,
+            contentType: false,
+            data: form_data,
+            success: function(data) {
+                if (data.includes('text-echec')) {
+                    $("#ajoutReglement").modal("hide");
+                    $("#addreglement_echec").removeClass("text-checked").addClass("text-echec").html(data);
+                    $("#EchecAddReglement").modal("show");
+                    setTimeout(function () {
+                        if ($("#EchecAddReglement").length > 0) {
+                            $("#EchecAddReglement").modal("hide");
+                        }
+                    }, 4000);
+                    view_reglement_record();
+                } else {
+                    $("#ajoutReglement").modal("hide");
+                    $("#addreglement_success").addClass("text-checked").html(data);
+                    $("#SuccessAddReglement").modal("show");
+                    $("#addreglement_success").removeClass("text-echec").addClass("text-checked");
+                    setTimeout(function () {
+                        if ($("#SuccessAddReglement").length > 0) {
+                            $("#SuccessAddReglement").modal("hide");
+                        }
+                    }, 4000);
+                    view_reglement_record();
+                }                   
+                window.location.reload();
+            }
+        });
+    }
+    });
+}
+
+//////////////// Module Reglement ////////////////
+
+function view_reglement_record(){
+    $.ajax({
+        url: "../../models/viewReglement.php",
+        method: "post",
+        success: function (data) {
+          try {
+            data = $.parseJSON(data);
+            if (data.status == "success") {
+              $("#table_listeReglement").html(data.html);
+              $('#listeReglement').DataTable({ "info": false});
+              searchpagination_title($('#listeReglement_filter'), "Réglements", "Liste des réglements");
+
+            }
+          } catch (e) { 
+            console.error("Invalid Response!" , data);
+          }
+        },
+      });
+}
+
+// affiche file reglement
+function affiche_file_reglement(){
+    $(document).on("click", "#btn_reglement", function () {
+         id = $(this).attr("data-id");
+         file = $(this).attr("data-file");
+        path = "../../view/file/facture/"+file;
+        window.open(path);
+    });
+}
+
+///////////////////// Module Message Administrateur ///////////////////
+
+function view_message_record(){
+    $.ajax({
+        url: "../../models/viewMessage.php",
+        method: "post",
+        success: function (data) {
+          try {
+            data = $.parseJSON(data);
+            if (data.status == "success") {
+              $("#liste_message").html(data.html);
+            }
+          } catch (e) { 
+            console.error("Invalid Response!" , data);
+          }
+        },
+    });
+}
+
+// affiche message
+function get_message(){
+    $(document).on("click", "#btn_message", function () {
+         id = $(this).attr("data-login");
+         nom = $(this).attr("data-nom");
+         img = $(this).attr("data-img");
+         var form_data = new FormData();
+         form_data.append("login", id);
+         form_data.append("nom", nom);
+         form_data.append("img", img);
+         $.ajax({
+             url: "../../models/getMessage.php", 
+             type: "POST",
+             processData: false,
+             contentType: false,
+             data: form_data,
+             success: function(html) {
+                $("#message").html(html);
+                $.ajax({
+                    url: "../../models/viewMessage.php",
+                    method: "post",
+                    success: function (data) {
+                      try {
+                        data = $.parseJSON(data);
+                        if (data.status == "success") {
+                          $("#liste_message").html(data.html);
+                        }
+                      } catch (e) { 
+                        console.error("Invalid Response!" , data);
+                      }
+                    },
+                });
+            }
+         });
+    });
+}
+
+// envoi message
+function send_message(){
+    $(document).on("click", "#send_message", function () {
+        id = $(this).attr("data-login");
+        nom = $(this).attr("data-nom");
+        img = $(this).attr("data-img");
+        console.log(id);
+        console.log(nom);
+        console.log(img);
+        message = $("#new_message").val().trim();
+        if (message === "") {
+            return;
+        }
+        var form_data = new FormData();
+        form_data.append("login", id);
+        form_data.append("message", message);
+        form_data.append("nom", nom);
+        form_data.append("img", img);
+        $.ajax({
+            url: "../../models/sendMessage.php", 
+            type: "POST",
+            processData: false,
+            contentType: false,
+            data: form_data,
+            success: function(data) {
+                $.ajax({
+                    url: "../../models/getMessage.php", 
+                    type: "POST",
+                    processData: false,
+                    contentType: false,
+                    data: form_data,
+                    success: function(html) {
+                       $("#message").html(html);
+                   }
+                });
+                $.ajax({
+                    url: "../../models/viewMessage.php",
+                    method: "post",
+                    success: function (data) {
+                      try {
+                        data = $.parseJSON(data);
+                        if (data.status == "success") {
+                          $("#liste_message").html(data.html);
+                        }
+                      } catch (e) { 
+                        console.error("Invalid Response!" , data);
+                      }
+                    },
+                });
+            }
+        });
+    });
+}         
+
+// icon message
+function view_message_liste_record(){
+    $(document).on('click', '#message_icon', function () {
+        $('#message_list').toggle();
+        if($('#message_list').is(':visible')) {
+            $('#nbr_msg').hide();
+        } else {
+            $('#nbr_msg').show();
+        }
+        $.ajax({
+            url: "../../models/viewMessageListe.php",
+            method: "POST",
+            success: function (data) {
+                try {
+                    data = $.parseJSON(data);
+                    if (data.status == "success") {
+                        $("#message_list").html(data.html);
+                    }
+                }
+                 catch (e) {
+                    console.error("Erreur de parsing JSON", e);
+                }
+            $(document).on('click', '#btn_message_soustraitant', function () {
+                id = $(this).attr("data-login");
+                nom = $(this).attr("data-nom");
+                img = $(this).attr("data-img");
+                var form_data = new FormData();
+                form_data.append("login", id);
+                form_data.append("nom", nom);
+                form_data.append("img", img);
+                $.ajax({
+                    url: "../../models/getMessage.php", 
+                    type: "POST",
+                    processData: false,
+                    contentType: false,
+                    data: form_data,
+                    success: function(html) {
+                        $("#message").html(html);
+                    }
+                });
+            })
+        },
+        });
+    });
+    $(document).on('click', function (e) {
+        var container = $("#message_list, #message_icon");
+        if (!container.is(e.target) && container.has(e.target).length === 0) {
+            $("#message_list").hide();
+            if(parseInt($('#nbr_msg').text()) > 0){
+                $('#nbr_msg').show();
+            }
+        }
+    });
+}
+
+// Message soustraitant
+function view_message_soustraitant_record(){
+    $(document).on('click', '#message_icon_soustraitant', function () {
+        $('#model_message_list').toggle();
+        if($('#model_message_list').is(':visible')){
+            $('#nbr_msg').hide();
+        } else {
+            $('#nbr_msg').show();
+        }
+        $.ajax({
+            url: "../../models/viewMessageSoustraitant.php",
+            method: "POST",
+            success: function (data) {
+                try {
+                    data = $.parseJSON(data);
+                    if (data.status == "success") {
+                        $("#message_list_soustraitant").html(data.html);  
+                        const $body = $("#message_list_soustraitant").find(".body_msg");
+                        setTimeout(() => {
+                          $body.scrollTop($body.prop("scrollHeight"));
+                        }, 0);                    }
+                } catch (e) {
+                    console.error("Erreur de parsing JSON", e);
+                }
+            },
+        });
+    });
+}
+
+// envoi message soustraitant
+function send_message_soustraitant(){
+    $(document).on("click", "#send_message_soustraitant", function () {
+        id = $(this).attr("data-login");
+        console.log(id);
+        message = $("#new_message").val().trim();
+        if (message === "") {
+            return;
+        }
+        var form_data = new FormData();
+        form_data.append("login", id);
+        form_data.append("message", message);
+        $.ajax({
+            url: "../../models/sendMessage.php", 
+            type: "POST",
+            processData: false,
+            contentType: false,
+            data: form_data,
+            success: function(data) {
+                $.ajax({
+                    url: "../../models/viewMessageSoustraitant.php",
+                    method: "POST",
+                    success: function (data) {
+                        try {
+                            data = $.parseJSON(data);
+                            if (data.status == "success") {
+                                $("#message_list_soustraitant").html(data.html); 
+                                const $body = $("#message_list_soustraitant").find(".body_msg");
+                                setTimeout(() => {
+                                  $body.scrollTop($body.prop("scrollHeight"));
+                                }, 0);                            }
+                        } catch (e) {
+                            console.error("Erreur de parsing JSON", e);
+                        }
+                    },
+                });
+                $.ajax({
+                    url: "../../models/getMessage.php", 
+                    type: "POST",
+                    processData: false,
+                    contentType: false,
+                    data: form_data,
+                    success: function(html) {
+                       $("#message").html(html);
+                   }
+                });
+            }
+        });
+    });
+}         
+
+///////////////////////////////////////////////////////////////////
+

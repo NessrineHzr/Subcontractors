@@ -1,6 +1,5 @@
 <?php
 include('../header_menu.php');
-
   $ID = $_SESSION['ID'];
   $name= $_SESSION['Nom'];
   $role= $_SESSION['Role'];
@@ -35,7 +34,6 @@ include('../header_menu.php');
   }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <body class="profile">

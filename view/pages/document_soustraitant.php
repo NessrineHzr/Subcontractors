@@ -11,57 +11,6 @@ if ($row = mysqli_fetch_assoc($result)) {
 <!DOCTYPE html>
 <html lang="fr">
 <body>
-<style>
-    .documents {
-        display: flex; 
-        gap: 10px;
-        flex-wrap: wrap;
-    }
-    p {
-        position: absolute;
-        top: 100%;  
-        left: auto; 
-        font-size: 16px; 
-    }
-    .document {
-        width: 18%;
-        display: flex;
-        align-items: center;
-        position: relative;
-    }
-    .titledoc {
-        position: absolute;
-        top: 100%;  
-        left: auto; 
-        font-size: 16px; 
-    }
-    .doc {
-        background-color: #FFF0DB; 
-        padding: 50px;
-        border: none;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-    }
-    .doc img {
-        width: 40px;
-        height: 50px;
-    }
-    .telecharger {
-        border: none;
-        background-color: transparent;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .telecharger img {
-        width: 60px;
-        height: 60px;
-        transform: translateX(-60px);
-        margin-top: 150px;
-    }
-</style>
 <div class="row d-flex">
     <div class="col-sm-12 col-md-6 d-flex align-items-center">
         <nav aria-label="breadcrumb">
