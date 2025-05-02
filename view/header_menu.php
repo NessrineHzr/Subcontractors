@@ -61,12 +61,12 @@ $nbr_msg = $res_msg->fetch_row()[0];
   <div id="chat-box">
     <div id="chat-header">
       <span>Assistant</span>
-      <button id="chat-close" style="background:none;border:none;color:#fff;font-size:1.2rem;">&times;</button>
+      <button id="chat-close" style="background:none;border:none;color:#fff;font-size:1.5rem;">&times;</button>
     </div>
     <div id="chat-log"></div>
     <div id="chat-input-container">
       <input id="chat-input" type="text" placeholder="Écrire un message…" autocomplete="off"/>
-      <button id="chat-send">Envoyer</button>
+      <button id="chat-send"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
     </div>
   </div>
     <aside class="sidebar">

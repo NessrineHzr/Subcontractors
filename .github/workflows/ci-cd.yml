@@ -3,9 +3,9 @@ name: CI/CD
 
 on:
   push:
-    branches: [ main ,Nessrine_sprint1]
+    branches: [Nessrine_sprint1]
   pull_request:
-    branches: [ main ]
+    branches: [ Nessrine_sprint1 ]
 
 jobs:
   # 1 Installation des dépendances JS et PHP

@@ -1222,74 +1222,124 @@ table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th, ta
     padding: 0;
   }
   
-      /* --- Styles du widget chatbot --- */
-      #chat-toggle {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: #470EE9;
-        color: #fff;
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        z-index: 1001;
-      }
-      #chat-box {
-        position: fixed;
-        top: 80px;
-        right: 20px;
-        width: 300px;
-        max-height: 400px;
-        background: #fff;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        display: none;
-        flex-direction: column;
-        z-index: 1000;
-      }
-      #chat-header {
-        background: #470EE9;
-        color: #fff;
-        padding: 8px;
-        border-top-left-radius: 8px;
-        border-top-right-radius: 8px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-      #chat-log {
-        flex: 1;
-        padding: 8px;
-        overflow-y: auto;
-        font-size: 0.9rem;
-        min-height: 350px;
-  
-      }
-      #chat-input-container {
-        display: flex;
-        border-top: 1px solid #ddd;
-      }
-      #chat-input {
-        flex: 1;
-        border: none;
-        padding: 8px;
-        font-size: 0.9rem;
-      }
-      #chat-send {
-        background: #470EE9;
-        color: #fff;
-        border: none;
-        padding: 0 12px;
-        cursor: pointer;
-      }
-      .msg-user { text-align: right; margin: 4px 0; color: #333; }
-      .msg-bot  { text-align: left;  margin: 4px 0; color: #470EE9; }
-      .msg-loading { text-align:center; font-style:italic; color:#999; }
+/* --- Styles du widget chatbot --- */
+#chat-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #470EE9;
+  color: #fff;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+#chat-box {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  width: 300px;
+  height: 450px; 
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  display: none;
+  flex-direction: column;
+  z-index: 1000;
+  overflow: hidden; 
+}
+
+#chat-header {
+  min-height: 40px;
+  background: #470EE9;
+  color: #fff;
+  padding: 15px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+#chat-header span {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+#chat-log {
+  flex: 1;
+  padding: 8px;
+  overflow-y: auto; 
+  font-size: 0.9rem;
+  height: 350px; 
+}
+
+#chat-input-container {
+  display: flex;
+  border-top: 1px solid #ddd;
+  flex-shrink: 0; 
+  height: 50px; 
+}
+
+#chat-input {
+  flex: 1;
+  border-radius: 20px;
+  border : 1px solid #470EE9;
+  padding: 8px;
+  font-size: 0.9rem;
+  margin: 5px;
+}
+
+#chat-send {
+  background: white;
+  color: #470EE9;
+  font-size: 22px;
+  border: none;
+  padding: 0 13px;
+  cursor: pointer;
+}
+
+.msg-user {
+  text-align: right;
+  margin: 4px 0;
+  color: #333;
+  background: #e9f0ff;
+  padding: 8px 12px;
+  border-radius: 12px 12px 0 12px;
+  display: inline-block;
+  max-width: 85%;
+  float: right;
+  clear: both;
+}
+
+.msg-bot {
+  text-align: left;
+  margin: 4px 0;
+  color: #333;
+  background: #f0f0f0;
+  padding: 8px 12px;
+  border-radius: 12px 12px 12px 0;
+  display: inline-block;
+  max-width: 85%;
+  float: left;
+  clear: both;
+}
+
+.msg-loading {
+  text-align: center;
+  font-style: italic;
+  color: #999;
+  clear: both;
+  width: 100%;
+  padding: 5px 0;
+}
 
 /* //////////////// page dashboard //////////////// */
 

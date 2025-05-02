@@ -1747,6 +1747,7 @@ function display_facture(){
         <th>Montant</th>
         <th>Status</th>
         <th>Facture</th>
+        <th>Facture Signé</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -1771,6 +1772,12 @@ function display_facture(){
             <td>
                 <center><a href='facture_pdf.php?id=" . $row['id_Facture'] . "&entreprise=" . $row['idEntreprise_Facture'] . "' target='_blank'>
                     <button type='button' class='icon-button' id='btn_facture' data-id='" . $row['id_Facture'] . "' data-entreprise='" . $row['idEntreprise_Facture'] . "'>
+                        <img src='../img/view.png' /></button></a>
+                </center>
+            </td>
+            <td>
+                <center><a href='facture_pdf_signe.php' target='_blank'>
+                    <button type='button' class='icon-button' id='btn_facture_signe' data-id='" . $row['id_Facture'] . "' data-entreprise='" . $row['idEntreprise_Facture'] . "'>
                         <img src='../img/view.png' /></button></a>
                 </center>
             </td>

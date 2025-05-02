@@ -19,7 +19,7 @@ while ($row2 = mysqli_fetch_assoc($result2)) {
     $pays = $row2['pays_Entreprise'];
 }
 
-$pdf = new TCPDF();
+$pdf = new TCPDF();  
 $pdf->AddPage();
 $logoFile = __DIR__ . '/logo.jpg'; 
 
@@ -136,5 +136,9 @@ $html2 = '
 $pdf->writeHTML($html, true, false, true, false, '');
 $pdf->SetY(-85);
 $pdf->writeHTML($html2, true, false, true, false, '');
+
 $pdf->Output('facture_'.$nomE.'.pdf', 'I'); 
+
+// $outputPath = __DIR__ . '/../facture_file/facture_' . $nomE . '.pdf';
+// $pdf->Output($outputPath, 'F'); 
 ?>
