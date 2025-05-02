@@ -3,7 +3,7 @@ name: CI/CD
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main ,Nessrine_sprint1]
   pull_request:
     branches: [ main ]
 
