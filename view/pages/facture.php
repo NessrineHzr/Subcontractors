@@ -2,6 +2,7 @@
 include('../header_menu.php');
 $login = $_SESSION['Login'];
 $id = $_SESSION['ID'];
+$role = $_SESSION['Role'];
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -178,7 +179,6 @@ $id = $_SESSION['ID'];
             <div class="form-group">
               <label for="nom_Facture">Nom*</label>
               <select id="nom_Facture" name="nom_Facture">
-                <option value="">Sélectionnez un nom</option>
                 <?php 
                 global $connexion;
                 $sql = "SELECT id_Entreprise ,nom_Entreprise FROM entreprise WHERE etat_Entreprise='1' ";
@@ -217,7 +217,7 @@ $id = $_SESSION['ID'];
         <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
       </div>
       <div class="modal-body">
-        <div style="font-size:18px; color: #470EE9;">
+        <div style="font-size:18px;">
           <center id="upfacture_success"></center>  
         </div>
       </div>
@@ -234,7 +234,7 @@ $id = $_SESSION['ID'];
         <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
       </div>
       <div class="modal-body">
-        <div style="font-size:18px; color: #470EE9;">
+        <div style="font-size:18px;">
           <center id="upfacture_echec"></center>  
         </div>
       </div>
@@ -251,7 +251,7 @@ $id = $_SESSION['ID'];
         <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
       </div>
       <div class="modal-body">
-        <p style="color: #470EE9; font-size: 18px;">Voulez-vous supprimer la facture ?</p><br>
+        <p style="font-size: 18px;">Voulez-vous supprimer la facture ?</p><br>
       </div>
         <div class="modal-footer">
 					<button type="button" id="btn_delete" class="buttonvalidate">Supprimer</button>
@@ -271,7 +271,7 @@ $id = $_SESSION['ID'];
         <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
       </div>
       <div class="modal-body">
-        <div style="font-size:18px; color: #470EE9;">
+        <div style="font-size:18px;">
           <center id="deletefacture_success"></center>  
         </div>
       </div>
@@ -288,7 +288,7 @@ $id = $_SESSION['ID'];
         <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
       </div>
       <div class="modal-body">
-        <div style="font-size:18px; color: #470EE9;">
+        <div style="font-size:18px;">
           <center id="deletefacture_echec"></center>  
         </div>
       </div>
@@ -297,6 +297,9 @@ $id = $_SESSION['ID'];
 </div>
 <!-- end Model alert supprimer echec -->
 </Body>
+<script>
+   var role = <?php echo $role ?>;
+</script>
 </html>
 <?php
 include('../footer.php');

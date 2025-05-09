@@ -114,7 +114,7 @@ $login = $_SESSION['Login'];
         <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
       </div>
       <div class="modal-body">
-        <div style="font-size:18px; color: #470EE9;">          
+        <div style="font-size:18px; ">          
           <center id="addsalarie_success"></center>  
         </div>
       </div>
@@ -131,7 +131,7 @@ $login = $_SESSION['Login'];
         <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
       </div>
       <div class="modal-body">
-        <div style="font-size:18px; color: #470EE9;">          
+        <div style="font-size:18px; ">          
           <center id="addsalarie_echec"></center>  
         </div>
       </div>
@@ -215,7 +215,7 @@ $login = $_SESSION['Login'];
         <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
       </div>
       <div class="modal-body">
-        <div style="font-size:18px; color: #470EE9;">
+        <div style="font-size:18px;">
           <center id="upsalarie_success"></center>  
         </div>
       </div>
@@ -232,7 +232,7 @@ $login = $_SESSION['Login'];
         <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
       </div>
       <div class="modal-body">
-        <div style="font-size:18px; color: #470EE9;">
+        <div style="font-size:18px;">
           <center id="upsalarie_echec"></center>  
         </div>
       </div>
@@ -249,7 +249,7 @@ $login = $_SESSION['Login'];
         <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
       </div>
       <div class="modal-body">
-        <p style="color: #470EE9; font-size: 18px;">Voulez-vous supprimer le client ?</p><br>
+        <p style="font-size: 18px;">Voulez-vous supprimer le client ?</p><br>
       </div>
         <div class="modal-footer">
 					<button type="button" id="btn_delete" class="buttonvalidate">Supprimer</button>
@@ -269,7 +269,7 @@ $login = $_SESSION['Login'];
         <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
       </div>
       <div class="modal-body">
-        <div style="font-size:18px; color: #470EE9;">
+        <div style="font-size:18px;">
           <center id="deletesalarie_success"></center>  
         </div>
       </div>
@@ -286,7 +286,7 @@ $login = $_SESSION['Login'];
         <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
       </div>
       <div class="modal-body">
-        <div style="font-size:18px; color: #470EE9;">
+        <div style="font-size:18px;">
           <center id="deletesalarie_echec"></center>  
         </div>
       </div>

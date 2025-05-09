@@ -35,7 +35,7 @@ $id = $_SESSION['ID'];
         <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
       </div>
       <div class="modal-body">
-        <div style="font-size:18px; color: #470EE9;">
+        <div style="font-size:18px;">
           <center id="success"></center>  
         </div>
       </div>
@@ -52,7 +52,7 @@ $id = $_SESSION['ID'];
         <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
       </div>
       <div class="modal-body">
-        <div style="font-size:18px; color: #470EE9;">
+        <div style="font-size:18px;">
           <center id="echec"></center>  
         </div>
       </div>

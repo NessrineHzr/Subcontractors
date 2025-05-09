@@ -28,7 +28,7 @@ if($role == "1"){
 $res = mysqli_query($connexion, $sql);
 $nbr = $res->fetch_row()[0];
 // message 
-$sql_msg="SELECT COUNT(*) FROM messages WHERE etat_Messages = '1' AND vu_Messages = '0' AND login_recepteur_Messages = '$login' ";
+$sql_msg="SELECT COUNT(*) FROM messages WHERE etat_Messages = '1' AND vu_recepteur_Messages = '0' AND login_recepteur_Messages = '$login' ";
 $res_msg = mysqli_query($connexion, $sql_msg);
 $nbr_msg = $res_msg->fetch_row()[0];
 ?>
@@ -53,6 +53,41 @@ $nbr_msg = $res_msg->fetch_row()[0];
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
 </head>
 <body>
+  <style>
+/* Conteneur de la barre de recherche pour servir de référence au positionnement absolu */
+.search-bar {
+  position: relative; /* Permet à #searchResults de se positionner relativement à .search-bar */
+}
+
+/* Liste de résultats */
+#searchResults {
+  position: absolute;
+  top: 95%;        
+  left: 2%;          /* Aligne le bord gauche */
+  width: 25%;      /* Même largeur que .search-bar */
+  margin-top: 4px;  /* Petit espacement facultatif */
+  background: #fff; /* Fond blanc */
+  border:none;
+  border-radius: 1px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  max-height: 140px;         /* Limite la hauteur */
+  overflow-y: auto;          /* Scroll si trop de résultats */
+  z-index: 1000;             /* Au-dessus des autres éléments */
+  display: none;             /* Caché par défaut */
+}
+
+/* Style des éléments de la liste */
+#searchResults .list-group-item {
+  cursor: pointer;
+  padding: 8px 12px;
+}
+
+/* Effet au survol */
+#searchResults .list-group-item:hover {
+  background-color: #f5f5f5;
+}
+
+</style>
   <!-- BOUTON POUR OUVRIR LE CHAT -->
   <div id="chat-toggle" title="Chatbot">
     <i class="fas fa-comments"></i>
@@ -74,25 +109,30 @@ $nbr_msg = $res_msg->fetch_row()[0];
         <nav class="nav-menu">
             <a href="dashboard.php" class="nav-link"><i class="fas fa-home"></i><span>Dashboard</span></a>
             <?php if($role=="1"){?><a href="compte.php" class="nav-link"><i class="fa-solid fa-circle-user"></i><span>Compte</span></a><?php }?>
-            <a href="demande.php" class="nav-link"><i class="fas fa-file-alt"></i><span>Demandes</span></a>
-            <?php if($role=="1"){?><a href="sous-traitant.php" class="nav-link"><i class="fas fa-user-tie"></i><span>Sous-traitants</span></a><?php }?>
             <a href="salarie.php" class="nav-link"><i class="fas fa-users"></i><span>Salariés</span></a>
-            <?php if($role=="1"){?><a href="facture.php" class="nav-link"><i class="fas fa-file-invoice-dollar"></i><span>Facture</span></a><?php }?>
+            <?php if($role=="1"){?><a href="sous-traitant.php" class="nav-link"><i class="fas fa-user-tie"></i><span>Sous-traitants</span></a><?php }?>
+            <a href="demande.php" class="nav-link"><i class="fas fa-file-alt"></i><span>Demandes</span></a>
+            <a href="facture.php" class="nav-link"><i class="fas fa-file-invoice-dollar"></i><span>Facture</span></a>
             <?php if($role=="1"){?><a href="reglement.php" class="nav-link"><i class="fas fa-file-invoice"></i><span>Réglement</span></a><?php }?>
-            <?php if($role=="1"){?><a href="contact.php" class="nav-link"><i class="fa-solid fa-address-book"></i><span>Contact</span></a><?php }?>
             <?php if($role=="1"){?><a href="document.php" class="nav-link"><i class="fas fa-folder"></i><span>Documents</span></a><?php }?>
             <?php if($role=="1"){?><a href="messagerie.php" class="nav-link"><i class="fas fa-envelope"></i><span>Messageries</span></a><?php }?>
-        </nav>
+            <a href="contact.php" class="nav-link"><i class="fa-solid fa-address-book"></i><span>Contact</span></a>
+          </nav>
     </aside>
     <main class="main-content">
         <div class="main-wrapper">
             <div class="search-container">
-                <div class="search-bar">
-                    <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Rechercher...">
-                </div>
-                <div class="icons">
 
+              <!-- barre de recherche  -->
+              <div class="search-bar">
+                <span  id="search-icon">
+                <i class="fas fa-search"></i>
+                </span>
+                <input type="text" id="searchInput" class="form-control" placeholder="Rechercher..."/>
+                <ul id="searchResults" class="list-group position-absolute w-100"></ul>
+              </div>
+
+              <div class="icons">
                     <!-- messagerie -->
                     <?php if($role=="1"){?><div class="icon message" id="message_icon"> <?php }?>
                     <?php if($role=="2"){?><div class="icon message" id="message_icon_soustraitant"> <?php }?>
@@ -148,9 +188,10 @@ $nbr_msg = $res_msg->fetch_row()[0];
                 </div>
             </div>
 
-<!-- chatbot -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script>
+//////////////////// chatbot ////////////////
+
   $(function() {
     const $toggle = $('#chat-toggle'),
           $box    = $('#chat-box'),
@@ -211,6 +252,71 @@ $nbr_msg = $res_msg->fetch_row()[0];
       }
     });
   });
+
+  /////////////////////////  Recherche  ///////////////////////////////
+
+  $(function(){
+  const pages = <?php if ($role == 2): ?>[
+      { name: 'Dashboard',    url: 'dashboard.php' },
+      { name: 'Salariés',     url: 'salarie.php'   },
+      { name: 'Demandes',     url: 'demande.php'   },
+      { name: 'Factures',     url: 'facture.php'   },
+      { name: 'Contact',      url: 'contact.php'   }
+    ]<?php else: ?>[
+      { name: 'Dashboard',     url: 'dashboard.php'     },
+      { name: 'Demandes',      url: 'demande.php'       },
+      { name: 'Salariés',      url: 'salarie.php'       },
+      { name: 'Sous-traitants',url: 'sous-traitant.php' },
+      { name: 'Factures',      url: 'facture.php'       },
+      { name: 'Règlements',    url: 'reglement.php'     },
+      { name: 'Documents',     url: 'document.php'      },
+      { name: 'Messagerie',    url: 'messagerie.php'    },
+      { name: 'Contact',       url: 'contact.php'       },
+      { name: 'Compte',        url: 'compte.php'        }
+    ]<?php endif; ?>;
+
+
+  const $input   = $('#searchInput');
+  const $results = $('#searchResults');
+
+  // fonction pour afficher les résultats
+  function showResults(matches) {
+    if (!matches.length) {
+      return $results.hide().empty();
+    }
+    const items = matches.map(p =>
+      `<li class="list-group-item list-group-item-action">${p.name}</li>`
+    ).join('');
+    $results.html(items).show();
+  }
+
+  // filtrage à chaque frappe
+  $input.on('input', function(){
+    const term = this.value.trim().toLowerCase();
+    if (!term) return showResults([]);
+    const matches = pages.filter(p =>
+      p.name.toLowerCase().includes(term)
+    );
+    showResults(matches);
+  });
+
+  // clic sur un résultat
+  $results.on('click', 'li', function(){
+    const selected = $(this).text();
+    const page = pages.find(p => p.name === selected);
+    if (page) {
+      window.location.href = page.url;
+    }
+  });
+
+  // fermer la liste si on clique ailleurs
+  $(document).on('click', function(e){
+    if (!$(e.target).closest('#searchInput, #searchResults').length) {
+      $results.hide();
+    }
+  });
+});
+
 </script>
 
 

@@ -151,7 +151,7 @@ $role = $_SESSION['Role'];
         <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
       </div>
       <div class="modal-body">
-        <div style="font-size:18px; color: #470EE9;">          
+        <div style="font-size:18px;">          
           <center id="adddemande_success"></center>  
         </div>
       </div>
@@ -168,7 +168,7 @@ $role = $_SESSION['Role'];
         <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
       </div>
       <div class="modal-body">
-        <div style="font-size:18px; color: #470EE9;">          
+        <div style="font-size:18px;">          
           <center id="adddemande_echec"></center>  
         </div>
       </div>
@@ -185,7 +185,7 @@ $role = $_SESSION['Role'];
         <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
       </div>
       <div class="modal-body">
-        <p style="color: #470EE9; font-size: 18px;">Voulez-vous supprimer le demande ?</p><br>
+        <p style="font-size: 18px;">Voulez-vous supprimer le demande ?</p><br>
       </div>
         <div class="modal-footer">
 					<button type="button" id="btn_delete" class="buttonvalidate">Supprimer</button>
@@ -205,7 +205,7 @@ $role = $_SESSION['Role'];
         <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
       </div>
       <div class="modal-body">
-        <div style="font-size:18px; color: #470EE9;">
+        <div style="font-size:18px;">
           <center id="deletedemande_success"></center>  
         </div>
       </div>
@@ -222,7 +222,7 @@ $role = $_SESSION['Role'];
         <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
       </div>
       <div class="modal-body">
-        <div style="font-size:18px; color: #470EE9;">
+        <div style="font-size:18px;">
           <center id="deletedemande_echec"></center>  
         </div>
       </div>

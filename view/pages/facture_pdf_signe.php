@@ -1,11 +1,4 @@
 <?php
-// Désactive l’affichage des warnings/infos
-ini_set('display_errors', 0);
-error_reporting(0);
-
-// Démarre un tampon de sortie pour capturer tout texte accidentel
-ob_start();
-
 require_once __DIR__ . '/../../vendor/autoload.php';
 include('../../config/base_de_donnee.php');
 
@@ -27,28 +20,6 @@ while ($row2 = mysqli_fetch_assoc($result2)) {
 }
 
 $pdf = new TCPDF();
-
-// Configuration de la signature
-$certFile    = __DIR__ . '/../../cle/certificat.pem';  
-$privateFile = __DIR__ . '/../../cle/private.key';
-$passphrase  = ''; 
-
-$signatureInfo = [
-    'Name'        => 'IMG',
-    'Location'    => 'Tunis, Tunisie',
-    'Reason'      => 'Facture acquittée',
-    'ContactInfo' => 'contact@img.tn'
-];
-
-$pdf->setSignature(
-    'file://'.$certFile,
-    'file://'.$privateFile,
-    $passphrase,
-    '',
-    2,             
-    $signatureInfo
-);      
-
 $pdf->AddPage();
 $logoFile = __DIR__ . '/logo.jpg'; 
 
@@ -87,9 +58,9 @@ $html = '
     <th style="background-color: #470EE9; color: white; font-weight: bold; text-align: center; padding: 10px 0; width: 33%;">Attachement</th>
   </tr>
   <tr><br>
-    <td style="padding: 20px; text-align: center; border: none; font-size: 9px;">AVANT GARDE TELECOM<br> 95 rue du Morellon<br> 38070 Saint Quentin Fallavier<br></td>
-    <td style="padding: 20px; text-align: center; border: none;font-size: 9px;">Du  <strong> 01/12/2024 </strong> Au  <strong> 31/12/2024</strong><br></td>
-    <td style="padding: 20px; text-align: center; border: none;font-size: 9px;">D25-0002</td>
+    <td style="padding: 20px; text-align: center; border: none; font-size: 9px;"><br>...<br><br></td>
+    <td style="padding: 20px; text-align: center; border: none;font-size: 9px;">...<br></td>
+    <td style="padding: 20px; text-align: center; border: none;font-size: 9px;">...</td>
   </tr>
 </table><br><br>
 
@@ -102,9 +73,9 @@ $html = '
     <th colspan="2" style="background-color: #470EE9; color: white; font-weight: bold; text-align: center; padding: 8px;">Total H.T</th>
   </tr>
   <tr><br>
-    <td colspan="2" style="padding: 20px; border: none;text-align:center;font-size: 9px;"></td>
-    <td colspan="3" style="padding: 20px; border: none;text-align:center;font-size: 9px;"> Travaux raccordement b2c-b2b region ce dept : 73</td>
-    <td style="padding: 20px; border: none;text-align:center;font-size: 9px;">1</td>
+    <td colspan="2" style="padding: 20px; border: none;text-align:center;font-size: 9px;">...</td>
+    <td colspan="3" style="padding: 20px; border: none;text-align:center;font-size: 9px;">...</td>
+    <td style="padding: 20px; border: none;text-align:center;font-size: 9px;">...</td>
     <td colspan="2" style="padding: 20px; border: none;text-align:center;font-size: 9px;">'.$montant.' dt</td>
     <td colspan="2" style="padding: 20px; border: none;text-align:center;font-size: 9px; font-weight: bold;">'.$montant.' dt</td>
   </tr>
@@ -174,7 +145,6 @@ $h = 20;
 
 // Champ de signature vide
 $pdf->addEmptySignatureAppearance($x, $y, $w, $h);
-
 $pdf->SetDrawColor(0, 0, 0);
 $pdf->SetLineWidth(0.5);
 $pdf->Rect($x, $y, $w, $h);
@@ -184,9 +154,55 @@ $textHeight = 5;
 $pdf->SetXY($x, $y + ($h - $textHeight) / 2);
 $pdf->Cell($w, $textHeight, 'Facture signé', 0, 1, 'C');
 
-if (ob_get_length()) {
-  ob_end_clean();
+$pdfContent = $pdf->Output('', 'S');
+
+
+// Vérification / génération de la paire de clés
+$sql_verif = "SELECT clePrive_FactureSigne, clePublic_FactureSigne FROM facture_signe WHERE idFacture_FactureSigne = $idFacture";
+$resCheck = $connexion->query($sql_verif);
+if ($resCheck->num_rows > 0) {
+    $row = $resCheck->fetch_assoc();
+    $privateKeyPem = $row['clePrive_FactureSigne'];
+    $publicKeyPem  = $row['clePublic_FactureSigne'];
+    $isNewPair     = false;
+} else {
+    $configArgs = [
+        "private_key_bits" => 2048,
+        "private_key_type" => OPENSSL_KEYTYPE_RSA,
+    ];
+    $res = openssl_pkey_new($configArgs);
+    openssl_pkey_export($res, $privateKeyPem);
+    $pubKeyDetails  = openssl_pkey_get_details($res);
+    $publicKeyPem   = $pubKeyDetails['key'];
+    $isNewPair      = true;
 }
 
-$pdf->Output('facture_signé_'.$nomE.'.pdf', 'I'); 
+// Signature du contenu PDF (SHA‑256)
+openssl_sign($pdfContent, $signatureRaw, $privateKeyPem, OPENSSL_ALGO_SHA256);
+$signatureB64 = base64_encode($signatureRaw);
+
+// Enregistrement en base si nouvelle paire (sans en-têtes PEM)
+if ($isNewPair) {
+    // Nettoie les PEM pour ne garder que le Base64 pur
+    $bodyPriv = str_replace(
+        ["-----BEGIN PRIVATE KEY-----", "-----END PRIVATE KEY-----", "\r", "\n"],
+        '',
+        $privateKeyPem
+    );
+    $bodyPub = str_replace(
+        ["-----BEGIN PUBLIC KEY-----", "-----END PUBLIC KEY-----", "\r", "\n"],
+        '',
+        $publicKeyPem
+    );
+
+    $sql_cle = "INSERT INTO facture_signe
+        (idFacture_FactureSigne, clePrive_FactureSigne, clePublic_FactureSigne, etat_FactureSigne)
+     VALUES('$idFacture', '$bodyPriv', '$bodyPub', '1')";
+    $result_cle = mysqli_query($connexion, $sql_cle);
+}
+// Envoi du PDF signé au navigateur
+header('Content-Type: application/pdf');
+header('Content-Disposition: inline; filename="facture_signé_'.$nomE.'.pdf"');
+echo $pdfContent;
+
 ?>

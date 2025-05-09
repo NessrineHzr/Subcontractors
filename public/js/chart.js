@@ -43,6 +43,7 @@ function calcul_chart_dashboard() {
                             ctx.restore();
                             const fontSize = (height / 114).toFixed(2);
                             ctx.font = fontSize + "em sans-serif";
+                            ctx.fontWeight = 'bold';
                             ctx.textBaseline = "middle";
                             const text = data.total1 + '%',
                                   textX = Math.round((width - ctx.measureText(text).width) / 2),
@@ -88,6 +89,7 @@ function calcul_chart_dashboard() {
                             ctx.restore();
                             const fontSize = (height / 114).toFixed(2);
                             ctx.font = fontSize + "em sans-serif";
+                            ctx.fontWeight = 'bold';
                             ctx.textBaseline = "middle";
                             const text = data.total2 + '%',
                                   textX = Math.round((width - ctx.measureText(text).width) / 2),

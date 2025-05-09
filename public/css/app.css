@@ -58,12 +58,6 @@ body {
     margin-right: 10px;
 }
 
-/* Effet actif et hover */
-.nav-link:hover,
-.nav-link.active {
-    border-left: 10px solid white;
-}
-
 /* Main Content */
 .main-content {
     flex: 1;
@@ -74,7 +68,7 @@ body {
 }
 
 .main-wrapper {
-    background: #f0f0f0f0;
+    background: #5158900D;
     padding: 35px;
     min-height: 98vh;
 }
@@ -291,7 +285,6 @@ body {
     }
 
     .user-info {
-        flex-direction: column;
         align-items: flex-start;
     }
 }
@@ -458,10 +451,6 @@ body {
     vertical-align: middle;
   }
   
-  .table-salarie tbody tr:hover {
-    background-color: #f4f4f4;
-  }
-  
   .icon-button {
     background: none;
     border: none;
@@ -517,9 +506,9 @@ body {
       background-color: #7545f9;
   }
   .mission-europeenne {
-    font-size: 10px;
-    width: 65px;
-    height: 19px;
+    font-size: 12px;
+    width: 85px;
+    height: 22px;
     text-align: center;
     display: flex;
     justify-content: center;
@@ -530,9 +519,9 @@ body {
     color:#CA0EE9;
   }
   .mission:not(.mission-europeenne) {
-    font-size: 10px;
-    width: 65px;
-    height: 19px;
+    font-size: 12px;
+    width: 80px;
+    height: 22px;
     text-align: center;
     display: flex;
     justify-content: center;
@@ -542,11 +531,36 @@ body {
     background-color:#DFEFFE;
     color:#2400FF;
   }
-
+  .status_compte {
+    font-size: 12px;
+    width: 60px;
+    height: 22px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    border-radius: 60px;
+    background-color:#F1BEF9;
+    color:#CA0EE9;
+  }
+  .statu:not(.status_compte) {
+    font-size: 12px;
+    width: 60px;
+    height: 22px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    border-radius: 60px;
+    background-color:#DFEFFE;
+    color:#2400FF;
+  }
   .status_attente {
-    font-size: 11px;
-    width: 65px;
-    height: 20px;
+    font-size: 12px;
+    width: 75px;
+    height: 22px;
     text-align: center;
     display: flex;
     justify-content: center;
@@ -557,9 +571,9 @@ body {
     color: #FFA629;
   }  
   .status_acceptee {
-    font-size: 11px;
-    width: 65px;
-    height: 20px;
+    font-size: 12px;
+    width: 70px;
+    height: 22px;
     text-align: center;
     display: flex;
     justify-content: center;
@@ -569,9 +583,9 @@ body {
     background-color:#B5FACC;
     color:#318C40;
   }  .status_refusee {
-    font-size: 11px;
-    width: 65px;
-    height: 20px;
+    font-size: 12px;
+    width: 70px;
+    height: 22px;
     text-align: center;
     display: flex;
     justify-content: center;
@@ -583,9 +597,9 @@ body {
   }
 
   .status_facture {
-    font-size: 11px;
-    width: 80px;
-    height: 30px;
+    font-size: 12px;
+    width: 150px;
+    height: 22px;
     text-align: center;
     display: flex;
     justify-content: center;
@@ -957,8 +971,8 @@ table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th, ta
     /* Style pour le badge */
     .icon.notification .notification {
         position: absolute;
-        top: -5px;
-        right: -5px;
+        top: -4px;
+        right: -1px;
         background: red;
         color: white;
         border-radius: 50%;
@@ -967,8 +981,8 @@ table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th, ta
       }
       .icon.message .message {
         position: absolute;
-        top: -5px;
-        right: -5px;
+        top: -4px;
+        right: -1px;
         background: red;
         color: white;
         border-radius: 50%;
@@ -1007,9 +1021,6 @@ table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th, ta
           width: 100%;
       }
   
-      .notification-item button:hover {
-          background-color:rgba(243, 243, 243, 0.9);
-      }
       .btn_non_lu {
           background-color:rgba(240, 240, 240, 0.8);
           padding: 10px;
@@ -1021,9 +1032,6 @@ table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th, ta
           text-align: left;
           font-size: 15px;
           width: 100%;
-      }
-      .btn_non_lu button:hover {
-          background-color:rgba(255, 255, 255, 0.9);
       }
       .btn_affiche {
       font-size: 15px;
@@ -1051,9 +1059,6 @@ table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th, ta
     width: 95%;
     min-height :60px;
     background-color: white;
-  }
-  button.message-item:hover {
-    background-color:rgba(229, 229, 234, 0.5);
   }
   button.message-item-lu {
     all: unset;
@@ -1095,7 +1100,7 @@ table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th, ta
   .model_message_list {
     position: fixed;
     bottom: 20px;
-    right: 25px;
+    right: 85px;
     width: 360px;
     max-height: 550px;
     background: #fff;
@@ -1225,9 +1230,9 @@ table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th, ta
 /* --- Styles du widget chatbot --- */
 #chat-toggle {
   position: fixed;
-  top: 20px;
-  right: 20px;
-  background: #470EE9;
+  top: 880px;
+  right: 30px;
+  background: #6229ff;
   color: #fff;
   width: 48px;
   height: 48px;
@@ -1241,9 +1246,9 @@ table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th, ta
 
 #chat-box {
   position: fixed;
-  top: 80px;
-  right: 20px;
-  width: 300px;
+  top: 480px;
+  right: 85px;
+  width: 320px;
   height: 450px; 
   background: #fff;
   border: 1px solid #ccc;
@@ -1257,7 +1262,7 @@ table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th, ta
 
 #chat-header {
   min-height: 40px;
-  background: #470EE9;
+  background: #6229ff;
   color: #fff;
   padding: 15px;
   border-top-left-radius: 8px;
@@ -1271,6 +1276,7 @@ table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th, ta
 #chat-header span {
   font-weight: bold;
   font-size: 18px;
+  font-family: 'Poppins', sans-serif;
 }
 
 #chat-log {
@@ -1299,7 +1305,7 @@ table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th, ta
 
 #chat-send {
   background: white;
-  color: #470EE9;
+  color: #6229ff;
   font-size: 22px;
   border: none;
   padding: 0 13px;
@@ -1405,7 +1411,8 @@ table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th, ta
     font-weight: bold;  
     font-size: 18px;   
     border: 2px solid transparent; 
-    padding: 20px 35px;  
+    padding: 20px 25px;
+    padding-right: 15px; 
     background-color: white; 
     border-radius: 5px;   
   }
@@ -1470,17 +1477,18 @@ table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th, ta
 
   .documents {
     display: flex; 
-    gap: 10px;
+    gap: 12px;
     flex-wrap: wrap;
 }
 .titledoc {
     position: absolute;
-    top: 100%;  
+    top: 99%;  
     left: auto; 
     font-size: 16px; 
+    width: 70%;
 }
 .document {
-    width: 18%;
+    width: 16.5%;
     display: flex;
     align-items: center;
     position: relative;
@@ -1694,7 +1702,6 @@ padding: 10px;
     display: grid;
     grid-template-columns: repeat(5, 1fr); 
     gap: 30px;
-    justify-items: center;
 }
 
 .card {
@@ -1761,9 +1768,6 @@ button.message-item {
   width: 99%;
   min-height :70px;
   background-color: white;
-}
-button.message-item:hover {
-  background-color:rgba(229, 229, 234, 0.5);
 }
 button.message-item-lu {
   all: unset;
@@ -1886,10 +1890,468 @@ button.message-item-lu {
 }
 
 
+/* /////////////////////////////////////////////////////////////////////////////////////// */
 
 
+/* ====== RESPONSIVE GLOBAL ====== */
 
+/* Variables pour les points de rupture */
+:root {
+  --breakpoint-xl: 1440px;
+  --breakpoint-lg: 1200px;
+  --breakpoint-md: 992px;
+  --breakpoint-sm: 768px;
+  --breakpoint-xs: 576px;
+  --breakpoint-xxs: 375px;
+}
 
+/* Écrans très larges (>1440px) */
+@media (min-width: 1441px) {
+  .container {
+    margin: 0 auto;
+  }
+  
+  .main-content {
+    padding: 20px 30px;
+  }
+}
+
+/* Écrans larges (1200px - 1440px) */
+@media (max-width: 1440px) {
+  .container {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  .search-bar {
+    max-width: 900px;
+  }
+  
+  .profile .cadre1 {
+    width: 72%;
+  }
+  
+  .profile .cadre2 {
+    width: 26%;
+  }
+}
+
+/* Grande tablette/Petit ordinateur (992px - 1200px) */
+@media (max-width: 1200px) {
+  .container {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  
+  .search-bar {
+    max-width: 700px;
+  }
+  
+  .cadre_m {
+    flex-direction: column;
+    max-height: none;
+  }
+  
+  .cadre1_m, .cadre2_m {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  .main-wrapper {
+    padding: 25px;
+  }
+  
+  .modal-content {
+    width: 80%;
+  }
+  
+  .modal-content-2 {
+    max-width: 50%;
+  }
+  
+  /* Ajustements pour le tableau */
+  .table-salarie th, .table-salarie td {
+    padding: 10px;
+  }
+}
+
+/* Tablette (768px - 992px) */
+@media (max-width: 992px) {
+  .container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .search-container {
+    align-items: flex-start;
+  }
+  
+  .search-bar {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 15px;
+  }
+  
+  .icons {
+    justify-content: flex-start;
+    margin-bottom: 15px;
+  }
+  
+  .stats {
+    flex-direction: column;
+  }
+  
+  .documents {
+    justify-content: center;
+  }
+  
+  .document {
+    width: 30%;
+    margin-bottom: 30px;
+  }
+  
+  .document_s {
+    width: 150px;
+  }
+  
+  /* Ajustements pour les modales */
+  #fiche_2row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Petit écran/Grande mobile (576px - 768px) */
+@media (max-width: 768px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+  
+  .document {
+    width: 45%;
+  }
+  
+  .sidebar {
+    width: 60px;
+  }
+  
+  .main-content {
+    margin-left: 60px;
+    padding: 10px;
+  }
+  
+  .main-wrapper {
+    padding: 15px;
+    min-height: 95vh;
+  }
+  
+  .profile .cadre1, .profile .cadre2,
+  .cadre1, .cadre2 {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  .cadre {
+    flex-direction: column;
+  }
+  
+  .modal-content {
+    width: 95%;
+    margin: 5% auto;
+  }
+  
+  .modal-content-2 {
+    max-width: 80%;
+  }
+  
+  .buttonvalidate, .buttonannule {
+    width: 120px;
+    height: 45px;
+    font-size: 14px;
+  }
+  
+  .entete {
+    align-items: flex-start;
+  }
+  
+  .title-class {
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+  
+  .btn-add {
+    padding: 10px 15px;
+    font-size: 13px;
+  }
+  
+  /* Ajustements pour la messagerie */
+  .model_message_list {
+    width: 300px;
+    right: 10px;
+  }
+  
+  /* Ajustements pour le chat */
+  #chat-box {
+    width: 280px;
+    right: 10px;
+  }
+}
+
+/* Mobile (375px - 576px) */
+@media (max-width: 576px) {
+  .sidebar {
+    width: 50px;
+  }
+  
+  .main-content {
+    margin-left: 50px;
+    padding: 5px;
+  }
+  
+  .main-wrapper {
+    padding: 10px;
+  }
+  
+  .document {
+    width: 100%;
+  }
+  
+  .document_s {
+    width: 130px;
+  }
+  
+  .notification-list {
+    width: 280px;
+    right: 0;
+  }
+  
+  .model_message_list {
+    width: 280px;
+    max-height: 450px;
+  }
+  
+  .user-info .user-icon {
+    width: 40px;
+  }
+  
+  .user-details .login {
+    font-size: 0.9rem;
+  }
+  
+  .user-details .role {
+    font-size: 0.8rem;
+  }
+  
+  .icons .icon {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .table-salarie {
+    font-size: 13px;
+  }
+  
+  .table-salarie th, .table-salarie td {
+    padding: 8px;
+  }
+  
+  .mission-europeenne, .mission:not(.mission-europeenne),
+  .status_attente, .status_acceptee, .status_refusee {
+    font-size: 12px;
+    width: 55px;
+    height: 17px;
+  }
+  
+  .buttonvalidate, .buttonannule {
+    width: 100px;
+    height: 40px;
+    font-size: 13px;
+  }
+  
+  .modal-content-2 {
+    max-width: 95%;
+  }
+  
+  .profile .titre, .profile h2 {
+    font-size: 16px;
+  }
+  
+  .search-bar input {
+    font-size: 0.85rem;
+  }
+  
+  .profile #update_profile_btn {
+    width: 70%;
+    font-size: 15px;
+  }
+  
+  /* Ajustements pour le contact */
+  .icon_contact i {
+    width: 10%;
+  }
+  
+  .info button {
+    width: 100%;
+  }
+}
+
+/* Très petit mobile (<375px) */
+@media (max-width: 375px) {
+  .sidebar {
+    width: 45px;
+  }
+  
+  .main-content {
+    margin-left: 45px;
+    padding: 3px;
+  }
+  
+  .main-wrapper {
+    padding: 8px;
+  }
+  
+  .search-bar {
+    padding: 10px;
+  }
+  
+  .icons .icon {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .icons .icon i {
+    font-size: 1.2rem;
+  }
+  
+  .user-info .user-icon {
+    width: 35px;
+  }
+  
+  .profile .cadre1 input {
+    padding: 3%;
+  }
+  
+  .document_s {
+    width: 120px;
+    padding: 10px;
+  }
+  
+  .document_s .doc {
+    padding: 20px;
+  }
+  
+  .document_s .doc img {
+    width: 30px;
+    height: 40px;
+  }
+  
+  .buttonvalidate, .buttonannule {
+    width: 90px;
+    height: 35px;
+    font-size: 12px;
+  }
+  
+  .modal-header, .modal-body, .modal-footer {
+    margin: 1%;
+  }
+  
+  .table-salarie {
+    font-size: 12px;
+  }
+  
+  .table-salarie th, .table-salarie td {
+    padding: 6px;
+  }
+  
+  /* Ajustements pour la messagerie et chat */
+  #chat-box {
+    width: 260px;
+  }
+  
+  .model_message_list {
+    width: 260px;
+  }
+  
+  .notification-list {
+    width: 250px;
+  }
+}
+
+/* ====== CORRECTIONS SPÉCIFIQUES ====== */
+
+/* Correction pour le menu de navigation sur petit écran */
+@media (max-width: 768px) {
+  .nav-link {
+    padding: 10px 0;
+    justify-content: center;
+  }
+  
+  .logo {
+    padding: 10px;
+  }
+  
+  .nav-menu {
+    padding: 15px 0;
+  }
+  
+  .sidebar {
+    padding: 10px 0;
+  }
+}
+
+/* Correction pour les tableaux responsive */
+@media (max-width: 768px) {
+  .table-responsive {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .dataTables_wrapper {
+    overflow-x: auto;
+  }
+}
+
+/* Correction pour les boutons et formulaires */
+@media (max-width: 576px) {
+  .modal input, .modal select {
+    padding: 6px;
+    margin: 3px 0 5px 0;
+  }
+  
+  .footer_msg .new_message {
+    padding: 8px 10px;
+  }
+}
+
+/* Correction pour les images */
+@media (max-width: 576px) {
+  .profile-image {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .card {
+    width: 200px;
+    height: 130px;
+  }
+  
+  .card .nom {
+    font-size: 16px;
+  }
+}
+
+/* Amélioration pour l'affichage des notifications sur petit écran */
+@media (max-width: 480px) {
+  .notification-list {
+    left: auto;
+    right: 0;
+    max-width: 100%;
+    width: 95vw;
+  }
+  
+  .user-info .dropdown {
+    width: 150px;
+  }
+}
 
 
 

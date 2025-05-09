@@ -147,7 +147,7 @@ $Nom = $_SESSION['Nom'];
         <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
       </div>
       <div class="modal-body">
-        <div style="font-size:18px; color: #470EE9;">          
+        <div style="font-size:18px;">          
           <center id="addsoustraitant_success"></center>  
         </div>
       </div>
@@ -164,7 +164,7 @@ $Nom = $_SESSION['Nom'];
         <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
       </div>
       <div class="modal-body">
-        <div style="font-size:18px; color: #470EE9;">          
+        <div style="font-size:18px;">          
           <center id="addsoustraitant_echec"></center>  
         </div>
       </div>
@@ -278,7 +278,7 @@ $Nom = $_SESSION['Nom'];
         <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
       </div>
       <div class="modal-body">
-        <div style="font-size:18px; color: #470EE9;">          
+        <div style="font-size:18px;">          
           <center id="addsalarie_success"></center>  
         </div>
       </div>
@@ -295,7 +295,7 @@ $Nom = $_SESSION['Nom'];
         <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
       </div>
       <div class="modal-body">
-        <div style="font-size:18px; color: #470EE9;">          
+        <div style="font-size:18px;">          
           <center id="addsalarie_echec"></center>  
         </div>
       </div>
@@ -354,7 +354,7 @@ $Nom = $_SESSION['Nom'];
         <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
       </div>
       <div class="modal-body">
-        <div style="font-size:18px; color: #470EE9;">
+        <div style="font-size:18px;">
           <center id="Validity_success"></center>  
         </div>
       </div>
@@ -371,7 +371,7 @@ $Nom = $_SESSION['Nom'];
         <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
       </div>
       <div class="modal-body">
-        <div style="font-size:18px; color: #470EE9;">
+        <div style="font-size:18px;">
           <center id="Validity_echec"></center>  
         </div>
       </div>

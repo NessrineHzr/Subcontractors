@@ -57,8 +57,8 @@ if ($statusDemande == 'En Attente' ){
         <th>Pays</th>
         <th>Téléphone</th>
         <th>Iban</th>
-        <th>Type Mission</th>
-        <th>Chef Projet</th>
+        <th><center>Type Mission</center></th>
+        <th><center>Chef Projet</center></th>
       </tr>
     </thead>
     <tbody>

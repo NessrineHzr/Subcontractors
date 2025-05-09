@@ -10,7 +10,7 @@ $login = $_SESSION['Login'];
 </div>
 
 <!-- Model ajout -->
-<div class="modal fade bd-example-modal-lg" id="ajoutSoustraitant" tabindex="-1" aria-hidden="true">
+<div class="modal fade bd-example-modal-lg" id="ajoutSoustraitant" tabindex="-1">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -113,7 +113,7 @@ $login = $_SESSION['Login'];
 </div>
 <!-- end Model ajout -->
 <!-- Model alert ajout succès -->
-<div class="modal fade" id="SuccessAddSoustraitant" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="SuccessAddSoustraitant" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" >
   <div class="modal-dialog" role="document">
     <div class="modal-content-2">
       <div class="modal-header">
@@ -121,7 +121,7 @@ $login = $_SESSION['Login'];
         <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
       </div>
       <div class="modal-body">
-        <div style="font-size:18px; color: #470EE9;">          
+        <div style="font-size:18px;">          
           <center id="addsoustraitant_success"></center>  
         </div>
       </div>
@@ -130,7 +130,7 @@ $login = $_SESSION['Login'];
 </div>
 <!-- end Model alert ajout succès -->
 <!-- Model alert ajout echec -->
-<div class="modal fade" id="EchecAddSoustraitant" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="EchecAddSoustraitant" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" >
   <div class="modal-dialog" role="document">
     <div class="modal-content-2">
       <div class="modal-header">
@@ -138,7 +138,7 @@ $login = $_SESSION['Login'];
         <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
       </div>
       <div class="modal-body">
-        <div style="font-size:18px; color: #470EE9;">          
+        <div style="font-size:18px;">          
           <center id="addsoustraitant_echec"></center>  
         </div>
       </div>
@@ -249,7 +249,7 @@ $login = $_SESSION['Login'];
 </div>
 <!-- End Modal modification -->
 <!-- Model alert modification succès -->
-<div class="modal fade" id="SuccessUpSoustraitant" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="SuccessUpSoustraitant" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" >
   <div class="modal-dialog" role="document">
     <div class="modal-content-2">
       <div class="modal-header">
@@ -257,7 +257,7 @@ $login = $_SESSION['Login'];
         <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
       </div>
       <div class="modal-body">
-        <div style="font-size:18px; color: #470EE9;">
+        <div style="font-size:18px;">
           <center id="upsoustraitant_success"></center>  
         </div>
       </div>
@@ -266,7 +266,7 @@ $login = $_SESSION['Login'];
 </div>  
 <!-- end Model alert modification succès -->
 <!-- Model alert modification echec -->
-<div class="modal fade" id="EchecUpSoustraitant" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="EchecUpSoustraitant" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" >
   <div class="modal-dialog" role="document">
     <div class="modal-content-2">
       <div class="modal-header">
@@ -274,7 +274,7 @@ $login = $_SESSION['Login'];
         <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
       </div>
       <div class="modal-body">
-        <div style="font-size:18px; color: #470EE9;">
+        <div style="font-size:18px;">
           <center id="upsoustraitant_echec"></center>  
         </div>
       </div>
@@ -283,7 +283,7 @@ $login = $_SESSION['Login'];
 </div>
 <!-- end Model alert modification echec -->
 <!-- Model suppression -->
-<div class="modal fade" id="deleteSoustraitant" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="deleteSoustraitant" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" >
   <div class="modal-dialog" role="document">
     <div class="modal-content-2">
       <div class="modal-header">
@@ -291,7 +291,7 @@ $login = $_SESSION['Login'];
         <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
       </div>
       <div class="modal-body">
-        <p style="color: #470EE9; font-size: 18px;">Voulez-vous supprimer le sous-traitant ?</p><br>
+        <p style="font-size: 18px;">Voulez-vous supprimer le sous-traitant ?</p><br>
       </div>
         <div class="modal-footer">
 					<button type="button" id="btn_delete" class="buttonvalidate">Supprimer</button>
@@ -303,7 +303,7 @@ $login = $_SESSION['Login'];
 </div>
 <!-- end Model suppression -->
 <!-- Model alert supprimer succès -->
-<div class="modal fade" id="SuccessDeleteSoustraitant" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="SuccessDeleteSoustraitant" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" >
   <div class="modal-dialog" role="document">
     <div class="modal-content-2">
       <div class="modal-header">
@@ -311,7 +311,7 @@ $login = $_SESSION['Login'];
         <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
       </div>
       <div class="modal-body">
-        <div style="font-size:18px; color: #470EE9;">
+        <div style="font-size:18px;">
           <center id="deletesoustraitant_success"></center>  
         </div>
       </div>
@@ -320,7 +320,7 @@ $login = $_SESSION['Login'];
 </div>
 <!-- end Model alert supprimer succès -->
 <!-- Model alert supprimer echec -->
-<div class="modal fade" id="EchecDeleteSoustraitant" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="EchecDeleteSoustraitant" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" >
   <div class="modal-dialog" role="document">
     <div class="modal-content-2">
       <div class="modal-header">
@@ -328,7 +328,7 @@ $login = $_SESSION['Login'];
         <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
       </div>
       <div class="modal-body">
-        <div style="font-size:18px; color: #470EE9;">
+        <div style="font-size:18px;">
           <center id="deletesoustraitant_echec"></center>  
         </div>
       </div>
@@ -337,7 +337,7 @@ $login = $_SESSION['Login'];
 </div>
 <!-- end Model alert supprimer echec -->
 <!-- Model affiche info chef projet -->
-<div class="modal fade" id="affiche_chefProjet" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="affiche_chefProjet" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" >
   <div class="modal-dialog" role="document">
     <div class="modal-content-2">
       <div class="modal-header">
@@ -345,7 +345,7 @@ $login = $_SESSION['Login'];
         <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
       </div><br>
       <div class="modal-body">
-        <div style="font-size:18px; color: #470EE9;">
+        <div style="font-size:18px;">
           <center id="info_chefProjet"></center>  
         </div>
         <div class="modal-footer">

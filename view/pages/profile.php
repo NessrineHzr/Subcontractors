@@ -125,7 +125,7 @@ include('../header_menu.php');
       <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
     </div>
     <div class="modal-body">
-      <center><p id="message" style="color: #470EE9;"></p></center>
+      <center><p id="message"></p></center>
     </div>
   </div>
 </div>

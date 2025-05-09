@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '5a3c867c3c512e9362221217eb0da257918138ad',
+        'reference' => 'd5a9e426bdfc9c29e6d406134bae4f5c20de708d',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '5a3c867c3c512e9362221217eb0da257918138ad',
+            'reference' => 'd5a9e426bdfc9c29e6d406134bae4f5c20de708d',
             'dev_requirement' => false,
         ),
         'dompdf/dompdf' => array(
@@ -89,6 +89,15 @@
             'install_path' => __DIR__ . '/../symfony/polyfill-ctype',
             'aliases' => array(),
             'reference' => 'aed596913b70fae57be53d86faa2e9ef85a2297b',
+            'dev_requirement' => false,
+        ),
+        'tecnickcom/tcpdf' => array(
+            'pretty_version' => '6.7.8',
+            'version' => '6.7.8.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../tecnickcom/tcpdf',
+            'aliases' => array(),
+            'reference' => '7956f5e37863c6a569d5ccfae826f353a12a2493',
             'dev_requirement' => false,
         ),
         'vlucas/phpdotenv' => array(

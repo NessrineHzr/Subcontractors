@@ -163,7 +163,7 @@ if ($row = mysqli_fetch_assoc($result)) {
         <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
       </div>
       <div class="modal-body">
-        <div style="font-size:18px; color: #470EE9;">          
+        <div style="font-size:18px;">          
           <center id="adddemande_success"></center>  
         </div>
       </div>
@@ -180,7 +180,7 @@ if ($row = mysqli_fetch_assoc($result)) {
         <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
       </div>
       <div class="modal-body">
-        <div style="font-size:18px; color: #470EE9;">          
+        <div style="font-size:18px;">          
           <center id="adddemande_echec"></center>  
         </div>
       </div>

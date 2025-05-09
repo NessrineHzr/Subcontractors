@@ -58,9 +58,9 @@ $html = '
     <th style="background-color: #470EE9; color: white; font-weight: bold; text-align: center; padding: 10px 0; width: 33%;">Attachement</th>
   </tr>
   <tr><br>
-    <td style="padding: 20px; text-align: center; border: none; font-size: 9px;">AVANT GARDE TELECOM<br> 95 rue du Morellon<br> 38070 Saint Quentin Fallavier<br></td>
-    <td style="padding: 20px; text-align: center; border: none;font-size: 9px;">Du  <strong> 01/12/2024 </strong> Au  <strong> 31/12/2024</strong><br></td>
-    <td style="padding: 20px; text-align: center; border: none;font-size: 9px;">D25-0002</td>
+    <td style="padding: 20px; text-align: center; border: none; font-size: 9px;"><br>...<br><br></td>
+    <td style="padding: 20px; text-align: center; border: none;font-size: 9px;">...<br></td>
+    <td style="padding: 20px; text-align: center; border: none;font-size: 9px;">...</td>
   </tr>
 </table><br><br>
 
@@ -73,9 +73,9 @@ $html = '
     <th colspan="2" style="background-color: #470EE9; color: white; font-weight: bold; text-align: center; padding: 8px;">Total H.T</th>
   </tr>
   <tr><br>
-    <td colspan="2" style="padding: 20px; border: none;text-align:center;font-size: 9px;"></td>
-    <td colspan="3" style="padding: 20px; border: none;text-align:center;font-size: 9px;"> Travaux raccordement b2c-b2b region ce dept : 73</td>
-    <td style="padding: 20px; border: none;text-align:center;font-size: 9px;">1</td>
+    <td colspan="2" style="padding: 20px; border: none;text-align:center;font-size: 9px;">...</td>
+    <td colspan="3" style="padding: 20px; border: none;text-align:center;font-size: 9px;">...</td>
+    <td style="padding: 20px; border: none;text-align:center;font-size: 9px;">...</td>
     <td colspan="2" style="padding: 20px; border: none;text-align:center;font-size: 9px;">'.$montant.' dt</td>
     <td colspan="2" style="padding: 20px; border: none;text-align:center;font-size: 9px; font-weight: bold;">'.$montant.' dt</td>
   </tr>
@@ -138,7 +138,5 @@ $pdf->SetY(-85);
 $pdf->writeHTML($html2, true, false, true, false, '');
 
 $pdf->Output('facture_'.$nomE.'.pdf', 'I'); 
-
-// $outputPath = __DIR__ . '/../facture_file/facture_' . $nomE . '.pdf';
-// $pdf->Output($outputPath, 'F'); 
+ 
 ?>

@@ -1,7 +1,7 @@
 <?php
 include('../header_menu.php');
 $login = $_SESSION['Login'];
-$sql= "SELECT id_Utilisateur, nom_Utilisateur, prenom_Utilisateur, email_Utilisateur, telephone_Utilisateur, adresse_Utilisateur, role_Utilisateur, etat_Utilisateur FROM utilisateur";
+$sql= "SELECT id_Utilisateur, nom_Utilisateur, prenom_Utilisateur, email_Utilisateur, telephone_Utilisateur, adresse_Utilisateur, role_Utilisateur, etat_Utilisateur FROM utilisateur WHERE login_Utilisateur != '$login'";
 $result = mysqli_query($connexion, $sql);
 ?>
 <!DOCTYPE html>
@@ -80,7 +80,7 @@ $result = mysqli_query($connexion, $sql);
         <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
       </div>
       <div class="modal-body">
-        <div style="font-size:18px; color: #470EE9;">          
+        <div style="font-size:18px;">          
           <center id="addsoustraitant_success"></center>  
         </div>
       </div>
@@ -97,7 +97,7 @@ $result = mysqli_query($connexion, $sql);
         <button id="btn_close"><img src="../img/x.png" alt="Fermer"></button>
       </div>
       <div class="modal-body">
-        <div style="font-size:18px; color: #470EE9;">          
+        <div style="font-size:18px;">          
           <center id="addsoustraitant_echec"></center>  
         </div>
       </div>
@@ -136,7 +136,7 @@ $result = mysqli_query($connexion, $sql);
         $role_log="Sous-traitant";
       }
 
-      $statusClass = ($status == '1') ? 'mission mission-europeenne' : 'mission';
+      $statusClass = ($status == '1') ? 'statu status_compte' : 'statu';
       $typesStatus = ($status == '1') ? 'Actif' : 'Inactif';
       if ($status == '1') {
         $btnLabel = "<i class='fas fa-user-lock'></i>";

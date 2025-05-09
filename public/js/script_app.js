@@ -73,6 +73,8 @@ $(document).ready(function() {
     get_message();
     send_message();
     view_message_liste_record()
+    get_message_liste();
+    send_message_liste()
     view_message_soustraitant_record();
     send_message_soustraitant();
 });
@@ -161,6 +163,7 @@ function searchpagination(id, title, EnteteDroite, titremodule, titre) {
     // Ajout du champ de recherche stylisé avec une marge à droite
     let searchInput = EnteteDroite.find("input");
     searchInput.addClass('form-control rounded-pill ps-5 border-0 shadow-sm');
+    searchInput.attr("placeholder", "Recherche...");
     searchInput.css("margin-right", "5px"); // Ajout d'une marge explicite
     // Bouton "Ajouter" avec espacement
     let addButton = `<button class='btn btn-add' id="${id}" title="${title}">${title}</button>`;
@@ -182,6 +185,7 @@ function searchpagination_with2buttom(id, title, id2, title2, EnteteDroite, titr
     // Ajout du champ de recherche stylisé avec une marge à droite
     let searchInput = EnteteDroite.find("input");
     searchInput.addClass('form-control rounded-pill ps-5 border-0 shadow-sm');
+    searchInput.attr("placeholder", "Recherche...");
     searchInput.css("margin-right", "5px"); // Ajout d'une marge explicite
     // Bouton "Ajouter" avec espacement
     let addButton = `<button class='btn btn-add' id="${id}" title="${title}">${title}</button>`;
@@ -205,6 +209,7 @@ function searchpagination_title( EnteteDroite, titremodule, titre) {
     // Ajout du champ de recherche stylisé avec une marge à droite
     let searchInput = EnteteDroite.find("input");
     searchInput.addClass('form-control rounded-pill ps-5 border-0 shadow-sm');
+    searchInput.attr("placeholder", "Recherche...");
     searchInput.css("margin-right", "5px"); 
     EnteteDroite.prepend(searchInput); 
 
@@ -286,7 +291,15 @@ function ajout_compte(){
 
         if (login === "" || mdp === "" || nom === "" || prenom === "" || email === "" || telephone === "" || adresse === "") {
             $("#message_soustraitant").addClass("echec-modal").html("Veuillez remplir tous les champs obligatoires !");
-        } else {
+        } else if (!/^[A-Za-zÀ-ÿ\s\-']+$/.test(nom)) {
+            $("#message_soustraitant").addClass("echec-modal").html("Le nom ne doit contenir que des lettres !");
+        } else if (!/^[A-Za-zÀ-ÿ\s\-']+$/.test(prenom)) {
+            $("#message_soustraitant").addClass("echec-modal").html("Le prénom ne doit contenir que des lettres !");
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            $("#message_soustraitant").addClass("echec-modal").html("Adresse e-mail invalide !");
+        } else if (!/^\d+$/.test(telephone)) {
+            $("#message_soustraitant").addClass("echec-modal").html("Le numéro de téléphone doit contenir uniquement des chiffres !");
+        }else {
             var form_data = new FormData();
             form_data.append("login", login);
             form_data.append("mdp", mdp);
@@ -346,6 +359,15 @@ function update_profile(){
         var ancien_mdp = $("#ancien_mdp").val();
         var nouveau_mdp = $("#nouveau_mdp").val();
         var confirmer_mdp = $("#confirmer_mdp").val();
+        if (nom === "" || prenom === "" || email === "" || telephone === "" || adresse === "") {
+            $("#modal").fadeIn();
+            $("#text").text("Alert profil");
+            $("#message").text("Veuillez remplir tous les champs obligatoires !");
+            setTimeout(function () {
+                $("#modal").fadeOut();
+            }, 4000);
+            return false;
+        }
         {if (nouveau_mdp !== "" && confirmer_mdp === "") {
             $("#modal").fadeIn();
             $("#text").text("Alert mot de passe");
@@ -802,7 +824,15 @@ function ajout_soustraitant(){
 
         if (nom === "" || nomGerant === "" || prenomGerant === "" || adresse === "" || pays === "" || siret === "" || email === "" || telephone === "" || iban === "" || typeMission === "" || chefProjet === "") {
             $("#message_soustraitant").addClass("echec-modal").html("Veuillez remplir tous les champs obligatoires !");
-        } else {
+        } else if (!/^[A-Za-zÀ-ÿ\s\-']+$/.test(nomGerant)) {
+            $("#message_soustraitant").addClass("echec-modal").html("Veuillez saisir un nom valide !");
+        } else if (!/^[A-Za-zÀ-ÿ\s\-']+$/.test(prenomGerant)) {
+            $("#message_soustraitant").addClass("echec-modal").html("Veuillez saisir un prénom valide !");
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            $("#message_soustraitant").addClass("echec-modal").html("Adresse e-mail invalide !");
+        } else if (!/^\d+$/.test(telephone)) {
+            $("#message_soustraitant").addClass("echec-modal").html("Le numéro de téléphone doit contenir uniquement des chiffres !");
+        }else {
             var form_data = new FormData();
             form_data.append("nom", nom);
             form_data.append("nomGerant", nomGerant);
@@ -1649,14 +1679,16 @@ function get_notification(){
             data: form_data,
             success: function (data) {
                 if (data.includes('text-echec')) {
+                    setTimeout(function () {
                     $("#echec").removeClass("text-checked").addClass("text-echec").html(data);
                     $("#envoyer_echec").modal("show");
-                    setTimeout(4000);
+                    }, 4000);
                 } else {
                     $("#success").addClass("text-checked").html(data);
+                    setTimeout(function () {
                     $("#envoyer_success").modal("show");
                     $("#success").removeClass("text-echec").addClass("text-checked");
-                    setTimeout(4000);                            
+                    }, 4000);
                 }
             }
         });
@@ -1675,7 +1707,11 @@ function view_facture_record(){
             if (data.status == "success") {
               $("#table_listeFacture").html(data.html);
               $('#listeFacture').DataTable({ "info": false});
-              searchpagination_with2buttom("ajout_facture","Ajouter une facture","ajout_reglement","Ajouter une réglement",$('#listeFacture_filter'),"Factures","Liste des Factures");
+              if (role == 1) {
+                searchpagination_with2buttom("ajout_facture","Ajouter une facture","ajout_reglement","Ajouter une réglement",$('#listeFacture_filter'),"Factures","Liste des Factures");
+              } else {
+                searchpagination_title($('#listeFacture_filter'),"Factures","Liste des Factures");
+              }
             }
           } catch (e) { 
             console.error("Invalid Response!" , data);
@@ -1742,12 +1778,10 @@ function ajout_facture(){
 function get_facture_data() {
     $(document).on("click", "#btn_modif_facture", function () {
       var id = $(this).data("id");
-      var entreprise = $(this).data("entreprise");
-console.log(entreprise);
       $.ajax({
         url: "../../models/getFacture.php",
         method: "POST",
-        data: { id: id, entreprise: entreprise },
+        data: { id: id},
         dataType: "JSON",
         success: function(data) {
           $("#id_Facture").val(data[0]);
@@ -1945,6 +1979,7 @@ function affiche_file_reglement(){
 ///////////////////// Module Message Administrateur ///////////////////
 
 function view_message_record(){
+    $('#nbr_msg').hide();
     $.ajax({
         url: "../../models/viewMessage.php",
         method: "post",
@@ -1964,6 +1999,7 @@ function view_message_record(){
 // affiche message
 function get_message(){
     $(document).on("click", "#btn_message", function () {
+        $('#nbr_msg').hide();
          id = $(this).attr("data-login");
          nom = $(this).attr("data-nom");
          img = $(this).attr("data-img");
@@ -1979,20 +2015,6 @@ function get_message(){
              data: form_data,
              success: function(html) {
                 $("#message").html(html);
-                $.ajax({
-                    url: "../../models/viewMessage.php",
-                    method: "post",
-                    success: function (data) {
-                      try {
-                        data = $.parseJSON(data);
-                        if (data.status == "success") {
-                          $("#liste_message").html(data.html);
-                        }
-                      } catch (e) { 
-                        console.error("Invalid Response!" , data);
-                      }
-                    },
-                });
             }
          });
     });
@@ -2001,6 +2023,7 @@ function get_message(){
 // envoi message
 function send_message(){
     $(document).on("click", "#send_message", function () {
+        $('#nbr_msg').hide();
         id = $(this).attr("data-login");
         nom = $(this).attr("data-nom");
         img = $(this).attr("data-img");
@@ -2031,6 +2054,7 @@ function send_message(){
                     data: form_data,
                     success: function(html) {
                        $("#message").html(html);
+                       $('#nbr_msg').hide();
                    }
                 });
                 $.ajax({
@@ -2041,6 +2065,7 @@ function send_message(){
                         data = $.parseJSON(data);
                         if (data.status == "success") {
                           $("#liste_message").html(data.html);
+                          $('#nbr_msg').hide();
                         }
                       } catch (e) { 
                         console.error("Invalid Response!" , data);
@@ -2054,6 +2079,9 @@ function send_message(){
 
 // icon message
 function view_message_liste_record(){
+    if (window.location.pathname.endsWith('messagerie.php')) {
+        return;
+    }
     $(document).on('click', '#message_icon', function () {
         $('#message_list').toggle();
         if($('#message_list').is(':visible')) {
@@ -2068,44 +2096,115 @@ function view_message_liste_record(){
                 try {
                     data = $.parseJSON(data);
                     if (data.status == "success") {
-                        $("#message_list").html(data.html);
+                        $("#message_list").html(data.html); 
                     }
                 }
                  catch (e) {
                     console.error("Erreur de parsing JSON", e);
+                }     
+            },
+        });
+    });
+}
+function get_message_liste(){
+    $(document).on("click", "#btn_message_soustraitant", function () {
+        $('#model_message_list').toggle();
+        if($('#model_message_list').is(':visible')){
+            $('#message_list').hide();
+            $('#nbr_msg').hide();
+        } else {
+            $('#nbr_msg').show();
+        }
+        const id = $(this).attr("data-login");
+        const nom = $(this).attr("data-nom");
+        const img = $(this).attr("data-img");
+        var form_data = new FormData();
+        form_data.append("login", id);
+        form_data.append("nom", nom);
+        form_data.append("img", img);
+        $.ajax({
+            url: "../../models/viewMessageAdmin.php",
+            method: "POST",
+            processData: false,
+            contentType: false,
+            data: form_data,
+            success: function (data) {
+                try {
+                    data = $.parseJSON(data);
+                    if (data.status == "success") {
+                        $("#message_list_soustraitant").html(data.html); 
+                        $('#nbr_msg').hide(); 
+                        const $body = $("#message_list_soustraitant").find(".body_msg");
+                        setTimeout(() => {
+                          $body.scrollTop($body.prop("scrollHeight"));
+                        }, 0);                    
+                    }
+                } catch (e) {
+                    console.error("Erreur de parsing JSON", e);
                 }
-            $(document).on('click', '#btn_message_soustraitant', function () {
-                id = $(this).attr("data-login");
-                nom = $(this).attr("data-nom");
-                img = $(this).attr("data-img");
+            },
+        });
+    });
+}
+// envoi message liste 
+function send_message_liste(){
+    $(document).on("click", "#send_message_liste", function () {
+        $('#nbr_msg').hide(); 
+        id = $(this).attr("data-login");
+        nom = $(this).attr("data-nom");
+        img = $(this).attr("data-img");
+        message = $("#new_message").val().trim();
+        if (message === "") {
+            return;
+        }
+        var form_data = new FormData();
+        form_data.append("login", id);
+        form_data.append("nom", nom);
+        form_data.append("img", img);
+        form_data.append("message", message);
+        $.ajax({
+            url: "../../models/sendMessage.php", 
+            type: "POST",
+            dataType: "json",        
+            processData: false,
+            contentType: false,
+            data: form_data,
+            success: function(data) {
+                const id   = data.login;
+                const nom  = data.nom;
+                const img  = data.img;
+                console.log(id);
+                console.log(nom);
                 var form_data = new FormData();
                 form_data.append("login", id);
                 form_data.append("nom", nom);
-                form_data.append("img", img);
+                form_data.append("img", img);                
                 $.ajax({
-                    url: "../../models/getMessage.php", 
-                    type: "POST",
+                    url: "../../models/viewMessageAdmin.php",
+                    method: "POST",
                     processData: false,
                     contentType: false,
                     data: form_data,
-                    success: function(html) {
-                        $("#message").html(html);
-                    }
+                    success: function (data) {
+                        try {
+                            data = $.parseJSON(data);
+                            if (data.status == "success") {
+                                $("#message_list_soustraitant").html(data.html); 
+                                $('#nbr_msg').hide(); 
+                                const $body = $("#message_list_soustraitant").find(".body_msg");
+                                setTimeout(() => {
+                                  $body.scrollTop($body.prop("scrollHeight"));
+                                }, 0);                    
+                            }
+                        } catch (e) {
+                            console.error("Erreur de parsing JSON", e);
+                        }
+                    },
                 });
-            })
-        },
+            }
         });
     });
-    $(document).on('click', function (e) {
-        var container = $("#message_list, #message_icon");
-        if (!container.is(e.target) && container.has(e.target).length === 0) {
-            $("#message_list").hide();
-            if(parseInt($('#nbr_msg').text()) > 0){
-                $('#nbr_msg').show();
-            }
-        }
-    });
-}
+}         
 
 // Message soustraitant
 function view_message_soustraitant_record(){
@@ -2123,7 +2222,8 @@ function view_message_soustraitant_record(){
                 try {
                     data = $.parseJSON(data);
                     if (data.status == "success") {
-                        $("#message_list_soustraitant").html(data.html);  
+                        $("#message_list_soustraitant").html(data.html); 
+                        $('#nbr_msg').hide(); 
                         const $body = $("#message_list_soustraitant").find(".body_msg");
                         setTimeout(() => {
                           $body.scrollTop($body.prop("scrollHeight"));
@@ -2139,8 +2239,8 @@ function view_message_soustraitant_record(){
 // envoi message soustraitant
 function send_message_soustraitant(){
     $(document).on("click", "#send_message_soustraitant", function () {
+        $('#nbr_msg').hide(); 
         id = $(this).attr("data-login");
-        console.log(id);
         message = $("#new_message").val().trim();
         if (message === "") {
             return;
@@ -2163,6 +2263,7 @@ function send_message_soustraitant(){
                             data = $.parseJSON(data);
                             if (data.status == "success") {
                                 $("#message_list_soustraitant").html(data.html); 
+                                $('#nbr_msg').hide(); 
                                 const $body = $("#message_list_soustraitant").find(".body_msg");
                                 setTimeout(() => {
                                   $body.scrollTop($body.prop("scrollHeight"));
