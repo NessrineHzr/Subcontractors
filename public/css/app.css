@@ -998,7 +998,7 @@ table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th, ta
       }
       .notification-list {
         position: absolute;
-        top: 110px; 
+        top: 122px; 
         width: 350px;
         background: #fff;
         border: 1px solid #ccc;
@@ -1551,9 +1551,8 @@ padding: 10px;
 
 .titre {
     font-size: 17px;
-    color: #470EE9;
     margin-bottom: 25px;
-    text-align: left;
+    text-align: center;
 }
 .documents_s {
     display: flex; 

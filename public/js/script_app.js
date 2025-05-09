@@ -2105,6 +2105,15 @@ function view_message_liste_record(){
             },
         });
     });
+    $(document).on('click', function (e) {
+        var container = $("#message_list, #message_icon");
+        if (!container.is(e.target) && container.has(e.target).length === 0) {
+            $("#message_list").hide();
+            if(parseInt($('#nbr_msg').text()) > 0){
+                $('#nbr_msg').show();
+            }
+        }
+    });
 }
 function get_message_liste(){
     $(document).on("click", "#btn_message_soustraitant", function () {
@@ -2143,6 +2152,15 @@ function get_message_liste(){
                     console.error("Erreur de parsing JSON", e);
                 }
             },
+        });
+        $(document).on('click', function (e) {
+            var container = $("#model_message_list, #btn_message_soustraitant");
+            if (!container.is(e.target) && container.has(e.target).length === 0) {
+                $("#model_message_list").hide();
+                if(parseInt($('#nbr_msg').text()) > 0){
+                    $('#nbr_msg').show();
+                }
+            }
         });
     });
 }
