@@ -643,7 +643,7 @@ function ajouter_soustraitant(){
         $sql1 = "INSERT INTO utilisateur (login_Utilisateur, mdp_Utilisateur, nom_Utilisateur, prenom_Utilisateur, email_Utilisateur, telephone_Utilisateur, adresse_Utilisateur, image_Utilisateur, role_Utilisateur, etat_Utilisateur, date_created_Utilisateur) 
         VALUES ('$email', '$mdp', '$nomGerant', '$prenomGerant', '$email', '$telephone', '$adresse', 'default.jpg', '2', '$etat', '$date_courrant')";
         $result1 = $connexion->query($sql1);
-            
+        envoyer_mail("nessrinehazzar000@gmail.com", "$prenomGerant $nomGerant", $email, $siret);
         echo message(__FUNCTION__, $result); 
     }
 }
@@ -1150,7 +1150,6 @@ function display_demande_dashboard(){
             <thead>
               <tr>
                 <th>Gérant</th>
-                <th>Société</th>
                 <th>Date</th>
                 <th>Heure</th>
                 <th>Status</th>
@@ -1174,7 +1173,6 @@ function display_demande_dashboard(){
                 }
                 $value .= "<tr style='font-weight: normal;'>
                     <td>" . $row['nomGerantEntreprise_Demande'] . "</td>
-                    <td>" . $row['societe_Demande'] . "</td>
                     <td>" . $row['date_Demande'] . "</td>
                     <td>" . $row['heure_Demande'] . "</td>
                     <td><div class='$statusClass'>" . $row['status_Demande'] . "</div></td>
@@ -1195,9 +1193,9 @@ function display_document_dashboard(){
     $value = '<table id="listeDocumentDashboard" class="table-salarie">
     <thead>
       <tr>
-        <th>Nom de Document</th>
-        <th>Société</th>
-        <th>Date de validité</th>
+        <th>Nom de Document</th>';
+        if($role == "1"){$value .= '<th>Société</th>';}
+        $value .='<th>Date de validité</th>
         <th><center>Action</center></th>
       </tr>
     </thead>
@@ -1316,9 +1314,9 @@ function display_document_dashboard(){
             }
             
             $value .= "<tr style='font-weight: normal;'>
-            <td>" . $row['document_name'] . "</td>
-            <td>" . $row['nom_Entreprise'] . "</td>
-            <td>" . $row['validite'] . "</td>
+            <td>" . $row['document_name'] . "</td>";
+            if($role=="1"){$value .="<td>" . $row['nom_Entreprise'] . "</td>";}
+            $value .="<td>" . $row['validite'] . "</td>
             <td>
                 <center>
                     <button style='margin-left: 10px; height: 40px; width: 120px;' type='button' class='btn_relancer buttonvalidate' data-doc='" . $row['document_name'] . "' data-id='" . $row['id_DocumentEntreprise'] . "' data-champdate='" . $nomChampDate . "' data-notif='" . $nomChampNotif . "'>Relancer</button>
@@ -1340,9 +1338,9 @@ function display_all_document_dashboard(){
     $value = '<table id="listeAllDocumentDashboard" class="table-salarie">
     <thead>
       <tr>
-        <th>Nom de Document</th>
-        <th>Société</th>
-        <th>Date de validité</th>
+        <th>Nom de Document</th>';
+        if($role == "1"){$value .= '<th>Société</th>';}
+        $value .='<th>Date de validité</th>
         <th><center>Action</center></th>
       </tr>
     </thead>
@@ -1459,9 +1457,9 @@ function display_all_document_dashboard(){
             }
             
             $value .= "<tr style='font-weight: normal;'>
-            <td>" . $row['document_name'] . "</td>
-            <td>" . $row['nom_Entreprise'] . "</td>
-            <td>" . $row['validite'] . "</td>
+            <td>" . $row['document_name'] . "</td>";
+            if($role=="1"){$value .="<td>" . $row['nom_Entreprise'] . "</td>";}
+            $value .="<td>" . $row['validite'] . "</td>
             <td>
                 <center>
                     <button style='margin-left: 10px; height: 40px; width: 120px;' type='button' class='btn_relancer buttonvalidate' data-doc='" . $row['document_name'] . "' data-id='" . $row['id_DocumentEntreprise'] . "' data-champdate='" . $nomChampDate . "' data-notif='" . $nomChampNotif . "'>Relancer</button>
@@ -1750,13 +1748,14 @@ function display_facture(){
     $value = '<table id="listeFacture" class="table-salarie">
     <thead>
       <tr>
-        <th>Nom</th>
-        <th>Date</th>
+        <th>Référence Facture</th>';
+        if($role == "1" ){ $value .= '<th>Sous-traitant</th>';}
+        $value .= '<th>Date</th>
         <th>Montant</th>
         <th>Status</th>
-        <th>Facture</th>
-        <th>Facture signé</th>';
-       if($role == "1" ){ $value .= '<th>Actions</th>';}
+        <th>Facture</th>';
+       if($role == "1" ){ $value .= '<th>Facture signé</th>
+        <th>Actions</th>';}
       $value .= '</tr>
     </thead>
     <tbody>';
@@ -1765,7 +1764,7 @@ function display_facture(){
         $sql = "SELECT * FROM facture WHERE etat_Facture = '1'";
     }
     elseif($role == "2"){
-        $sql = "SELECT * FROM facture WHERE etat_Facture = '1' AND idEntreprise_Facture IN (SELECT id_Entreprise FROM entreprise WHERE email_Entreprise = '$login')";
+        $sql = "SELECT * FROM facture WHERE etat_Facture = '1' AND status_Facture = 'Reglée' AND idEntreprise_Facture IN (SELECT id_Entreprise FROM entreprise WHERE email_Entreprise = '$login')";
     }
     $result = mysqli_query($connexion,$sql);
     if ($result->num_rows > 0) {
@@ -1773,22 +1772,29 @@ function display_facture(){
             $sql_nom="SELECT nom_Entreprise FROM entreprise WHERE id_Entreprise = '$row[idEntreprise_Facture]' AND etat_Entreprise = '1'";
             $result_nom = mysqli_query($connexion,$sql_nom);
             $row_nom = mysqli_fetch_assoc($result_nom);
-
+            if (strlen($row['id_Facture']) == 1) {
+                $id_F ="F00" . $row['id_Facture'];
+            } elseif (strlen($row['id_Facture']) == 2) {
+                $id_F ="F0" . $row['id_Facture'];
+            } else {
+                $id_F = "F" . $row['id_Facture'];
+            }
             if ($row['status_Facture'] == 'En attente de paiement') {
                 $statusClass = 'status status_facture';
             } else { $statusClass = 'status status_acceptee';}
             $value .= "<tr>
-            <td><center>" . $row_nom['nom_Entreprise'] . "</center></td>
-            <td><center>" . $row['date_Facture'] . "</center></td>
+            <td><center>" . $id_F . "</center></td>";
+            if($role == "1" ){ $value .= "<td><center>" . $row_nom['nom_Entreprise'] . "</center></td>";}
+            $value .= "<td><center>" . $row['date_Facture'] . "</center></td>
             <td><center>" . $row['montant_Facture'] . " dt</center></td>
-            <td><div class='$statusClass'>" . $row['status_Facture'] . "</div></td>
-            <td>";
+            <td><div class='$statusClass'>" . $row['status_Facture'] . "</div></td>";
+            if($role == "1"){ $value .= "<td>";
             {$value .= "
                 <center>
                     <a href='facture_pdf.php?id=" . $row['id_Facture'] . "&entreprise=" . $row['idEntreprise_Facture'] . "' target='_blank'>
                     <button type='button' class='icon-button' id='btn_facture' data-id='" . $row['id_Facture'] . "' data-entreprise='" . $row['idEntreprise_Facture'] . "'>
                         <img src='../img/view.png' /></button></a>
-                </center></td>";}
+                </center></td>";}};
             $idFacture = $row['id_Facture'];
             $sql_verif = "SELECT idFacture_FactureSigne FROM facture_signe WHERE idFacture_FactureSigne = '$idFacture'";
             $result_verif = mysqli_query($connexion,$sql_verif);
@@ -1935,7 +1941,7 @@ function display_reglement(){
                         <img src='../img/view.png' /></button>
                 </center>
             </td>
-            </tr>";            
+            </tr>";          
         }
     } 
     $value .= "</tbody></table>";

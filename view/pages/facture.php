@@ -104,11 +104,18 @@ $role = $_SESSION['Role'];
                 <option value="">Sélectionnez une facture</option>
                 <?php 
                 global $connexion;
-                $sql = "SELECT id_Facture ,nom_Entreprise FROM entreprise,facture WHERE entreprise.id_Entreprise=facture.idEntreprise_Facture AND entreprise.etat_Entreprise='1' ";
+                $sql = "SELECT id_Facture  FROM entreprise,facture WHERE entreprise.id_Entreprise=facture.idEntreprise_Facture AND entreprise.etat_Entreprise='1'AND status_Facture='En attente de paiement' ";
                 $result = mysqli_query($connexion, $sql);
                 if ($result) {
                     while($row = mysqli_fetch_assoc($result)) {
-                        echo "<option value='". $row['id_Facture'] ."'>" . $row['nom_Entreprise'] . "</option>";
+                      if (strlen($row['id_Facture']) == 1) {
+                          $id_F ="F00" . $row['id_Facture'];
+                        } elseif (strlen($row['id_Facture']) == 2) {
+                          $id_F ="F0" . $row['id_Facture'];
+                        } else {
+                          $id_F = "F" . $row['id_Facture'];
+                        }
+                        echo "<option value='". $row['id_Facture'] ."'>" . $id_F . "</option>";
                     }
                 }
                 ?>
